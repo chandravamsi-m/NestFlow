@@ -1,0 +1,151 @@
+/* ==========================================================================
+   NestFlow - Root CSS Variables
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Semantic Status Colors (Optional if needed outside tailwind classes) */
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-danger: #ef4444;
+    --color-info: #3b82f6;
+
+    /* Base Font Sizing */
+    --font-size-base: 16px;
+    --line-height-base: 1.6;
+  }
+}
+
+/* Global resets not handled by tailwind */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  @apply text-slate-700 bg-slate-50 antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9; 
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1; 
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8; 
+}
+
+/* Mobile Drawer RTL Support */
+[dir="ltr"] #mobile-menu {
+    right: 0;
+    left: auto;
+    transform: translateX(100%);
+}
+[dir="ltr"] #mobile-menu.is-open {
+    transform: translateX(0);
+}
+[dir="rtl"] #mobile-menu {
+    left: 0;
+    right: auto;
+    transform: translateX(-100%);
+}
+[dir="rtl"] #mobile-menu.is-open {
+    transform: translateX(0);
+}
+
+/* Transparent navbar state overrides */
+#navbar.navbar-transparent {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+#navbar.navbar-transparent .nav-link-text:not(.text-primary-500) {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+#navbar.navbar-transparent .nav-link-text:not(.text-primary-500):hover {
+  color: #ffffff !important;
+}
+
+#navbar.navbar-transparent .nav-brand-text {
+  color: #ffffff !important;
+}
+
+#navbar.navbar-transparent .nav-icon-btn {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+#navbar.navbar-transparent .nav-icon-btn:hover {
+  color: #ffffff !important;
+}
+
+#navbar.navbar-transparent .nav-login-btn {
+  border-color: rgba(255, 255, 255, 0.8) !important;
+  color: #ffffff !important;
+}
+
+#navbar.navbar-transparent .nav-login-btn:hover {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #ffffff !important;
+}
+
+/* Global Footer Adjustments */
+footer {
+  font-size: 0.875rem !important; /* text-sm */
+  padding-top: 2rem !important;    /* pt-8 */
+  padding-bottom: 1.25rem !important; /* pb-5 */
+}
+
+footer h4 {
+  font-size: 1rem !important;     /* text-base */
+  margin-bottom: 0.75rem !important; /* mb-3 */
+}
+
+footer p {
+  font-size: 0.875rem !important; /* text-sm */
+}
+
+footer p.text-slate-500 {
+  font-size: 0.75rem !important;  /* text-xs for copyright */
+}
+
+footer .text-sm,
+footer .flex.gap-6.justify-center {
+  font-size: 0.75rem !important;  /* text-xs for privacy/terms links */
+}
+
+footer .grid.mb-8 {
+  margin-bottom: 1.5rem !important; /* mb-6 */
+}
+
+footer .mb-4 {
+  margin-bottom: 0.75rem !important; /* mb-3 */
+}
+
+/* Hide scrollbar utility for clean horizontal swipe containers */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

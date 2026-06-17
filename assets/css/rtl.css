@@ -1,0 +1,13 @@
+/* ==========================================================================
+   NestFlow - RTL Support
+   ========================================================================== */
+
+/*
+   Tailwind supports RTL natively by using logical properties 
+   (like ms-4 instead of ml-4, pe-4 instead of pr-4).
+   This file is reserved for complex structural changes in RTL mode.
+*/
+
+html[dir="rtl"] {
+  /* specific structural overrides if necessary */
+}

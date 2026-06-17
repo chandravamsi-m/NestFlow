@@ -1,0 +1,24 @@
+/* ==========================================================================
+   NestFlow - Dark Mode Overrides
+   ========================================================================== */
+
+/* 
+   We will rely heavily on Tailwind's dark: modifier classes 
+   for dark mode support (e.g. dark:bg-slate-900).
+   This file is reserved for any complex dark mode overrides 
+   that cannot be handled purely by utility classes.
+*/
+
+html.dark body {
+  @apply bg-slate-900 text-slate-300;
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background: #0f172a; 
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: #334155; 
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569; 
+}

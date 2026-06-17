@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properties | NestFlow</title>
+    
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/dark-mode.css">
+    <link rel="stylesheet" href="../assets/css/rtl.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../assets/js/tailwind-config.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300">
+
+    <nav id="navbar" class="w-full z-50 py-4 transition-all duration-300 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm sticky top-0">
+
+        <div class="container mx-auto px-4 md:px-6 lg:px-8">
+            <div class="flex items-center justify-between">
+                <a href="../index.html" class="flex items-center gap-2 group">
+                    <img src="../assets/images/logo.svg" alt="NestFlow Logo" class="w-10 h-10">
+                    <span class="font-heading font-bold text-2xl tracking-tight text-slate-900 dark:text-white">Nest<span class="text-primary-500">Flow</span></span>
+                </a>
+                
+                <!-- Desktop Nav Links -->
+                <div class="hidden lg:flex items-center gap-6 xl:gap-8 font-medium">
+                    <!-- Home Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center gap-1 hover:text-primary-500 transition-colors text-slate-900 dark:text-slate-100 py-2">Home <i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+                        <div class="absolute top-full left-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 flex flex-col overflow-hidden">
+                                <a href="../index.html" class="px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-900 dark:text-slate-100 transition-colors">Home 1</a>
+                                <a href="home-2.html" class="px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors border-t border-slate-100 dark:border-slate-700">Home 2</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="properties.html" class=" hover:text-primary-500 transition-colors py-2">Properties</a>
+                    <a href="services.html" class=" hover:text-primary-500 transition-colors py-2">Services</a>
+                    <a href="about.html" class=" hover:text-primary-500 transition-colors py-2">About Us</a>
+                    <a href="contact.html" class=" hover:text-primary-500 transition-colors py-2">Contact</a>
+                    
+                    <!-- Dashboard Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center gap-1 hover:text-primary-500 transition-colors  py-2">Dashboards <i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+                        <div class="absolute top-full left-0 pt-2 w-52 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 flex flex-col overflow-hidden text-slate-700 dark:text-slate-300">
+                                <a href="user-dashboard.html" class="px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">User Dashboard</a>
+                                <a href="admin-dashboard.html" class="px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors border-t border-slate-100 dark:border-slate-700">Admin Dashboard</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="hidden lg:flex items-center gap-2 xl:gap-4">
+                    <button class="rtl-toggle p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-300" aria-label="Toggle RTL">
+                        <span class="font-bold text-xs uppercase tracking-wider">RTL</span>
+                    </button>
+                    <button class="theme-toggle p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-300" aria-label="Toggle Dark Mode">
+                        <i data-lucide="moon" class="dark:hidden"></i>
+                        <i data-lucide="sun" class="hidden dark:block"></i>
+                    </button>
+                    <a href="login.html" class="px-4 xl:px-5 py-2 rounded-full font-medium transition-colors border border-[#10b981] text-[#10b981] hover:bg-[#10b981] hover:text-white bg-transparent">Log in</a>
+                    <a href="add-property.html" class="px-4 xl:px-5 py-2 rounded-full bg-primary-500 text-white font-medium hover:bg-primary-600 transition-colors shadow-lg shadow-primary-500/30 whitespace-nowrap">Add Property</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Nav Overlay -->
+        <div id="mobile-overlay" class="fixed inset-0 bg-slate-900/50 z-[55] hidden opacity-0 transition-opacity duration-300 lg:hidden backdrop-blur-sm"></div>
+        
+        <!-- Mobile Nav Drawer -->
+        <div id="mobile-menu" class="fixed top-0 w-[80%] sm:w-[60%] md:w-[50%] h-screen bg-white dark:bg-slate-900 z-[60] shadow-2xl transition-transform duration-300 hidden lg:hidden flex flex-col">
+            <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center shrink-0">
+                <span class="font-heading font-bold text-xl text-slate-900 dark:text-white">Nest<span class="text-primary-500">Flow</span></span>
+                <button id="close-menu-btn" class="p-2 text-slate-500 hover:text-slate-900 dark:hover:text-white bg-slate-50 dark:bg-slate-800 rounded-lg transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="flex flex-col p-4 space-y-4 overflow-y-auto flex-1 text-slate-800 dark:text-slate-100">
+                <details class="group">
+                    <summary class="flex items-center justify-between font-medium hover:text-primary-500 cursor-pointer list-none marker:hidden transition-colors">
+                        Home <i data-lucide="chevron-down" class="w-4 h-4 transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <div class="flex flex-col pl-4 pt-3 space-y-3">
+                        <a href="../index.html" class="font-medium text-slate-600 dark:text-slate-400 hover:text-primary-500 transition-colors">Home 1</a>
+                        <a href="home-2.html" class="font-medium text-slate-600 dark:text-slate-400 hover:text-primary-500 transition-colors">Home 2</a>
+                    </div>
+                </details>
+                <a href="properties.html" class="font-medium hover:text-primary-500 transition-colors">Properties</a>
+                <a href="services.html" class="font-medium hover:text-primary-500 transition-colors">Services</a>
+                <a href="about.html" class="font-medium hover:text-primary-500 transition-colors">About Us</a>
+                <a href="contact.html" class="font-medium hover:text-primary-500 transition-colors">Contact</a>
+                <details class="group">
+                    <summary class="flex items-center justify-between font-medium hover:text-primary-500 cursor-pointer list-none marker:hidden transition-colors">
+                        Dashboards <i data-lucide="chevron-down" class="w-4 h-4 transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <div class="flex flex-col pl-4 pt-3 space-y-3">
+                        <a href="user-dashboard.html" class="font-medium text-slate-600 dark:text-slate-400 hover:text-primary-500 transition-colors">User Dashboard</a>
+                        <a href="admin-dashboard.html" class="font-medium text-slate-600 dark:text-slate-400 hover:text-primary-500 transition-colors">Admin Dashboard</a>
+                    </div>
+                </details>
+                
+                <div class="border-t border-slate-200 dark:border-slate-800 my-2 pt-4 grid grid-cols-2 gap-4">
+                    <button class="rtl-toggle py-2 px-4 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex justify-center items-center text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                        <span class="font-bold text-xs uppercase tracking-wider">RTL</span>
+                    </button>
+                    <button class="theme-toggle py-2 px-4 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex justify-center items-center text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                        <i data-lucide="moon" class="dark:hidden"></i>
+                        <i data-lucide="sun" class="hidden dark:block"></i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 gap-3 pt-2">
+                    <a href="login.html" class="text-center py-2 border border-[#10b981] text-[#10b981] hover:bg-[#10b981] hover:text-white transition-colors rounded-lg font-medium bg-transparent">Log in</a>
+                    <a href="add-property.html" class="text-center py-2 bg-primary-500 text-white rounded-lg font-bold shadow-lg shadow-primary-500/30">Add Property</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="py-14 md:py-20 lg:py-24 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800/30 border-b border-slate-200 dark:border-slate-800 relative overflow-hidden">
+        <!-- Ambient Decorative Shapes -->
+        <div class="absolute -top-10 -left-10 w-72 h-72 bg-primary-500/10 dark:bg-primary-500/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-10 -right-10 w-96 h-96 bg-[#10b981]/5 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="container mx-auto px-4 md:px-6 lg:px-8 relative z-10 text-center">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold font-heading text-slate-900 dark:text-white tracking-tight mb-4 leading-tight">
+                Discover Your Next Space
+            </h1>
+            <p class="text-slate-600 dark:text-slate-400 max-w-2xl text-sm sm:text-base md:text-lg leading-relaxed mx-auto">
+                Browse our verified collections of premium apartments, seafront villas, and high-rise lofts. Apply custom filters to match your exact budget and lifestyle preferences.
+            </p>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8">
+        
+        <!-- Filter Sidebar -->
+        <aside class="w-full lg:w-1/4">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-soft sticky top-24 border border-slate-100 dark:border-slate-700">
+                <h2 class="text-xl font-bold font-heading mb-6 flex items-center gap-2">
+                    <i data-lucide="filter" class="w-5 h-5 text-primary-500"></i>
+                    Filter Properties
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6">
+                    <!-- Location -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Location</label>
+                        <input type="text" placeholder="City or ZIP" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 focus:border-primary-500 focus:outline-none">
+                    </div>
+                    <!-- Type -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Property Type</label>
+                        <select class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 focus:border-primary-500 focus:outline-none">
+                            <option>All Types</option>
+                            <option>Apartment</option>
+                            <option>Villa</option>
+                        </select>
+                    </div>
+                    <!-- Price Range -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Price Range</label>
+                        <input type="range" class="w-full accent-primary-500">
+                        <div class="flex justify-between text-xs text-slate-500 mt-2">
+                            <span>$0</span>
+                            <span>$10k+</span>
+                        </div>
+                    </div>
+                    <!-- Amenities -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-3">Amenities</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" class="rounded text-primary-500 focus:ring-primary-500"> Parking</label>
+                            <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" class="rounded text-primary-500 focus:ring-primary-500"> Gym</label>
+                            <label class="flex items-center gap-2 text-sm cursor-pointer"><input type="checkbox" class="rounded text-primary-500 focus:ring-primary-500"> Pet Friendly</label>
+                        </div>
+                    </div>
+                    
+                    <div class="md:col-span-2 lg:col-span-1 pt-2">
+                        <button class="w-full py-3 bg-primary-500 text-white rounded-lg font-bold hover:bg-primary-600 transition-colors shadow-lg shadow-primary-500/30">Apply Filters</button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Properties Grid -->
+        <main class="w-full lg:w-3/4">
+            <div class="flex items-center justify-between mb-6">
+                <h1 class="text-2xl font-bold font-heading">Showing 24 Properties</h1>
+                <select class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2 text-sm focus:outline-none">
+                    <option>Sort by: Newest</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                </select>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Property Card 1 -->
+                <div class="bg-white dark:bg-slate-800/90 rounded-3xl shadow-soft overflow-hidden group hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 border border-slate-100 dark:border-slate-700/80">
+                    <div class="relative overflow-hidden aspect-[4/3]">
+                        <div class="absolute top-4 left-4 z-10 flex gap-2">
+                            <span class="bg-primary-500 text-white text-[10px] uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-lg shadow-lg">Featured</span>
+                            <span class="bg-slate-950/80 backdrop-blur-md text-white text-[10px] uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-lg shadow-lg">For Rent</span>
+                        </div>
+                        <img src="../assets/images/property_penthouse.png" alt="The Oasis Penthouse" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute bottom-4 right-4 z-10 bg-white dark:bg-slate-900/95 rounded-2xl px-4 py-2.5 shadow-lg border border-slate-100/55 dark:border-slate-700/60">
+                            <span class="text-primary-500 font-extrabold text-xl">$2,500<span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">/mo</span></span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-3 flex items-center gap-1.5">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-primary-500 shrink-0"></i>
+                            123 Luxury Avenue, Beverly Hills
+                        </div>
+                        <h3 class="text-xl font-bold font-heading mb-4 text-slate-900 dark:text-white group-hover:text-primary-500 transition-colors">The Oasis Penthouse</h3>
+                        <div class="grid grid-cols-3 gap-2 sm:gap-4 border-t border-b border-slate-100 dark:border-slate-700/60 py-4 mb-6 text-slate-600 dark:text-slate-400">
+                            <div class="flex flex-col items-center gap-1">
+                                <i data-lucide="bed" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-semibold">3 Beds</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-1 border-x border-slate-100 dark:border-slate-800/80">
+                                <i data-lucide="bath" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-semibold">2 Baths</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-1">
+                                <i data-lucide="maximize" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-semibold">1,200 sqft</span>
+                            </div>
+                        </div>
+                        <a href="property-detail.html" class="block w-full py-3.5 text-center rounded-2xl font-bold border border-[#10b981] text-[#10b981] hover:bg-[#10b981] hover:text-white transition-all bg-transparent shadow-sm">View Details</a>
+                    </div>
+                </div>
+
+                <!-- Property Card 2 -->
+                <div class="bg-white dark:bg-slate-800/90 rounded-3xl shadow-soft overflow-hidden group hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 border border-slate-100 dark:border-slate-700/80">
+                    <div class="relative overflow-hidden aspect-[4/3]">
+                        <div class="absolute top-4 left-4 z-10 flex gap-2">
+                            <span class="bg-[#10b981] text-white text-[10px] uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-lg shadow-lg">New</span>
+                            <span class="bg-slate-950/80 backdrop-blur-md text-white text-[10px] uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-lg shadow-lg">For Rent</span>
+                        </div>
+                        <img src="../assets/images/property_villa.png" alt="Azure Seafront Villa" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute bottom-4 right-4 z-10 bg-white dark:bg-slate-900/95 rounded-2xl px-4 py-2.5 shadow-lg border border-slate-100/55 dark:border-slate-700/60">
+                            <span class="text-primary-500 font-extrabold text-xl">$4,200<span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">/mo</span></span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-3 flex items-center gap-1.5">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-primary-500 shrink-0"></i>
+                            88 Ocean Vista Drive, Miami
+                        </div>
+                        <h3 class="text-xl font-bold font-heading mb-4 text-slate-900 dark:text-white group-hover:text-primary-500 transition-colors">Azure Seafront Villa</h3>
+                        <div class="grid grid-cols-3 gap-2 sm:gap-4 border-t border-b border-slate-100 dark:border-slate-700/60 py-4 mb-6 text-slate-600 dark:text-slate-400">
+                            <div class="flex flex-col items-center gap-1">
+                                <i data-lucide="bed" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-semibold">4 Beds</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-1 border-x border-slate-100 dark:border-slate-800/80">
+                                <i data-lucide="bath" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-semibold">4 Baths</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-1">
+                                <i data-lucide="maximize" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-semibold">3,100 sqft</span>
+                            </div>
+                        </div>
+                        <a href="property-detail.html" class="block w-full py-3.5 text-center rounded-2xl font-bold border border-[#10b981] text-[#10b981] hover:bg-[#10b981] hover:text-white transition-all bg-transparent shadow-sm">View Details</a>
+                    </div>
+                </div>
+
+                <!-- Property Card 3 -->
+                <div class="bg-white dark:bg-slate-800/90 rounded-3xl shadow-soft overflow-hidden group hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 border border-slate-100 dark:border-slate-700/80">
+                    <div class="relative overflow-hidden aspect-[4/3]">
+                        <div class="absolute top-4 left-4 z-10 flex gap-2">
+                            <span class="bg-indigo-500 text-white text-[10px] uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-lg shadow-lg">Trending</span>
+                            <span class="bg-slate-950/80 backdrop-blur-md text-white text-[10px] uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-lg shadow-lg">For Rent</span>
+                        </div>
+                        <img src="../assets/images/property_loft.png" alt="Urban Industrial Loft" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute bottom-4 right-4 z-10 bg-white dark:bg-slate-900/95 rounded-2xl px-4 py-2.5 shadow-lg border border-slate-100/55 dark:border-slate-700/60">
+                            <span class="text-primary-500 font-extrabold text-xl">$1,950<span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">/mo</span></span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-3 flex items-center gap-1.5">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-primary-500 shrink-0"></i>
+                            45 Downtown Street, Seattle
+                        </div>
+                        <h3 class="text-xl font-bold font-heading mb-4 text-slate-900 dark:text-white group-hover:text-primary-500 transition-colors">Urban Industrial Loft</h3>
+                        <div class="grid grid-cols-3 gap-2 sm:gap-4 border-t border-b border-slate-100 dark:border-slate-700/60 py-4 mb-6 text-slate-600 dark:text-slate-400">
+                            <div class="flex flex-col items-center gap-1">
+                                <i data-lucide="bed" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-semibold">1 Bed</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-1 border-x border-slate-100 dark:border-slate-800/80">
+                                <i data-lucide="bath" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-semibold">1.5 Baths</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-1">
+                                <i data-lucide="maximize" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-semibold">920 sqft</span>
+                            </div>
+                        </div>
+                        <a href="property-detail.html" class="block w-full py-3.5 text-center rounded-2xl font-bold border border-[#10b981] text-[#10b981] hover:bg-[#10b981] hover:text-white transition-all bg-transparent shadow-sm">View Details</a>
+                    </div>
+                </div>
+
+                <!-- Property Card 4 -->
+                <div class="bg-white dark:bg-slate-800/90 rounded-3xl shadow-soft overflow-hidden group hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 border border-slate-100 dark:border-slate-700/80">
+                    <div class="relative overflow-hidden aspect-[4/3]">
+                        <div class="absolute top-4 left-4 z-10 flex gap-2">
+                            <span class="bg-amber-500 text-white text-[10px] uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-lg shadow-lg">Popular</span>
+                            <span class="bg-slate-950/80 backdrop-blur-md text-white text-[10px] uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-lg shadow-lg">For Rent</span>
+                        </div>
+                        <img src="../assets/images/property_1.png" alt="Modern Minimalist Condo" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute bottom-4 right-4 z-10 bg-white dark:bg-slate-900/95 rounded-2xl px-4 py-2.5 shadow-lg border border-slate-100/55 dark:border-slate-700/60">
+                            <span class="text-primary-500 font-extrabold text-xl">$2,100<span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">/mo</span></span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-3 flex items-center gap-1.5">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-primary-500 shrink-0"></i>
+                            512 Golden Gate Ave, San Francisco
+                        </div>
+                        <h3 class="text-xl font-bold font-heading mb-4 text-slate-900 dark:text-white group-hover:text-primary-500 transition-colors">Modern Minimalist Condo</h3>
+                        <div class="grid grid-cols-3 gap-2 sm:gap-4 border-t border-b border-slate-100 dark:border-slate-700/60 py-4 mb-6 text-slate-600 dark:text-slate-400">
+                            <div class="flex flex-col items-center gap-1">
+                                <i data-lucide="bed" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-semibold">2 Beds</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-1 border-x border-slate-100 dark:border-slate-800/80">
+                                <i data-lucide="bath" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-semibold">2 Baths</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-1">
+                                <i data-lucide="maximize" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-semibold">1,100 sqft</span>
+                            </div>
+                        </div>
+                        <a href="property-detail.html" class="block w-full py-3.5 text-center rounded-2xl font-bold border border-[#10b981] text-[#10b981] hover:bg-[#10b981] hover:text-white transition-all bg-transparent shadow-sm">View Details</a>
+                    </div>
+                </div>
+
+                <!-- Property Card 5 -->
+                <div class="bg-white dark:bg-slate-800/90 rounded-3xl shadow-soft overflow-hidden group hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 border border-slate-100 dark:border-slate-700/80">
+                    <div class="relative overflow-hidden aspect-[4/3]">
+                        <div class="absolute top-4 left-4 z-10 flex gap-2">
+                            <span class="bg-primary-500 text-white text-[10px] uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-lg shadow-lg">Featured</span>
+                            <span class="bg-slate-950/80 backdrop-blur-md text-white text-[10px] uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-lg shadow-lg">For Rent</span>
+                        </div>
+                        <img src="../assets/images/property_penthouse.png" alt="Vanguard Penthouse Loft" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute bottom-4 right-4 z-10 bg-white dark:bg-slate-900/95 rounded-2xl px-4 py-2.5 shadow-lg border border-slate-100/55 dark:border-slate-700/60">
+                            <span class="text-primary-500 font-extrabold text-xl">$3,400<span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">/mo</span></span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-3 flex items-center gap-1.5">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-primary-500 shrink-0"></i>
+                            298 Dumbo Heights, Brooklyn
+                        </div>
+                        <h3 class="text-xl font-bold font-heading mb-4 text-slate-900 dark:text-white group-hover:text-primary-500 transition-colors">Vanguard Penthouse Loft</h3>
+                        <div class="grid grid-cols-3 gap-2 sm:gap-4 border-t border-b border-slate-100 dark:border-slate-700/60 py-4 mb-6 text-slate-600 dark:text-slate-400">
+                            <div class="flex flex-col items-center gap-1">
+                                <i data-lucide="bed" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-semibold">3 Beds</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-1 border-x border-slate-100 dark:border-slate-800/80">
+                                <i data-lucide="bath" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-semibold">2.5 Baths</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-1">
+                                <i data-lucide="maximize" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-semibold">1,750 sqft</span>
+                            </div>
+                        </div>
+                        <a href="property-detail.html" class="block w-full py-3.5 text-center rounded-2xl font-bold border border-[#10b981] text-[#10b981] hover:bg-[#10b981] hover:text-white transition-all bg-transparent shadow-sm">View Details</a>
+                    </div>
+                </div>
+
+                <!-- Property Card 6 -->
+                <div class="bg-white dark:bg-slate-800/90 rounded-3xl shadow-soft overflow-hidden group hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 border border-slate-100 dark:border-slate-700/80">
+                    <div class="relative overflow-hidden aspect-[4/3]">
+                        <div class="absolute top-4 left-4 z-10 flex gap-2">
+                            <span class="bg-[#10b981] text-white text-[10px] uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-lg shadow-lg">New</span>
+                            <span class="bg-slate-950/80 backdrop-blur-md text-white text-[10px] uppercase tracking-wider font-extrabold px-3 py-1.5 rounded-lg shadow-lg">For Rent</span>
+                        </div>
+                        <img src="../assets/images/property_villa.png" alt="Sunset Coastal Estate" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute bottom-4 right-4 z-10 bg-white dark:bg-slate-900/95 rounded-2xl px-4 py-2.5 shadow-lg border border-slate-100/55 dark:border-slate-700/60">
+                            <span class="text-primary-500 font-extrabold text-xl">$5,500<span class="text-xs text-slate-500 dark:text-slate-400 font-semibold">/mo</span></span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-3 flex items-center gap-1.5">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-primary-500 shrink-0"></i>
+                            104 Malibu Road, Malibu
+                        </div>
+                        <h3 class="text-xl font-bold font-heading mb-4 text-slate-900 dark:text-white group-hover:text-primary-500 transition-colors">Sunset Coastal Estate</h3>
+                        <div class="grid grid-cols-3 gap-2 sm:gap-4 border-t border-b border-slate-100 dark:border-slate-700/60 py-4 mb-6 text-slate-600 dark:text-slate-400">
+                            <div class="flex flex-col items-center gap-1">
+                                <i data-lucide="bed" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-semibold">5 Beds</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-1 border-x border-slate-100 dark:border-slate-800/80">
+                                <i data-lucide="bath" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-semibold">5 Baths</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-1">
+                                <i data-lucide="maximize" class="w-4 h-4 text-slate-400"></i>
+                                <span class="text-xs font-semibold">4,200 sqft</span>
+                            </div>
+                        </div>
+                        <a href="property-detail.html" class="block w-full py-3.5 text-center rounded-2xl font-bold border border-[#10b981] text-[#10b981] hover:bg-[#10b981] hover:text-white transition-all bg-transparent shadow-sm">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Listing Assurances & Verified Badges -->
+    <section class="py-12 bg-slate-100/70 dark:bg-slate-950/30 border-t border-slate-200 dark:border-slate-800">
+        <div class="container mx-auto px-4 md:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-primary-500 font-bold tracking-wider uppercase text-xs mb-2 block">Our Assurances</span>
+                <h2 class="text-2xl md:text-3xl font-extrabold font-heading text-slate-900 dark:text-white">Why Rent with NestFlow?</h2>
+                <p class="text-slate-600 dark:text-slate-400 mt-2 text-sm">
+                    We establish direct transparency between property owners and tenants through verified data.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                <!-- Benefit 1 -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100/80 dark:border-slate-800/80 hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 rounded-xl bg-primary-500/10 dark:bg-primary-500/20 flex items-center justify-center text-primary-500 mb-4">
+                        <i data-lucide="shield-check" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">100% Vetted Listings</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Every single property image, address, and amenity sheet is verified by our physical inspection team.
+                    </p>
+                </div>
+                
+                <!-- Benefit 2 -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100/80 dark:border-slate-800/80 hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 flex items-center justify-center text-emerald-500 mb-4">
+                        <i data-lucide="file-text" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Direct Smart Lease</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Sign legally-compliant rental contracts directly with landlords using NestFlow's secure digital ledger.
+                    </p>
+                </div>
+                
+                <!-- Benefit 3 -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100/80 dark:border-slate-800/80 hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/20 flex items-center justify-center text-indigo-500 mb-4">
+                        <i data-lucide="dollar-sign" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Zero Hidden Fees</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        No broker commissions, no markups. Get a clear breakdown of security deposits and utility rates upfront.
+                    </p>
+                </div>
+                
+                <!-- Benefit 4 -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100/80 dark:border-slate-800/80 hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 flex items-center justify-center text-amber-500 mb-4">
+                        <i data-lucide="headset" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">24/7 Concierge Support</h3>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                        Instant emergency maintenance reporting and neutral deposit escrow resolution within hours.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <!-- Footer -->
+    <!-- Footer -->
+    <!-- Footer -->
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 pt-10 pb-6 border-t border-slate-800 mt-auto">
+        <div class="container mx-auto px-4 md:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <!-- Brand Info -->
+                <div class="space-y-2">
+                    <a href="../index.html" class="flex items-center gap-2 group">
+                        <img src="../assets/images/logo.svg" alt="NestFlow Logo" class="w-10 h-10">
+                        <span class="font-heading font-bold text-2xl tracking-tight text-white">Nest<span class="text-primary-500">Flow</span></span>
+                    </a>
+                    <p class="text-slate-400 leading-relaxed">
+                        Modern property management solutions bridging the gap between property owners and tenants with cutting-edge technology.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary-500 hover:text-white transition-colors">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary-500 hover:text-white transition-colors">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary-500 hover:text-white transition-colors">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-white font-bold font-heading text-lg mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="properties.html" class="hover:text-primary-500 transition-colors">Find a Property</a></li>
+                        <li><a href="add-property.html" class="hover:text-primary-500 transition-colors">List Your Property</a></li>
+                        <li><a href="services.html" class="hover:text-primary-500 transition-colors">Our Services</a></li>
+                        <li><a href="about.html" class="hover:text-primary-500 transition-colors">About Us</a></li>
+                        <li><a href="contact.html" class="hover:text-primary-500 transition-colors">Contact Support</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="text-white font-bold font-heading text-lg mb-4">Contact Us</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-primary-500 shrink-0 mt-1"></i>
+                            <span>123 Innovation Drive,<br>Tech City, TC 90210</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="phone" class="w-5 h-5 text-primary-500 shrink-0"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="mail" class="w-5 h-5 text-primary-500 shrink-0"></i>
+                            <span>support@nestflow.com</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="text-white font-bold font-heading text-lg mb-4">Newsletter</h4>
+                    <p class="text-slate-400 mb-4">Subscribe to our newsletter to get the latest property updates.</p>
+                    <form class="relative" onsubmit="event.preventDefault()">
+                        <input type="email" placeholder="Email address" class="w-full pl-4 pr-12 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-primary-500">
+                        <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-lg bg-primary-500 hover:bg-primary-600 text-white transition-colors">
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-slate-800 text-center md:flex md:items-center md:justify-between">
+                <p class="text-slate-500">&copy; 2026 NestFlow. All rights reserved.</p>
+                <div class="flex gap-6 justify-center mt-4 md:mt-0 text-slate-500 text-sm">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>lucide.createIcons();</script>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

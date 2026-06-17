@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | NestFlow</title>
+    
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/dark-mode.css">
+    <link rel="stylesheet" href="../assets/css/rtl.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../assets/js/tailwind-config.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300 min-h-screen flex items-center justify-center p-4">
+
+    <!-- Top Corner Actions -->
+    <div class="absolute top-6 right-6 flex items-center gap-4">
+        <button class="theme-toggle p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+            <i data-lucide="moon" class="dark:hidden"></i>
+            <i data-lucide="sun" class="hidden dark:block"></i>
+        </button>
+        <button class="rtl-toggle font-bold text-sm hover:text-primary-500">RTL</button>
+    </div>
+
+    <!-- Auth Card -->
+    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-8 md:p-10 w-full max-w-md border border-slate-100 dark:border-slate-700">
+        
+        <div class="flex justify-center mb-8">
+            <a href="../index.html" class="flex items-center gap-2 group">
+                <div class="w-12 h-12 rounded-xl bg-primary-500 flex items-center justify-center text-white shadow-lg shadow-primary-500/30">
+                    <i data-lucide="home"></i>
+                </div>
+                <span class="font-heading font-bold text-3xl tracking-tight text-slate-900 dark:text-white">Nest<span class="text-primary-500">Flow</span></span>
+            </a>
+        </div>
+
+        <h2 class="text-2xl font-bold font-heading text-center mb-2">Welcome Back</h2>
+        <p class="text-slate-500 text-center mb-8">Please enter your details to sign in.</p>
+
+        <form class="space-y-5">
+            <div>
+                <label class="block text-sm font-semibold mb-2">Email</label>
+                <input type="email" placeholder="name@example.com" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 transition-colors">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold mb-2">Password</label>
+                <div class="relative">
+                    <input type="password" placeholder="••••••••" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 transition-colors">
+                    <button type="button" class="absolute right-4 top-3 text-slate-400 hover:text-slate-600"><i data-lucide="eye" class="w-5 h-5"></i></button>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between text-sm">
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" class="rounded text-primary-500 focus:ring-primary-500">
+                    <span class="font-medium text-slate-600 dark:text-slate-400">Remember me</span>
+                </label>
+                <a href="#" class="font-medium text-primary-500 hover:text-primary-600">Forgot Password?</a>
+            </div>
+
+            <button type="button" onclick="window.location.href='user-dashboard.html'" class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold rounded-xl py-3.5 transition-colors shadow-lg shadow-primary-500/30">
+                Sign In
+            </button>
+        </form>
+
+        <div class="relative my-8">
+            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200 dark:border-slate-700"></div></div>
+            <div class="relative flex justify-center text-sm"><span class="px-2 bg-white dark:bg-slate-800 text-slate-500">Or continue with</span></div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            <button class="flex justify-center items-center gap-2 py-3 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors font-medium">
+                Google
+            </button>
+            <button class="flex justify-center items-center gap-2 py-3 border border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors font-medium">
+                Apple
+            </button>
+        </div>
+
+        <p class="text-center text-slate-500 mt-8 text-sm">
+            Don't have an account? <a href="signup.html" class="font-bold text-primary-500 hover:text-primary-600">Sign Up</a>
+        </p>
+    </div>
+
+    <script>lucide.createIcons();</script>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

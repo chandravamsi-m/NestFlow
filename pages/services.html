@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services | NestFlow</title>
+    
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/dark-mode.css">
+    <link rel="stylesheet" href="../assets/css/rtl.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../assets/js/tailwind-config.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300">
+
+    <nav id="navbar" class="w-full z-50 py-4 transition-all duration-300 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm sticky top-0">
+
+        <div class="container mx-auto px-4 md:px-6 lg:px-8">
+            <div class="flex items-center justify-between">
+                <a href="../index.html" class="flex items-center gap-2 group">
+                    <img src="../assets/images/logo.svg" alt="NestFlow Logo" class="w-10 h-10">
+                    <span class="font-heading font-bold text-2xl tracking-tight text-slate-900 dark:text-white">Nest<span class="text-primary-500">Flow</span></span>
+                </a>
+                
+                <!-- Desktop Nav Links -->
+                <div class="hidden lg:flex items-center gap-6 xl:gap-8 font-medium">
+                    <!-- Home Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center gap-1 hover:text-primary-500 transition-colors text-slate-900 dark:text-slate-100 py-2">Home <i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+                        <div class="absolute top-full left-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 flex flex-col overflow-hidden">
+                                <a href="../index.html" class="px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-900 dark:text-slate-100 transition-colors">Home 1</a>
+                                <a href="home-2.html" class="px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors border-t border-slate-100 dark:border-slate-700">Home 2</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="properties.html" class=" hover:text-primary-500 transition-colors py-2">Properties</a>
+                    <a href="services.html" class=" hover:text-primary-500 transition-colors py-2">Services</a>
+                    <a href="about.html" class=" hover:text-primary-500 transition-colors py-2">About Us</a>
+                    <a href="contact.html" class=" hover:text-primary-500 transition-colors py-2">Contact</a>
+                    
+                    <!-- Dashboard Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center gap-1 hover:text-primary-500 transition-colors  py-2">Dashboards <i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+                        <div class="absolute top-full left-0 pt-2 w-52 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+                            <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 flex flex-col overflow-hidden text-slate-700 dark:text-slate-300">
+                                <a href="user-dashboard.html" class="px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">User Dashboard</a>
+                                <a href="admin-dashboard.html" class="px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors border-t border-slate-100 dark:border-slate-700">Admin Dashboard</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="hidden lg:flex items-center gap-2 xl:gap-4">
+                    <button class="rtl-toggle p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-300" aria-label="Toggle RTL">
+                        <span class="font-bold text-xs uppercase tracking-wider">RTL</span>
+                    </button>
+                    <button class="theme-toggle p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-300" aria-label="Toggle Dark Mode">
+                        <i data-lucide="moon" class="dark:hidden"></i>
+                        <i data-lucide="sun" class="hidden dark:block"></i>
+                    </button>
+                    <a href="login.html" class="px-4 xl:px-5 py-2 rounded-full font-medium transition-colors border border-[#10b981] text-[#10b981] hover:bg-[#10b981] hover:text-white bg-transparent">Log in</a>
+                    <a href="add-property.html" class="px-4 xl:px-5 py-2 rounded-full bg-primary-500 text-white font-medium hover:bg-primary-600 transition-colors shadow-lg shadow-primary-500/30 whitespace-nowrap">Add Property</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Nav Overlay -->
+        <div id="mobile-overlay" class="fixed inset-0 bg-slate-900/50 z-[55] hidden opacity-0 transition-opacity duration-300 lg:hidden backdrop-blur-sm"></div>
+        
+        <!-- Mobile Nav Drawer -->
+        <div id="mobile-menu" class="fixed top-0 w-[80%] sm:w-[60%] md:w-[50%] h-screen bg-white dark:bg-slate-900 z-[60] shadow-2xl transition-transform duration-300 hidden lg:hidden flex flex-col">
+            <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center shrink-0">
+                <span class="font-heading font-bold text-xl text-slate-900 dark:text-white">Nest<span class="text-primary-500">Flow</span></span>
+                <button id="close-menu-btn" class="p-2 text-slate-500 hover:text-slate-900 dark:hover:text-white bg-slate-50 dark:bg-slate-800 rounded-lg transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="flex flex-col p-4 space-y-4 overflow-y-auto flex-1 text-slate-800 dark:text-slate-100">
+                <details class="group">
+                    <summary class="flex items-center justify-between font-medium hover:text-primary-500 cursor-pointer list-none marker:hidden transition-colors">
+                        Home <i data-lucide="chevron-down" class="w-4 h-4 transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <div class="flex flex-col pl-4 pt-3 space-y-3">
+                        <a href="../index.html" class="font-medium text-slate-600 dark:text-slate-400 hover:text-primary-500 transition-colors">Home 1</a>
+                        <a href="home-2.html" class="font-medium text-slate-600 dark:text-slate-400 hover:text-primary-500 transition-colors">Home 2</a>
+                    </div>
+                </details>
+                <a href="properties.html" class="font-medium hover:text-primary-500 transition-colors">Properties</a>
+                <a href="services.html" class="font-medium hover:text-primary-500 transition-colors">Services</a>
+                <a href="about.html" class="font-medium hover:text-primary-500 transition-colors">About Us</a>
+                <a href="contact.html" class="font-medium hover:text-primary-500 transition-colors">Contact</a>
+                <details class="group">
+                    <summary class="flex items-center justify-between font-medium hover:text-primary-500 cursor-pointer list-none marker:hidden transition-colors">
+                        Dashboards <i data-lucide="chevron-down" class="w-4 h-4 transition-transform group-open:rotate-180"></i>
+                    </summary>
+                    <div class="flex flex-col pl-4 pt-3 space-y-3">
+                        <a href="user-dashboard.html" class="font-medium text-slate-600 dark:text-slate-400 hover:text-primary-500 transition-colors">User Dashboard</a>
+                        <a href="admin-dashboard.html" class="font-medium text-slate-600 dark:text-slate-400 hover:text-primary-500 transition-colors">Admin Dashboard</a>
+                    </div>
+                </details>
+                
+                <div class="border-t border-slate-200 dark:border-slate-800 my-2 pt-4 grid grid-cols-2 gap-4">
+                    <button class="rtl-toggle py-2 px-4 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex justify-center items-center text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                        <span class="font-bold text-xs uppercase tracking-wider">RTL</span>
+                    </button>
+                    <button class="theme-toggle py-2 px-4 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex justify-center items-center text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                        <i data-lucide="moon" class="dark:hidden"></i>
+                        <i data-lucide="sun" class="hidden dark:block"></i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 gap-3 pt-2">
+                    <a href="login.html" class="text-center py-2 border border-[#10b981] text-[#10b981] hover:bg-[#10b981] hover:text-white transition-colors rounded-lg font-medium bg-transparent">Log in</a>
+                    <a href="add-property.html" class="text-center py-2 bg-primary-500 text-white rounded-lg font-bold shadow-lg shadow-primary-500/30">Add Property</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Hero Header -->
+    <header class="py-14 md:py-20 lg:py-24 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800/30 border-b border-slate-200 dark:border-slate-800 relative overflow-hidden text-center">
+        <!-- Ambient Decorative Shapes -->
+        <div class="absolute -top-10 -left-10 w-72 h-72 bg-primary-500/10 dark:bg-primary-500/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-10 -right-10 w-96 h-96 bg-[#10b981]/5 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="container mx-auto px-4 md:px-6 lg:px-8 relative z-10">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold font-heading text-slate-900 dark:text-white tracking-tight mb-4 leading-tight">
+                Our Premium Services
+            </h1>
+            <p class="text-slate-600 dark:text-slate-400 max-w-2xl text-sm sm:text-base md:text-lg leading-relaxed mx-auto">
+                Comprehensive property management and digital real estate solutions tailored specifically to achieve peace of mind for owners and high-end living for tenants.
+            </p>
+        </div>
+    </header>
+
+    <section class="py-20 bg-white dark:bg-slate-900">
+        <div class="container mx-auto px-4 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-primary-500 font-bold tracking-wider uppercase text-xs mb-2 block">Core Offerings</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold font-heading text-slate-900 dark:text-white">Our Core Services</h2>
+                <p class="text-slate-600 dark:text-slate-400 mt-3 text-sm sm:text-base leading-relaxed">
+                    Explore our premium suite of property management and real estate capabilities built on efficiency, trust, and advanced tech solutions.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Service 1 -->
+                <div class="bg-white dark:bg-slate-800/90 p-5 rounded-3xl shadow-soft border border-slate-100 dark:border-slate-700/80 hover:-translate-y-1.5 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-primary-500/10 dark:bg-primary-500/20 flex items-center justify-center text-primary-500 mb-4 group-hover:bg-primary-500 group-hover:text-white transition-all duration-300">
+                            <i data-lucide="home" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-lg font-bold font-heading mb-2 text-slate-900 dark:text-white group-hover:text-primary-500 transition-colors">Property Management</h3>
+                        <p class="text-slate-500 dark:text-slate-400 mb-4 leading-relaxed text-xs sm:text-[13px]">
+                            End-to-end management of your properties. We handle everything from tenant screening to maintenance coordination, so you can enjoy passive income without the hassle.
+                        </p>
+                        <ul class="space-y-1.5 mb-4 text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                                <span>Vetted Tenant Screening</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                                <span>Automated Rent Ledger Routing</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                                <span>Routine Audits & Assessments</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="contact.html" class="inline-flex items-center gap-2 font-bold text-xs sm:text-sm text-primary-500 hover:text-primary-600 group/btn transition-colors mt-auto">Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover/btn:translate-x-1.5 transition-transform"></i></a>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="bg-white dark:bg-slate-800/90 p-5 rounded-3xl shadow-soft border border-slate-100 dark:border-slate-700/80 hover:-translate-y-1.5 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 flex items-center justify-center text-emerald-500 mb-4 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
+                            <i data-lucide="users" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-lg font-bold font-heading mb-2 text-slate-900 dark:text-white group-hover:text-primary-500 transition-colors">Tenant Placement</h3>
+                        <p class="text-slate-500 dark:text-slate-400 mb-4 leading-relaxed text-xs sm:text-[13px]">
+                            We rigorously screen all applicants including credit checks, employment verification, and past rental history to ensure you get reliable, long-term tenants.
+                        </p>
+                        <ul class="space-y-1.5 mb-4 text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                                <span>Credit & Legal Background Check</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                                <span>Employment & Income Audits</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                                <span>Smart Lease Agreement Deployment</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="contact.html" class="inline-flex items-center gap-2 font-bold text-xs sm:text-sm text-primary-500 hover:text-primary-600 group/btn transition-colors mt-auto">Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover/btn:translate-x-1.5 transition-transform"></i></a>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="bg-white dark:bg-slate-800/90 p-5 rounded-3xl shadow-soft border border-slate-100 dark:border-slate-700/80 hover:-translate-y-1.5 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/20 flex items-center justify-center text-indigo-500 mb-4 group-hover:bg-indigo-500 group-hover:text-white transition-all duration-300">
+                            <i data-lucide="wrench" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-lg font-bold font-heading mb-2 text-slate-900 dark:text-white group-hover:text-primary-500 transition-colors">24/7 Maintenance</h3>
+                        <p class="text-slate-500 dark:text-slate-400 mb-4 leading-relaxed text-xs sm:text-[13px]">
+                            Our round-the-clock maintenance team ensures emergency repairs are handled immediately, protecting your investment and keeping tenants satisfied.
+                        </p>
+                        <ul class="space-y-1.5 mb-4 text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                                <span>Immediate Emergency Dispatch</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                                <span>Vetted Local Technician Pool</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                                <span>Neutral Deposit Escrow Protection</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="contact.html" class="inline-flex items-center gap-2 font-bold text-xs sm:text-sm text-primary-500 hover:text-primary-600 group/btn transition-colors mt-auto">Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover/btn:translate-x-1.5 transition-transform"></i></a>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="bg-white dark:bg-slate-800/90 p-5 rounded-3xl shadow-soft border border-slate-100 dark:border-slate-700/80 hover:-translate-y-1.5 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 flex items-center justify-center text-amber-500 mb-4 group-hover:bg-amber-500 group-hover:text-white transition-all duration-300">
+                            <i data-lucide="line-chart" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-lg font-bold font-heading mb-2 text-slate-900 dark:text-white group-hover:text-primary-500 transition-colors">Financial Reporting</h3>
+                        <p class="text-slate-500 dark:text-slate-400 mb-4 leading-relaxed text-xs sm:text-[13px]">
+                            Access detailed monthly and annual financial statements through our secure Owner Portal. Track income, expenses, and overall portfolio performance easily.
+                        </p>
+                        <ul class="space-y-1.5 mb-4 text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                                <span>Real-Time Owner Income Portal</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                                <span>Annual Tax Statement Sheets</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                                <span>Automated Utility Bills Breakdown</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="contact.html" class="inline-flex items-center gap-2 font-bold text-xs sm:text-sm text-primary-500 hover:text-primary-600 group/btn transition-colors mt-auto">Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover/btn:translate-x-1.5 transition-transform"></i></a>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="bg-white dark:bg-slate-800/90 p-5 rounded-3xl shadow-soft border border-slate-100 dark:border-slate-700/80 hover:-translate-y-1.5 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-primary-500/10 dark:bg-primary-500/20 flex items-center justify-center text-primary-500 mb-4 group-hover:bg-primary-500 group-hover:text-white transition-all duration-300">
+                            <i data-lucide="search" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-lg font-bold font-heading mb-2 text-slate-900 dark:text-white group-hover:text-primary-500 transition-colors">Property Valuation</h3>
+                        <p class="text-slate-500 dark:text-slate-400 mb-4 leading-relaxed text-xs sm:text-[13px]">
+                            Get accurate, data-driven rental estimates and property valuations. We help you maximize your ROI by analyzing market trends and neighborhood comps.
+                        </p>
+                        <ul class="space-y-1.5 mb-4 text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                                <span>AI-Powered Comps Analysis</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                                <span>Neighborhood Price Audits</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                                <span>ROI Evaluation & Strategy Sheets</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="contact.html" class="inline-flex items-center gap-2 font-bold text-xs sm:text-sm text-primary-500 hover:text-primary-600 group/btn transition-colors mt-auto">Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover/btn:translate-x-1.5 transition-transform"></i></a>
+                </div>
+
+                <!-- Service 6 -->
+                <div class="bg-white dark:bg-slate-800/90 p-5 rounded-3xl shadow-soft border border-slate-100 dark:border-slate-700/80 hover:-translate-y-1.5 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 flex items-center justify-center text-emerald-500 mb-4 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
+                            <i data-lucide="camera" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="text-lg font-bold font-heading mb-2 text-slate-900 dark:text-white group-hover:text-primary-500 transition-colors">Marketing & Staging</h3>
+                        <p class="text-slate-500 dark:text-slate-400 mb-4 leading-relaxed text-xs sm:text-[13px]">
+                            We showcase your property with professional photography, 3D tours, and targeted online marketing to minimize vacancies and attract premium tenants.
+                        </p>
+                        <ul class="space-y-1.5 mb-4 text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                                <span>Virtual 3D Walkthrough Tours</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                                <span>Premium Real Estate Photography</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0"></i>
+                                <span>Targeted Multi-Channel Ads</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="contact.html" class="inline-flex items-center gap-2 font-bold text-xs sm:text-sm text-primary-500 hover:text-primary-600 group/btn transition-colors mt-auto">Learn more <i data-lucide="arrow-right" class="w-3.5 h-3.5 group-hover/btn:translate-x-1.5 transition-transform"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Delivery Process Section -->
+    <section class="py-20 bg-slate-50 dark:bg-slate-800/30 border-t border-b border-slate-200 dark:border-slate-800">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-primary-500 font-bold tracking-wider uppercase text-xs mb-2 block">Our Workflow</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold font-heading text-slate-900 dark:text-white">Our Service Delivery Process</h2>
+            <p class="text-slate-600 dark:text-slate-400 mt-3 text-sm sm:text-base leading-relaxed">
+                    A structured, secure, and transparent workflow designed to support both property owners and tenants at every stage of the rental journey.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative">
+                <!-- Step 1 -->
+                <div class="relative bg-white dark:bg-slate-800/90 p-6 rounded-3xl border border-slate-100 dark:border-slate-700/80 shadow-soft hover:-translate-y-1 hover:shadow-lg transition-all duration-300 z-10">
+                    <div class="w-10 h-10 rounded-full bg-primary-500 text-white flex items-center justify-center font-bold text-base mb-4 shadow-md shadow-primary-500/20">
+                        01
+                    </div>
+                    <h3 class="text-lg font-bold font-heading text-slate-900 dark:text-white mb-2">Consultation</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-[13px] leading-relaxed">
+                        We analyze neighborhood comps and run AI-powered valuations to recommend the standard pricing layout for your listing.
+                    </p>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="relative bg-white dark:bg-slate-800/90 p-6 rounded-3xl border border-slate-100 dark:border-slate-700/80 shadow-soft hover:-translate-y-1 hover:shadow-lg transition-all duration-300 z-10">
+                    <div class="w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-base mb-4 shadow-md shadow-emerald-500/20">
+                        02
+                    </div>
+                    <h3 class="text-lg font-bold font-heading text-slate-900 dark:text-white mb-2">Vetting & Audits</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-[13px] leading-relaxed">
+                        Our physical inspection teams verify conditions, catalog amenities, and capture high-resolution virtual 3D tours.
+                    </p>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="relative bg-white dark:bg-slate-800/90 p-6 rounded-3xl border border-slate-100 dark:border-slate-700/80 shadow-soft hover:-translate-y-1 hover:shadow-lg transition-all duration-300 z-10">
+                    <div class="w-10 h-10 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold text-base mb-4 shadow-md shadow-indigo-500/20">
+                        03
+                    </div>
+                    <h3 class="text-lg font-bold font-heading text-slate-900 dark:text-white mb-2">Smart Contracting</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-[13px] leading-relaxed">
+                        Sign legally-compliant lease contracts directly using NestFlow's secure digital ledger for absolute lease safety.
+                    </p>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="relative bg-white dark:bg-slate-800/90 p-6 rounded-3xl border border-slate-100 dark:border-slate-700/80 shadow-soft hover:-translate-y-1 hover:shadow-lg transition-all duration-300 z-10">
+                    <div class="w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-base mb-4 shadow-md shadow-amber-500/20">
+                        04
+                    </div>
+                    <h3 class="text-lg font-bold font-heading text-slate-900 dark:text-white mb-2">Concierge Support</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-[13px] leading-relaxed">
+                        We manage neutral deposit escrow payouts, repairs emergency dispatch, and tenant dispute resolutions 24/7.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Client FAQs Section -->
+    <section class="py-20 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+        <div class="container mx-auto px-4 md:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-primary-500 font-bold tracking-wider uppercase text-xs mb-2 block">Help Center</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold font-heading text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+                <p class="text-slate-600 dark:text-slate-400 mt-3 text-sm sm:text-base leading-relaxed">
+                    Have questions about NestFlow's features? Browse our detailed FAQ sections below to learn more about our processes.
+                </p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto space-y-4">
+                <!-- FAQ 1 -->
+                <details name="faq" class="group bg-white dark:bg-slate-800/90 border border-slate-100 dark:border-slate-700/80 rounded-2xl p-5 cursor-pointer hover:shadow-md transition-all duration-300">
+                    <summary class="flex justify-between items-center text-base sm:text-lg font-bold text-slate-900 dark:text-white transition-colors list-none marker:hidden">
+                        <span>What is your tenant vetting process?</span>
+                        <div class="w-8 h-8 rounded-full bg-slate-50 dark:bg-slate-900/50 group-open:bg-primary-500 group-open:text-white flex items-center justify-center text-slate-400 transition-all duration-300 shrink-0">
+                            <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 group-open:rotate-180"></i>
+                        </div>
+                    </summary>
+                    <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700/50 text-slate-500 dark:text-slate-400 leading-relaxed text-sm">
+                        Our screening process is comprehensive, involving legal background checks, credit scoring audits, current employment verification, and tenant rental history reviews. This rigorous check reduces vacancies and ensures maximum tenant retention.
+                    </div>
+                </details>
+                
+                <!-- FAQ 2 -->
+                <details name="faq" class="group bg-white dark:bg-slate-800/90 border border-slate-100 dark:border-slate-700/80 rounded-2xl p-5 cursor-pointer hover:shadow-md transition-all duration-300">
+                    <summary class="flex justify-between items-center text-base sm:text-lg font-bold text-slate-900 dark:text-white transition-colors list-none marker:hidden">
+                        <span>How are emergency property maintenance requests handled?</span>
+                        <div class="w-8 h-8 rounded-full bg-slate-50 dark:bg-slate-900/50 group-open:bg-primary-500 group-open:text-white flex items-center justify-center text-slate-400 transition-all duration-300 shrink-0">
+                            <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 group-open:rotate-180"></i>
+                        </div>
+                    </summary>
+                    <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700/50 text-slate-500 dark:text-slate-400 leading-relaxed text-sm">
+                        Tenants can report emergency repairs 24/7 directly through the mobile app or tenant portal. Our automated system matches the request with our vetted local technician pool and dispatches help within a standard 2-hour window.
+                    </div>
+                </details>
+                
+                <!-- FAQ 3 -->
+                <details name="faq" class="group bg-white dark:bg-slate-800/90 border border-slate-100 dark:border-slate-700/80 rounded-2xl p-5 cursor-pointer hover:shadow-md transition-all duration-300">
+                    <summary class="flex justify-between items-center text-base sm:text-lg font-bold text-slate-900 dark:text-white transition-colors list-none marker:hidden">
+                        <span>How do smart contracts and ledger payments work?</span>
+                        <div class="w-8 h-8 rounded-full bg-slate-50 dark:bg-slate-900/50 group-open:bg-primary-500 group-open:text-white flex items-center justify-center text-slate-400 transition-all duration-300 shrink-0">
+                            <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 group-open:rotate-180"></i>
+                        </div>
+                    </summary>
+                    <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700/50 text-slate-500 dark:text-slate-400 leading-relaxed text-sm">
+                        NestFlow utilizes secure digital ledgers for absolute lease safety. Contracts are signed electronically and rent is routed directly from the tenant's ledger card to the owner's bank account, creating an immutable audit trail.
+                    </div>
+                </details>
+                
+                <!-- FAQ 4 -->
+                <details name="faq" class="group bg-white dark:bg-slate-800/90 border border-slate-100 dark:border-slate-700/80 rounded-2xl p-5 cursor-pointer hover:shadow-md transition-all duration-300">
+                    <summary class="flex justify-between items-center text-base sm:text-lg font-bold text-slate-900 dark:text-white transition-colors list-none marker:hidden">
+                        <span>Are there any hidden broker or listing termination fees?</span>
+                        <div class="w-8 h-8 rounded-full bg-slate-50 dark:bg-slate-900/50 group-open:bg-primary-500 group-open:text-white flex items-center justify-center text-slate-400 transition-all duration-300 shrink-0">
+                            <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 group-open:rotate-180"></i>
+                        </div>
+                    </summary>
+                    <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700/50 text-slate-500 dark:text-slate-400 leading-relaxed text-sm">
+                        Absolutely not. We prioritize total pricing transparency. Our fee structure details security deposit escrows and utility rates upfront. There are no hidden list creation fees or contract termination penalties.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <!-- Footer -->
+    <!-- Footer -->
+    <!-- Footer -->
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 pt-10 pb-6 border-t border-slate-800 mt-auto">
+        <div class="container mx-auto px-4 md:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <!-- Brand Info -->
+                <div class="space-y-2">
+                    <a href="../index.html" class="flex items-center gap-2 group">
+                        <img src="../assets/images/logo.svg" alt="NestFlow Logo" class="w-10 h-10">
+                        <span class="font-heading font-bold text-2xl tracking-tight text-white">Nest<span class="text-primary-500">Flow</span></span>
+                    </a>
+                    <p class="text-slate-400 leading-relaxed">
+                        Modern property management solutions bridging the gap between property owners and tenants with cutting-edge technology.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary-500 hover:text-white transition-colors">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary-500 hover:text-white transition-colors">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary-500 hover:text-white transition-colors">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-white font-bold font-heading text-lg mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="properties.html" class="hover:text-primary-500 transition-colors">Find a Property</a></li>
+                        <li><a href="add-property.html" class="hover:text-primary-500 transition-colors">List Your Property</a></li>
+                        <li><a href="services.html" class="hover:text-primary-500 transition-colors">Our Services</a></li>
+                        <li><a href="about.html" class="hover:text-primary-500 transition-colors">About Us</a></li>
+                        <li><a href="contact.html" class="hover:text-primary-500 transition-colors">Contact Support</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="text-white font-bold font-heading text-lg mb-4">Contact Us</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-primary-500 shrink-0 mt-1"></i>
+                            <span>123 Innovation Drive,<br>Tech City, TC 90210</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="phone" class="w-5 h-5 text-primary-500 shrink-0"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="mail" class="w-5 h-5 text-primary-500 shrink-0"></i>
+                            <span>support@nestflow.com</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="text-white font-bold font-heading text-lg mb-4">Newsletter</h4>
+                    <p class="text-slate-400 mb-4">Subscribe to our newsletter to get the latest property updates.</p>
+                    <form class="relative" onsubmit="event.preventDefault()">
+                        <input type="email" placeholder="Email address" class="w-full pl-4 pr-12 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-primary-500">
+                        <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-lg bg-primary-500 hover:bg-primary-600 text-white transition-colors">
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="pt-6 border-t border-slate-800 text-center md:flex md:items-center md:justify-between">
+                <p class="text-slate-500">&copy; 2026 NestFlow. All rights reserved.</p>
+                <div class="flex gap-6 justify-center mt-4 md:mt-0 text-slate-500 text-sm">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Accordion behavior for details elements (fallback for older browsers)
+        const details = document.querySelectorAll('details[name="faq"]');
+        details.forEach((targetDetail) => {
+            targetDetail.addEventListener('toggle', () => {
+                if (targetDetail.open) {
+                    details.forEach((detail) => {
+                        if (detail !== targetDetail) {
+                            detail.removeAttribute('open');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>
