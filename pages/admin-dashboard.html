@@ -1,245 +1,1463 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | NestFlow</title>
-    
+
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/dark-mode.css">
     <link rel="stylesheet" href="../assets/css/rtl.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../assets/js/tailwind-config.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom overrides for admin utilities and dashboard controls */
+        .dark input[type="checkbox"],
+        .dark input[type="radio"],
+        .dark select {
+            color-scheme: dark;
+            accent-color: #14b8a6;
+        }
+
+        /* Mobile Sidebar transitions */
+        #sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            z-index: 50;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html[dir="ltr"] #sidebar {
+            left: 0;
+            transform: translateX(-100%);
+        }
+
+        html[dir="ltr"] #sidebar.is-open {
+            transform: translateX(0);
+        }
+
+        html[dir="rtl"] #sidebar {
+            right: 0;
+            transform: translateX(100%);
+        }
+
+        html[dir="rtl"] #sidebar.is-open {
+            transform: translateX(0);
+        }
+
+        @media (min-width: 768px) {
+            #sidebar {
+                position: static;
+                transform: none !important;
+            }
+        }
+
+        /* ============================================================
+           RESPONSIVE TABLE → CARD LAYOUT (mobile < 768px)
+           Each <tr> becomes a labelled card. Add data-label="Column"
+           to every <td> and class="r-table" to the <table>.
+        ============================================================ */
+        @media (max-width: 767px) {
+
+            /* Hide horizontal scroll wrapper chrome on mobile */
+            .r-table-wrap {
+                overflow: visible;
+            }
+
+            /* Hide the thead */
+            .r-table thead {
+                display: none;
+            }
+
+            /* tbody rows → cards */
+            .r-table tbody {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                padding: 12px;
+            }
+            .r-table tbody tr {
+                display: block;
+                background: #fff;
+                border: 1px solid #e2e8f0;
+                border-radius: 14px;
+                padding: 4px 0;
+                box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+                transition: box-shadow 0.2s;
+            }
+            .r-table tbody tr:hover {
+                box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+                background: #fff !important;
+            }
+
+            /* Each cell → label : value row */
+            .r-table tbody td {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                padding: 9px 14px;
+                border-bottom: 1px solid #f1f5f9;
+                font-size: 0.8125rem;
+                white-space: normal !important;
+                text-align: right;
+            }
+            .r-table tbody td:last-child {
+                border-bottom: none;
+            }
+
+            /* Prevent inner element nowrap/min-width constraints from causing mobile overflow */
+            .r-table tbody td,
+            .r-table tbody td * {
+                white-space: normal !important;
+                min-width: 0 !important;
+                max-width: 100% !important;
+                word-break: break-word;
+            }
+
+            /* Label pseudo-element */
+            .r-table tbody td::before {
+                content: attr(data-label);
+                font-size: 10px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                color: #94a3b8;
+                flex-shrink: 0;
+                text-align: left;
+                min-width: 90px;
+            }
+
+            /* Dark mode card styles */
+            .dark .r-table tbody tr {
+                background: #1e293b;
+                border-color: #334155;
+            }
+            .dark .r-table tbody tr:hover {
+                background: #1e293b !important;
+            }
+            .dark .r-table tbody td {
+                border-color: #1e293b;
+            }
+        }
+
+        /* Desktop: keep normal table behaviour */
+        @media (min-width: 768px) {
+            .r-table-wrap {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+    </style>
 </head>
+
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300">
 
-    <div class="flex h-screen overflow-hidden">
-        
+    <div class="flex h-screen overflow-hidden relative">
+
+        <!-- Sidebar Overlay (mobile only) -->
+        <div id="sidebar-overlay"
+            class="fixed inset-0 bg-slate-900/50 z-40 hidden opacity-0 transition-opacity duration-300 md:hidden backdrop-blur-sm">
+        </div>
+
         <!-- Sidebar -->
-        <aside class="w-64 bg-slate-900 border-r border-slate-800 hidden md:flex flex-col h-full z-20 text-slate-300">
-            <div class="p-6 border-b border-slate-800">
+        <aside id="sidebar"
+            class="w-[80%] md:w-64 bg-white dark:bg-slate-800 border-r rtl:border-r-0 rtl:border-l border-slate-200 dark:border-slate-700 flex flex-col h-full shrink-0 text-slate-600 dark:text-slate-350">
+            <div class="p-5 border-b border-slate-150 dark:border-slate-700 flex items-center justify-between">
                 <a href="../index.html" class="flex items-center gap-2 group">
-                    <div class="w-10 h-10 rounded-xl bg-primary-500 flex items-center justify-center text-white">
-                        <i data-lucide="shield"></i>
-                    </div>
-                    <span class="font-heading font-bold text-2xl tracking-tight text-white">Nest<span class="text-primary-500">Admin</span></span>
+                    <img src="../assets/images/logo.svg" alt="NestFlow Logo"
+                        class="w-10 h-10 group-hover:scale-105 transition-transform">
+                    <span
+                        class="font-heading font-bold text-2xl tracking-tight text-slate-900 dark:text-white">Nest<span
+                            class="text-primary-500">Flow</span></span>
                 </a>
+                <button id="close-sidebar-btn"
+                    class="md:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
             </div>
-            
-            <div class="px-4 py-6 flex-1 overflow-y-auto space-y-1">
-                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-800 text-white font-medium border-l-4 border-primary-500">
+
+            <div class="px-4 py-4 flex-1 overflow-y-auto space-y-1">
+                <!-- Navigation links with data-section attribute -->
+                <button data-section="overview"
+                    class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary-50 text-primary-500 dark:bg-slate-700/80 dark:text-primary-400 font-bold border-l-4 border-primary-500 transition-all text-left rtl:border-l-0 rtl:border-r-4 rtl:text-right">
                     <i data-lucide="pie-chart" class="w-5 h-5"></i>
-                    Overview
-                </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 hover:text-white font-medium transition-colors border-l-4 border-transparent">
+                    <span>Overview</span>
+                </button>
+                <button data-section="properties"
+                    class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white font-semibold transition-all border-l-4 border-transparent text-left rtl:border-l-0 rtl:border-r-4 rtl:text-right">
                     <i data-lucide="home" class="w-5 h-5"></i>
-                    Properties
-                </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 hover:text-white font-medium transition-colors border-l-4 border-transparent">
+                    <span>Properties</span>
+                </button>
+                <button data-section="tenants"
+                    class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white font-semibold transition-all border-l-4 border-transparent text-left rtl:border-l-0 rtl:border-r-4 rtl:text-right">
                     <i data-lucide="users" class="w-5 h-5"></i>
-                    Tenants
-                </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 hover:text-white font-medium transition-colors border-l-4 border-transparent">
+                    <span>Tenants</span>
+                </button>
+                <button data-section="maintenance"
+                    class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white font-semibold transition-all border-l-4 border-transparent text-left rtl:border-l-0 rtl:border-r-4 rtl:text-right">
                     <i data-lucide="wrench" class="w-5 h-5"></i>
-                    Maintenance
-                </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-800 hover:text-white font-medium transition-colors border-l-4 border-transparent">
+                    <span>Maintenance</span>
+                </button>
+                <button data-section="finances"
+                    class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white font-semibold transition-all border-l-4 border-transparent text-left rtl:border-l-0 rtl:border-r-4 rtl:text-right">
                     <i data-lucide="dollar-sign" class="w-5 h-5"></i>
-                    Finances
+                    <span>Finances</span>
+                </button>
+                <a href="login.html"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-rose-50 dark:hover:bg-rose-900/20 text-rose-500 font-bold transition-all border-l-4 rtl:border-l-0 rtl:border-r-4 border-transparent text-left rtl:text-right">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                    <span>Logout</span>
                 </a>
             </div>
 
-            <div class="p-4 border-t border-slate-800">
-                <a href="login.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-rose-900/50 text-rose-400 font-medium transition-colors">
-                    <i data-lucide="log-out" class="w-5 h-5"></i>
-                    Logout
-                </a>
+            <div class="p-4 border-t border-slate-200 dark:border-slate-700 space-y-3 md:hidden">
+                <!-- Toggles visible on mobile drawer, hidden on desktop -->
+                <div class="flex items-center justify-between gap-2">
+                    <button
+                        class="rtl-toggle flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400 font-bold text-xs uppercase tracking-wider transition-all"
+                        aria-label="Toggle RTL">
+                        <span>RTL</span>
+                    </button>
+                    <button
+                        class="theme-toggle flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400 font-bold text-xs uppercase tracking-wider transition-all"
+                        aria-label="Toggle Dark Mode">
+                        <i data-lucide="moon" class="dark:hidden w-4 h-4"></i>
+                        <i data-lucide="sun" class="hidden dark:block w-4 h-4"></i>
+                        <span class="dark:hidden">Dark</span>
+                        <span class="hidden dark:inline">Light</span>
+                    </button>
+                </div>
             </div>
         </aside>
 
         <!-- Main Content -->
         <main class="flex-1 flex flex-col h-full overflow-hidden">
             <!-- Topbar -->
-            <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                    <button class="md:hidden text-slate-500"><i data-lucide="menu"></i></button>
-                    <h2 class="text-xl font-bold font-heading">Management Overview</h2>
+            <header
+                class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <button id="mobile-menu-btn"
+                        class="md:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                        aria-label="Open sidebar menu"><i data-lucide="menu"></i></button>
+                    <h2 id="topbar-title" class="text-base sm:text-xl font-bold font-heading">Management Overview</h2>
                 </div>
-                <div class="flex items-center gap-4">
-                    <button class="theme-toggle p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500"><i data-lucide="moon" class="dark:hidden"></i><i data-lucide="sun" class="hidden dark:block"></i></button>
-                    <button class="relative p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500">
-                        <i data-lucide="bell"></i>
+                <div class="flex items-center gap-1.5 sm:gap-3">
+                    <button
+                        class="rtl-toggle hidden md:flex p-1.5 sm:p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 transition-colors items-center justify-center font-bold text-xs uppercase tracking-wider"
+                        aria-label="Toggle RTL">
+                        <span>RTL</span>
                     </button>
-                    <div class="flex items-center gap-3 ml-4 pl-4 border-l border-slate-200 dark:border-slate-700">
-                        <div class="text-right hidden sm:block">
-                            <p class="text-sm font-bold">Admin User</p>
-                            <p class="text-xs text-slate-500">Super Admin</p>
-                        </div>
-                        <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center text-primary-500 font-bold border-2 border-primary-500 cursor-pointer">
-                            AU
-                        </div>
+                    <button
+                        class="theme-toggle hidden md:inline-flex p-1.5 sm:p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 transition-colors items-center justify-center"
+                        aria-label="Toggle Dark Mode"><i data-lucide="moon"
+                            class="dark:hidden w-4.5 h-4.5 sm:w-5 h-5"></i><i data-lucide="sun"
+                            class="hidden dark:block w-4.5 h-4.5 sm:w-5 h-5"></i></button>
+                    <button
+                        class="relative p-1.5 sm:p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 transition-colors">
+                        <i data-lucide="bell" class="w-4.5 h-4.5 sm:w-5 h-5"></i>
+                        <span
+                            class="absolute top-1 right-1 rtl:right-auto rtl:left-1 w-2 h-2 bg-primary-500 rounded-full border border-white dark:border-slate-800"></span>
+                    </button>
+                    <div
+                        class="w-8 h-8 sm:w-10 h-10 rounded-full overflow-hidden border-2 border-slate-200 dark:border-slate-700 cursor-pointer">
+                        <img src="../assets/images/avatar_1.png" alt="Profile" class="w-full h-full object-cover">
                     </div>
                 </div>
             </header>
 
-            <!-- Scrollable Content -->
-            <div class="flex-1 overflow-y-auto p-6 bg-slate-50 dark:bg-slate-900">
-                
-                <!-- KPI Cards -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <!-- Total Properties -->
-                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 relative overflow-hidden">
-                        <div class="flex justify-between items-start mb-2 relative z-10">
-                            <div>
-                                <p class="text-slate-500 text-sm font-semibold uppercase tracking-wider mb-1">Properties</p>
-                                <h4 class="text-3xl font-bold">124</h4>
+            <!-- Scrollable Content Container -->
+            <div class="flex-1 overflow-y-auto p-5 sm:p-6 md:p-8 space-y-8">
+
+                <!-- ==================== SECTION 1: OVERVIEW ==================== -->
+                <div id="section-overview" class="dashboard-section space-y-8">
+
+                    <!-- KPI Cards Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div
+                            class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm relative overflow-hidden">
+                            <div class="flex justify-between items-start mb-2 relative z-10">
+                                <div>
+                                    <p
+                                        class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
+                                        Properties</p>
+                                    <h4 class="text-3xl font-bold">124</h4>
+                                </div>
+                                <div class="p-3 bg-blue-50 dark:bg-blue-950/40 rounded-xl text-blue-500"><i
+                                        data-lucide="home"></i></div>
                             </div>
-                            <div class="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-xl text-blue-500"><i data-lucide="home"></i></div>
+                            <div class="text-sm text-emerald-500 font-medium flex items-center gap-1 relative z-10">
+                                <i data-lucide="trending-up" class="w-4 h-4"></i> +4 this month
+                            </div>
                         </div>
-                        <div class="text-sm text-emerald-500 font-medium flex items-center gap-1 relative z-10">
-                            <i data-lucide="trending-up" class="w-4 h-4"></i> +4 this month
+                        <div
+                            class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm relative overflow-hidden">
+                            <div class="flex justify-between items-start mb-2 relative z-10">
+                                <div>
+                                    <p
+                                        class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
+                                        Active Tenants</p>
+                                    <h4 class="text-3xl font-bold">452</h4>
+                                </div>
+                                <div class="p-3 bg-indigo-50 dark:bg-indigo-950/40 rounded-xl text-indigo-500"><i
+                                        data-lucide="users"></i></div>
+                            </div>
+                            <div class="text-sm text-emerald-500 font-medium flex items-center gap-1 relative z-10">
+                                <i data-lucide="trending-up" class="w-4 h-4"></i> 98% occupancy
+                            </div>
+                        </div>
+                        <div
+                            class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm relative overflow-hidden">
+                            <div class="flex justify-between items-start mb-2 relative z-10">
+                                <div>
+                                    <p
+                                        class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
+                                        Monthly Revenue</p>
+                                    <h4 class="text-3xl font-bold">$1.2M</h4>
+                                </div>
+                                <div class="p-3 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl text-emerald-500"><i
+                                        data-lucide="dollar-sign"></i></div>
+                            </div>
+                            <div class="text-sm text-emerald-500 font-medium flex items-center gap-1 relative z-10">
+                                <i data-lucide="trending-up" class="w-4 h-4"></i> +12% from last month
+                            </div>
+                        </div>
+                        <div
+                            class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm relative overflow-hidden">
+                            <div class="flex justify-between items-start mb-2 relative z-10">
+                                <div>
+                                    <p
+                                        class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
+                                        Open Issues</p>
+                                    <h4 class="text-3xl font-bold text-amber-500">18</h4>
+                                </div>
+                                <div class="p-3 bg-amber-50 dark:bg-amber-950/40 rounded-xl text-amber-500"><i
+                                        data-lucide="wrench"></i></div>
+                            </div>
+                            <div class="text-sm text-rose-500 font-medium flex items-center gap-1 relative z-10">
+                                <i data-lucide="alert-circle" class="w-4 h-4"></i> 3 urgent requests
+                            </div>
                         </div>
                     </div>
-                    <!-- Active Tenants -->
-                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 relative overflow-hidden">
-                        <div class="flex justify-between items-start mb-2 relative z-10">
-                            <div>
-                                <p class="text-slate-500 text-sm font-semibold uppercase tracking-wider mb-1">Active Tenants</p>
-                                <h4 class="text-3xl font-bold">452</h4>
+
+                    <!-- Split tables and charts -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                        <!-- Property List Table -->
+                        <div
+                            class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm overflow-hidden h-fit">
+                            <div
+                                class="p-5 border-b border-slate-100 dark:border-slate-700/60 flex items-center justify-between">
+                                <h3 class="font-bold text-lg font-heading">Recent Properties</h3>
+                                <button onclick="switchToSection('properties')"
+                                    class="text-primary-500 text-sm font-semibold hover:underline">Manage All</button>
                             </div>
-                            <div class="p-3 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl text-indigo-500"><i data-lucide="users"></i></div>
+                            <div class="r-table-wrap">
+                                <table class="r-table w-full text-left border-collapse">
+                                    <thead class="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-700/60">
+                                        <tr>
+                                            <th class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap">Property</th>
+                                            <th class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap">Status</th>
+                                            <th class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap">Rent</th>
+                                            <th class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right whitespace-nowrap">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-100 dark:divide-slate-700/60 text-sm">
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                            <td data-label="Property" class="px-4 lg:px-6 py-3 lg:py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src="../assets/images/property_1.png" class="w-full h-full object-cover"></div>
+                                                    <div>
+                                                        <div class="font-bold text-sm">The Oasis Apartment</div>
+                                                        <div class="text-xs text-slate-500">Beverly Hills, CA</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4"><span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold">Occupied</span></td>
+                                            <td data-label="Rent" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-slate-700 dark:text-slate-200">$2,500/mo</td>
+                                            <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right"><button onclick="showNotification('Opening actions menu...')" class="text-slate-400 hover:text-primary-500"><i data-lucide="more-vertical" class="w-5 h-5 ml-auto"></i></button></td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                            <td data-label="Property" class="px-4 lg:px-6 py-3 lg:py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src="../assets/images/property_loft.png" class="w-full h-full object-cover"></div>
+                                                    <div>
+                                                        <div class="font-bold text-sm">Skyline View Loft</div>
+                                                        <div class="text-xs text-slate-500">Seattle, WA</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4"><span class="px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 text-xs font-bold">Vacant</span></td>
+                                            <td data-label="Rent" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-slate-700 dark:text-slate-200">$1,800/mo</td>
+                                            <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right"><button onclick="showNotification('Opening actions menu...')" class="text-slate-400 hover:text-primary-500"><i data-lucide="more-vertical" class="w-5 h-5 ml-auto"></i></button></td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                            <td data-label="Property" class="px-4 lg:px-6 py-3 lg:py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src="../assets/images/property_villa.png" class="w-full h-full object-cover"></div>
+                                                    <div>
+                                                        <div class="font-bold text-sm">Sunset Heights Villa</div>
+                                                        <div class="text-xs text-slate-500">Miami, FL</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4"><span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold">Occupied</span></td>
+                                            <td data-label="Rent" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-slate-700 dark:text-slate-200">$4,200/mo</td>
+                                            <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right"><button onclick="showNotification('Opening actions menu...')" class="text-slate-400 hover:text-primary-500"><i data-lucide="more-vertical" class="w-5 h-5 ml-auto"></i></button></td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                            <td data-label="Property" class="px-4 lg:px-6 py-3 lg:py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src="../assets/images/property_penthouse.png" class="w-full h-full object-cover"></div>
+                                                    <div>
+                                                        <div class="font-bold text-sm">Oceanfront Penthouse</div>
+                                                        <div class="text-xs text-slate-500">Malibu, CA</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4"><span class="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 text-xs font-bold">Maintenance</span></td>
+                                            <td data-label="Rent" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-slate-700 dark:text-slate-200">$5,500/mo</td>
+                                            <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right"><button onclick="showNotification('Opening actions menu...')" class="text-slate-400 hover:text-primary-500"><i data-lucide="more-vertical" class="w-5 h-5 ml-auto"></i></button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <div class="text-sm text-emerald-500 font-medium flex items-center gap-1 relative z-10">
-                            <i data-lucide="trending-up" class="w-4 h-4"></i> 98% occupancy
+
+                        <!-- Side widgets -->
+                        <div class="space-y-6 lg:col-span-1">
+                            <!-- Revenue Trend Widget -->
+                            <div
+                                class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm p-5 space-y-4">
+                                <h3 class="font-heading font-bold text-base">Finances Quick Peek</h3>
+                                <div class="h-28 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-700/80 flex items-center justify-center text-slate-400 flex-col gap-1.5 p-4 text-center cursor-pointer"
+                                    onclick="switchToSection('finances')">
+                                    <i data-lucide="trending-up" class="w-7 h-7 text-emerald-500"></i>
+                                    <span class="text-xs font-semibold text-slate-600 dark:text-slate-300">Revenue Log
+                                        is up 12%</span>
+                                    <span class="text-[10px] text-slate-400">Click to view Finance statements</span>
+                                </div>
+                            </div>
+
+                            <!-- Activity list -->
+                            <div
+                                class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm p-5 space-y-4">
+                                <h3 class="font-heading font-bold text-base">Recent Activities</h3>
+                                <div class="space-y-4 text-xs font-medium">
+                                    <div class="flex gap-3">
+                                        <span class="w-2 h-2 mt-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                                        <div>
+                                            <p class="text-slate-700 dark:text-slate-350">Rent Paid - The Oasis
+                                                Apartment</p>
+                                            <p class="text-slate-400 mt-0.5 font-semibold">2 hours ago</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-3">
+                                        <span class="w-2 h-2 mt-1.5 rounded-full bg-amber-500 shrink-0"></span>
+                                        <div>
+                                            <p class="text-slate-700 dark:text-slate-350">Maintenance Ticket MNT-29841
+                                                logged</p>
+                                            <p class="text-slate-400 mt-0.5 font-semibold">5 hours ago</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-3">
+                                        <span class="w-2 h-2 mt-1.5 rounded-full bg-blue-500 shrink-0"></span>
+                                        <div>
+                                            <p class="text-slate-700 dark:text-slate-350">Tenant application received
+                                                for Skyline Loft</p>
+                                            <p class="text-slate-400 mt-0.5 font-semibold">Yesterday</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
-                    <!-- Revenue -->
-                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 relative overflow-hidden">
-                        <div class="flex justify-between items-start mb-2 relative z-10">
-                            <div>
-                                <p class="text-slate-500 text-sm font-semibold uppercase tracking-wider mb-1">Monthly Revenue</p>
-                                <h4 class="text-3xl font-bold">$1.2M</h4>
-                            </div>
-                            <div class="p-3 bg-emerald-50 dark:bg-emerald-900/30 rounded-xl text-emerald-500"><i data-lucide="dollar-sign"></i></div>
-                        </div>
-                        <div class="text-sm text-emerald-500 font-medium flex items-center gap-1 relative z-10">
-                            <i data-lucide="trending-up" class="w-4 h-4"></i> +12% from last month
-                        </div>
-                    </div>
-                    <!-- Open Maintenance -->
-                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 relative overflow-hidden">
-                        <div class="flex justify-between items-start mb-2 relative z-10">
-                            <div>
-                                <p class="text-slate-500 text-sm font-semibold uppercase tracking-wider mb-1">Open Issues</p>
-                                <h4 class="text-3xl font-bold text-amber-500">18</h4>
-                            </div>
-                            <div class="p-3 bg-amber-50 dark:bg-amber-900/30 rounded-xl text-amber-500"><i data-lucide="wrench"></i></div>
-                        </div>
-                        <div class="text-sm text-rose-500 font-medium flex items-center gap-1 relative z-10">
-                            <i data-lucide="alert-circle" class="w-4 h-4"></i> 3 urgent requests
+
+                    <!-- Expanded Card: Quick Admin Control Shortcuts -->
+                    <div
+                        class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-4 mt-8">
+                        <h3 class="font-heading font-bold text-lg">System Quick Actions & Controls</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <a href="add-property.html"
+                                class="flex items-center gap-3 p-4 rounded-xl border border-slate-150 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 hover:bg-primary-500/5 hover:border-primary-500 dark:hover:bg-primary-500/10 transition-all cursor-pointer group text-left">
+                                <div class="p-3 rounded-lg bg-white dark:bg-slate-800 text-primary-500 shadow-sm"><i
+                                        data-lucide="plus-circle" class="w-5 h-5"></i></div>
+                                <div>
+                                    <p class="font-bold text-sm text-slate-800 dark:text-white">Register Unit</p>
+                                    <p class="text-[10px] text-slate-400">Add property to register</p>
+                                </div>
+                            </a>
+                            <button onclick="switchToSection('maintenance')"
+                                class="flex items-center gap-3 p-4 rounded-xl border border-slate-150 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 hover:bg-primary-500/5 hover:border-primary-500 dark:hover:bg-primary-500/10 transition-all cursor-pointer group text-left">
+                                <div class="p-3 rounded-lg bg-white dark:bg-slate-800 text-amber-500 shadow-sm"><i
+                                        data-lucide="wrench" class="w-5 h-5"></i></div>
+                                <div>
+                                    <p class="font-bold text-sm text-slate-800 dark:text-white">Dispatch Crew</p>
+                                    <p class="text-[10px] text-slate-400">Manage dispatch work</p>
+                                </div>
+                            </button>
+                            <button onclick="showNotification('Broadcast announcement portal opened.')"
+                                class="flex items-center gap-3 p-4 rounded-xl border border-slate-150 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 hover:bg-primary-500/5 hover:border-primary-500 dark:hover:bg-primary-500/10 transition-all cursor-pointer group text-left">
+                                <div class="p-3 rounded-lg bg-white dark:bg-slate-800 text-indigo-500 shadow-sm"><i
+                                        data-lucide="megaphone" class="w-5 h-5"></i></div>
+                                <div>
+                                    <p class="font-bold text-sm text-slate-800 dark:text-white">Broadcast Alert</p>
+                                    <p class="text-[10px] text-slate-400">Send message to all tenants</p>
+                                </div>
+                            </button>
+                            <button onclick="showNotification('Financial report CSV generation started.')"
+                                class="flex items-center gap-3 p-4 rounded-xl border border-slate-150 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 hover:bg-primary-500/5 hover:border-primary-500 dark:hover:bg-primary-500/10 transition-all cursor-pointer group text-left">
+                                <div class="p-3 rounded-lg bg-white dark:bg-slate-800 text-emerald-500 shadow-sm"><i
+                                        data-lucide="file-spreadsheet" class="w-5 h-5"></i></div>
+                                <div>
+                                    <p class="font-bold text-sm text-slate-800 dark:text-white">Export Audit</p>
+                                    <p class="text-[10px] text-slate-400">Generate CSV statement</p>
+                                </div>
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Main Grid Layout -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    
-                    <!-- Property List Table -->
-                    <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 overflow-hidden">
-                        <div class="p-6 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-                            <h3 class="font-bold text-lg font-heading">Recent Properties</h3>
-                            <button class="bg-primary-500 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-primary-600 transition-colors shadow-lg shadow-primary-500/30">+ Add New</button>
+                <!-- ==================== SECTION 2: PROPERTIES ==================== -->
+                <div id="section-properties" class="dashboard-section hidden space-y-8">
+
+                    <!-- KPI Row -->
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-6">
+                        <div
+                            class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
+                            <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Total Portfolios</p>
+                            <h4 class="text-2xl font-bold mt-1">124 Units</h4>
                         </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left">
-                                <thead class="bg-slate-50 dark:bg-slate-900/50">
+                        <div
+                            class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
+                            <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Occupied Units</p>
+                            <h4 class="text-2xl font-bold mt-1 text-emerald-500">118 Units</h4>
+                        </div>
+                        <div
+                            class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
+                            <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Occupancy Rate</p>
+                            <h4 class="text-2xl font-bold mt-1 text-primary-500">95.1%</h4>
+                        </div>
+                        <div
+                            class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
+                            <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Vacant Units</p>
+                            <h4 class="text-2xl font-bold mt-1 text-amber-500">6 Units</h4>
+                        </div>
+                    </div>
+
+                    <!-- Properties Directory -->
+                    <div
+                        class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+                        <div
+                            class="p-5 border-b border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                            <h3 class="font-bold text-lg font-heading">Properties Management Register</h3>
+
+                            <div class="flex items-center gap-3 w-full sm:w-auto">
+                                <input type="text" placeholder="Search address, state..."
+                                    class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-primary-500 w-full sm:w-48">
+                                <a href="add-property.html"
+                                    class="bg-primary-500 hover:bg-primary-600 text-white font-bold px-4 py-2 rounded-xl text-xs shadow-md shadow-primary-500/25 transition-colors shrink-0">+
+                                    Add Property</a>
+                            </div>
+                        </div>
+
+                        <div class="r-table-wrap">
+                            <table class="r-table w-full text-left border-collapse text-sm">
+                                <thead
+                                    class="bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700">
                                     <tr>
-                                        <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase">Property</th>
-                                        <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase">Status</th>
-                                        <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase">Rent</th>
-                                        <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase text-right">Actions</th>
+                                        <th
+                                            class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">
+                                            Property Details</th>
+                                        <th
+                                            class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
+                                            City / State</th>
+                                        <th
+                                            class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
+                                            Status</th>
+                                        <th
+                                            class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
+                                            Current Tenant</th>
+                                        <th
+                                            class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
+                                            Rent</th>
+                                        <th
+                                            class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase text-right whitespace-nowrap">
+                                            Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
-                                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-3">
-                                                <div class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden"><img src="../assets/images/property_1.png" class="w-full h-full object-cover"></div>
-                                                <div>
-                                                    <div class="font-bold text-sm">The Oasis Apartment</div>
-                                                    <div class="text-xs text-slate-500">Beverly Hills, CA</div>
-                                                </div>
+                                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                        <td data-label="Property Details" class="px-4 lg:px-6 py-3 lg:py-4">
+                                            <div class="flex items-center gap-3 font-semibold">
+                                                <div
+                                                    class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0">
+                                                    <img src="../assets/images/property_1.png"
+                                                        class="w-full h-full object-cover"></div>
+                                                <span>The Oasis Apartment (Apt 304)</span>
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4"><span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold">Occupied</span></td>
-                                        <td class="px-6 py-4 font-bold">$2,500/mo</td>
-                                        <td class="px-6 py-4 text-right"><button class="text-slate-400 hover:text-primary-500"><i data-lucide="more-vertical" class="w-5 h-5 ml-auto"></i></button></td>
+                                        <td data-label="City / State" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Beverly Hills, CA</td>
+                                        <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span
+                                                class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold border border-emerald-200 dark:border-emerald-900">Occupied</span>
+                                        </td>
+                                        <td data-label="Current Tenant" class="px-4 lg:px-6 py-3 lg:py-4 font-medium whitespace-nowrap">John Doe
+                                        </td>
+                                        <td data-label="Rent"
+                                            class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">
+                                            $2,500.00</td>
+                                        <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
+                                                onclick="showNotification('Property profile options...')"
+                                                class="text-slate-400 hover:text-primary-500"><i
+                                                    data-lucide="more-horizontal" class="w-5 h-5 ml-auto"></i></button>
+                                        </td>
                                     </tr>
-                                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50">
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-3">
-                                                <div class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden"><img src="../assets/images/property_1.png" class="w-full h-full object-cover" style="filter: hue-rotate(90deg);"></div>
-                                                <div>
-                                                    <div class="font-bold text-sm">Skyline View Loft</div>
-                                                    <div class="text-xs text-slate-500">Seattle, WA</div>
-                                                </div>
+                                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                        <td data-label="Property Details" class="px-4 lg:px-6 py-3 lg:py-4">
+                                            <div class="flex items-center gap-3 font-semibold">
+                                                <div
+                                                    class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0">
+                                                    <img src="../assets/images/property_loft.png"
+                                                        class="w-full h-full object-cover"></div>
+                                                <span>Skyline View Loft (Unit 12B)</span>
                                             </div>
                                         </td>
-                                        <td class="px-6 py-4"><span class="px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400 text-xs font-bold">Vacant</span></td>
-                                        <td class="px-6 py-4 font-bold">$1,800/mo</td>
-                                        <td class="px-6 py-4 text-right"><button class="text-slate-400 hover:text-primary-500"><i data-lucide="more-vertical" class="w-5 h-5 ml-auto"></i></button></td>
+                                        <td data-label="City / State" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Seattle, WA</td>
+                                        <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span
+                                                class="px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 text-xs font-bold border border-amber-200 dark:border-amber-900">Vacant</span>
+                                        </td>
+                                        <td data-label="Current Tenant" class="px-4 lg:px-6 py-3 lg:py-4 text-slate-400 whitespace-nowrap">-</td>
+                                        <td data-label="Rent"
+                                            class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">
+                                            $1,800.00</td>
+                                        <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
+                                                onclick="showNotification('Property profile options...')"
+                                                class="text-slate-400 hover:text-primary-500"><i
+                                                    data-lucide="more-horizontal" class="w-5 h-5 ml-auto"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                        <td data-label="Property Details" class="px-4 lg:px-6 py-3 lg:py-4">
+                                            <div class="flex items-center gap-3 font-semibold">
+                                                <div
+                                                    class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0">
+                                                    <img src="../assets/images/property_villa.png"
+                                                        class="w-full h-full object-cover"></div>
+                                                <span>Sunset Heights Villa</span>
+                                            </div>
+                                        </td>
+                                        <td data-label="City / State" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Miami, FL</td>
+                                        <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span
+                                                class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold border border-emerald-200 dark:border-emerald-900">Occupied</span>
+                                        </td>
+                                        <td data-label="Current Tenant" class="px-4 lg:px-6 py-3 lg:py-4 font-medium whitespace-nowrap">Sarah
+                                            Jenkins</td>
+                                        <td data-label="Rent"
+                                            class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">
+                                            $4,200.00</td>
+                                        <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
+                                                onclick="showNotification('Property profile options...')"
+                                                class="text-slate-400 hover:text-primary-500"><i
+                                                    data-lucide="more-horizontal" class="w-5 h-5 ml-auto"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                        <td data-label="Property Details" class="px-4 lg:px-6 py-3 lg:py-4">
+                                            <div class="flex items-center gap-3 font-semibold">
+                                                <div
+                                                    class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0">
+                                                    <img src="../assets/images/property_penthouse.png"
+                                                        class="w-full h-full object-cover"></div>
+                                                <span>Oceanfront Penthouse (Apt 5)</span>
+                                            </div>
+                                        </td>
+                                        <td data-label="City / State" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Malibu, CA</td>
+                                        <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span
+                                                class="px-2.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 text-xs font-bold border border-blue-200 dark:border-blue-900">Maintenance</span>
+                                        </td>
+                                        <td data-label="Current Tenant" class="px-4 lg:px-6 py-3 lg:py-4 text-slate-400 whitespace-nowrap">-</td>
+                                        <td data-label="Rent"
+                                            class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">
+                                            $5,500.00</td>
+                                        <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
+                                                onclick="showNotification('Property profile options...')"
+                                                class="text-slate-400 hover:text-primary-500"><i
+                                                    data-lucide="more-horizontal" class="w-5 h-5 ml-auto"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                        <td data-label="Property Details" class="px-4 lg:px-6 py-3 lg:py-4">
+                                            <div class="flex items-center gap-3 font-semibold">
+                                                <div
+                                                    class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0">
+                                                    <img src="../assets/images/property_1.png"
+                                                        class="w-full h-full object-cover"
+                                                        style="filter: hue-rotate(240deg);"></div>
+                                                <span>Brooklyn Brownstone (Unit 2)</span>
+                                            </div>
+                                        </td>
+                                        <td data-label="City / State" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Brooklyn, NY</td>
+                                        <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span
+                                                class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold border border-emerald-200 dark:border-emerald-900">Occupied</span>
+                                        </td>
+                                        <td data-label="Current Tenant" class="px-4 lg:px-6 py-3 lg:py-4 font-medium whitespace-nowrap">Michael
+                                            Chang</td>
+                                        <td data-label="Rent"
+                                            class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">
+                                            $3,100.00</td>
+                                        <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
+                                                onclick="showNotification('Property profile options...')"
+                                                class="text-slate-400 hover:text-primary-500"><i
+                                                    data-lucide="more-horizontal" class="w-5 h-5 ml-auto"></i></button>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Side Panel: Activity & Chart Placeholder -->
-                    <div class="space-y-8">
-                        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-6">
-                            <h3 class="font-bold text-lg font-heading mb-4">Revenue Trend</h3>
-                            <div class="h-48 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-700 flex items-center justify-center text-slate-400 flex-col gap-2">
-                                <i data-lucide="bar-chart-3" class="w-8 h-8"></i>
-                                <span class="text-sm font-medium">Chart Visualization Placeholder</span>
+                <!-- Expanded Card: Properties Allocation & Portfolio Distribution -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                    <!-- Portfolios by State -->
+                    <div
+                        class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
+                        <h3 class="font-bold text-base font-heading flex items-center gap-2">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-primary-500"></i>
+                            Unit Allocation by Region
+                        </h3>
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div
+                                class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                                <span class="text-2xl font-bold text-slate-700 dark:text-white">74</span>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">California (CA)</p>
                             </div>
-                        </div>
-
-                        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-6">
-                            <h3 class="font-bold text-lg font-heading mb-4">Recent Activity</h3>
-                            <div class="space-y-6">
-                                <div class="flex gap-4">
-                                    <div class="w-2 h-2 mt-2 rounded-full bg-emerald-500 shrink-0"></div>
-                                    <div>
-                                        <p class="text-sm font-medium">Rent Paid - The Oasis Apartment</p>
-                                        <p class="text-xs text-slate-500 mt-1">2 hours ago</p>
-                                    </div>
-                                </div>
-                                <div class="flex gap-4">
-                                    <div class="w-2 h-2 mt-2 rounded-full bg-amber-500 shrink-0"></div>
-                                    <div>
-                                        <p class="text-sm font-medium">Maintenance Request Submitted</p>
-                                        <p class="text-xs text-slate-500 mt-1">5 hours ago</p>
-                                    </div>
-                                </div>
-                                <div class="flex gap-4">
-                                    <div class="w-2 h-2 mt-2 rounded-full bg-blue-500 shrink-0"></div>
-                                    <div>
-                                        <p class="text-sm font-medium">New Tenant Application</p>
-                                        <p class="text-xs text-slate-500 mt-1">Yesterday</p>
-                                    </div>
-                                </div>
+                            <div
+                                class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                                <span class="text-2xl font-bold text-slate-700 dark:text-white">38</span>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Florida (FL)</p>
+                            </div>
+                            <div
+                                class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                                <span class="text-2xl font-bold text-slate-700 dark:text-white">12</span>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Washington (WA)</p>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Portfolios by Housing Type -->
+                    <div
+                        class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4">
+                        <h3 class="font-bold text-base font-heading flex items-center gap-2">
+                            <i data-lucide="building-2" class="w-5 h-5 text-primary-500"></i>
+                            Property Model Breakdown
+                        </h3>
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div
+                                class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                                <span class="text-2xl font-bold text-slate-700 dark:text-white">82</span>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Apartments</p>
+                            </div>
+                            <div
+                                class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                                <span class="text-2xl font-bold text-slate-700 dark:text-white">24</span>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Loft Spaces</p>
+                            </div>
+                            <div
+                                class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                                <span class="text-2xl font-bold text-slate-700 dark:text-white">18</span>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Family Villas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== SECTION 3: TENANTS ==================== -->
+                <div id="section-tenants" class="dashboard-section hidden space-y-8">
+
+                <!-- KPI Row -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div
+                        class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center gap-4">
+                        <div class="p-3 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500 rounded-xl"><i
+                                data-lucide="heart" class="w-6 h-6"></i></div>
+                        <div>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold">Leases Active</p>
+                            <h4 class="text-xl font-bold mt-0.5">118 tenants</h4>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center gap-4">
+                        <div class="p-3 bg-amber-50 dark:bg-amber-950/40 text-amber-500 rounded-xl"><i
+                                data-lucide="clock" class="w-6 h-6"></i></div>
+                        <div>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold">Lease Renewals Due</p>
+                            <h4 class="text-xl font-bold mt-0.5">4 expiring soon</h4>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center gap-4">
+                        <div class="p-3 bg-primary-50 dark:bg-primary-950/40 text-primary-500 rounded-xl"><i
+                                data-lucide="percent" class="w-6 h-6"></i></div>
+                        <div>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold">Rent Payment Rate</p>
+                            <h4 class="text-xl font-bold mt-0.5">98.5% rate</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tenants Register -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+                    <div class="p-5 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                        <h3 class="font-bold text-lg font-heading">Active Tenant Directory</h3>
+                        <input type="text" placeholder="Find tenant by name..."
+                            class="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 text-xs focus:outline-none focus:border-primary-500 w-48">
+                    </div>
+
+                    <div class="r-table-wrap">
+                        <table class="r-table w-full text-left border-collapse text-sm">
+                            <thead
+                                class="bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700">
+                                <tr>
+                                    <th
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
+                                        Tenant Details</th>
+                                    <th
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
+                                        Assigned Unit</th>
+                                    <th
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
+                                        Lease Term</th>
+                                    <th
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
+                                        Outstanding</th>
+                                    <th
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase text-right whitespace-nowrap">
+                                        Quick Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                    <td data-label="Tenant Details" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold">
+                                        <div class="min-w-[140px]">
+                                            <div class="text-sm font-bold whitespace-nowrap">John Doe</div>
+                                            <div class="text-xs text-slate-500 max-w-[200px] truncate">john.doe@example.com • (310) 555-0142</div>
+                                        </div>
+                                    </td>
+                                    <td data-label="Assigned Unit" class="px-4 lg:px-6 py-3 lg:py-4 font-medium text-slate-700 dark:text-slate-350 whitespace-nowrap">Oasis Apartment #304</td>
+                                    <td data-label="Lease Term" class="px-4 lg:px-6 py-3 lg:py-4 text-slate-550 whitespace-nowrap">Dec 15, 2025 – Dec 15, 2026</td>
+                                    <td data-label="Outstanding" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold">$0.00 (Paid)</span></td>
+                                    <td data-label="Quick Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap">
+                                        <div class="flex justify-end gap-2">
+                                            <button onclick="showNotification('Drafting direct message to John Doe...')" class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:text-primary-500 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer"><i data-lucide="mail" class="w-4 h-4"></i></button>
+                                            <button onclick="showNotification('Tenant details panel...')" class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:text-primary-500 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer"><i data-lucide="eye" class="w-4 h-4"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                    <td data-label="Tenant Details" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold">
+                                        <div class="min-w-[140px]">
+                                            <div class="text-sm font-bold whitespace-nowrap">Sarah Jenkins</div>
+                                            <div class="text-xs text-slate-500 max-w-[200px] truncate">sarah.j@example.com • (305) 555-0112</div>
+                                        </div>
+                                    </td>
+                                    <td data-label="Assigned Unit" class="px-4 lg:px-6 py-3 lg:py-4 font-medium text-slate-700 dark:text-slate-350 whitespace-nowrap">Sunset Heights Villa</td>
+                                    <td data-label="Lease Term" class="px-4 lg:px-6 py-3 lg:py-4 text-slate-550 whitespace-nowrap">Oct 01, 2025 – Oct 01, 2026</td>
+                                    <td data-label="Outstanding" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold">$0.00 (Paid)</span></td>
+                                    <td data-label="Quick Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap">
+                                        <div class="flex justify-end gap-2">
+                                            <button onclick="showNotification('Drafting direct message...')" class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:text-primary-500 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer"><i data-lucide="mail" class="w-4 h-4"></i></button>
+                                            <button onclick="showNotification('Tenant details panel...')" class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:text-primary-500 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer"><i data-lucide="eye" class="w-4 h-4"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                    <td data-label="Tenant Details" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold">
+                                        <div class="min-w-[140px]">
+                                            <div class="text-sm font-bold whitespace-nowrap">Michael Chang</div>
+                                            <div class="text-xs text-slate-500 max-w-[200px] truncate">m.chang@example.com • (718) 555-0189</div>
+                                        </div>
+                                    </td>
+                                    <td data-label="Assigned Unit" class="px-4 lg:px-6 py-3 lg:py-4 font-medium text-slate-700 dark:text-slate-350 whitespace-nowrap">Brooklyn Brownstone #2</td>
+                                    <td data-label="Lease Term" class="px-4 lg:px-6 py-3 lg:py-4 text-slate-550 whitespace-nowrap">Jan 15, 2026 – Jan 15, 2027</td>
+                                    <td data-label="Outstanding" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span class="px-2.5 py-0.5 rounded-full bg-rose-100 dark:bg-rose-950/50 text-rose-600 dark:text-rose-455 text-xs font-bold border border-rose-200 dark:border-rose-900">$3,100 (Late 2 Days)</span></td>
+                                    <td data-label="Quick Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap">
+                                        <div class="flex justify-end gap-2">
+                                            <button onclick="showNotification('Sending late rent warning notice email...')" class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:text-primary-500 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer"><i data-lucide="bell-ring" class="w-4 h-4 text-rose-500 animate-bounce"></i></button>
+                                            <button onclick="showNotification('Tenant details panel...')" class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:text-primary-500 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer"><i data-lucide="eye" class="w-4 h-4"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Expanded Card: Tenant Retention, Move-out Warnings, Satisfaction NPS -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+                    <!-- NPS Score -->
+                    <div
+                        class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col justify-between space-y-4">
+                        <h3 class="font-bold text-sm font-heading text-slate-700 dark:text-slate-200">Tenant
+                            Satisfaction Index</h3>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-16 h-16 rounded-full border-4 border-emerald-500 flex items-center justify-center font-bold text-xl text-emerald-500 shrink-0">
+                                78</div>
+                            <div>
+                                <p class="text-xs font-bold">Excellent NPS rating</p>
+                                <p class="text-[10px] text-slate-400 leading-normal">Based on 280 tenant surveys
+                                    conducted this quarter regarding support turnaround.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Retention Stat -->
+                    <div
+                        class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col justify-between space-y-4">
+                        <h3 class="font-bold text-sm font-heading text-slate-700 dark:text-slate-200">Average Tenure
+                            Length</h3>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-16 h-16 rounded-full border-4 border-primary-500 flex items-center justify-center font-bold text-xl text-primary-500 shrink-0">
+                                2.4y</div>
+                            <div>
+                                <p class="text-xs font-bold">Stable Renter Profile</p>
+                                <p class="text-[10px] text-slate-400 leading-normal">Average occupancy length exceeds
+                                    industry averages by 14% this fiscal year.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Move-out warnings log -->
+                    <div
+                        class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-3">
+                        <h3 class="font-bold text-sm font-heading text-slate-700 dark:text-slate-200">Upcoming Vacancies
+                            Notice</h3>
+                        <div class="space-y-2 text-xs">
+                            <div
+                                class="flex justify-between items-center bg-slate-50 dark:bg-slate-900 px-3 py-2 rounded-xl">
+                                <div>
+                                    <p class="font-bold text-slate-700 dark:text-white">Jack Robinson</p>
+                                    <p class="text-[10px] text-slate-400">Oasis Apt 105</p>
+                                </div>
+                                <span class="text-[10px] font-bold text-amber-500">Vacates Jul 31</span>
+                            </div>
+                            <div
+                                class="flex justify-between items-center bg-slate-50 dark:bg-slate-900 px-3 py-2 rounded-xl">
+                                <div>
+                                    <p class="font-bold text-slate-700 dark:text-white">Clara Barton</p>
+                                    <p class="text-[10px] text-slate-400">Skyline view 2B</p>
+                                </div>
+                                <span class="text-[10px] font-bold text-amber-500">Vacates Aug 15</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== SECTION 4: MAINTENANCE ==================== -->
+            <div id="section-maintenance" class="dashboard-section hidden space-y-8">
+
+                <!-- KPI Row -->
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-6">
+                    <div
+                        class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Total Open Tickets</p>
+                        <h4 class="text-2xl font-bold mt-1 text-amber-500">18 Requests</h4>
+                    </div>
+                    <div
+                        class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">High/Emergency Priority</p>
+                        <h4 class="text-2xl font-bold mt-1 text-rose-500">3 Tickets</h4>
+                    </div>
+                    <div
+                        class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Currently In Progress</p>
+                        <h4 class="text-2xl font-bold mt-1 text-blue-500">7 Tickets</h4>
+                    </div>
+                    <div
+                        class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Completed this Week</p>
+                        <h4 class="text-2xl font-bold mt-1 text-emerald-500">14 Tickets</h4>
+                    </div>
+                </div>
+
+                <!-- Tickets Database Table -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+                    <div class="p-5 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                        <h3 class="font-bold text-lg font-heading">Maintenance Dispatch Database</h3>
+                        <button onclick="showNotification('Filter applied!')"
+                            class="text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 px-3.5 py-1.5 rounded-xl font-bold">Filters</button>
+                    </div>
+
+                    <div class="r-table-wrap">
+                        <table class="r-table w-full text-left border-collapse text-sm">
+                            <thead
+                                class="bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700">
+                                <tr>
+                                    <th
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
+                                        Ticket ID</th>
+                                    <th
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">
+                                        Issue Description</th>
+                                    <th
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">
+                                        Residence Unit</th>
+                                    <th
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
+                                        Urgency</th>
+                                    <th
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
+                                        Assigned Staff</th>
+                                    <th
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase text-right whitespace-nowrap">
+                                        Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                    <td data-label="Ticket ID"
+                                        class="px-4 lg:px-6 py-3 lg:py-4 font-mono font-bold text-xs text-primary-500 whitespace-nowrap">
+                                        MNT-28491</td>
+                                    <td data-label="Issue Description" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold">Bedroom heating unit blowing
+                                        cold air</td>
+                                    <td data-label="Residence Unit" class="px-4 lg:px-6 py-3 lg:py-4">Oasis Apartment #304 (John Doe)</td>
+                                    <td data-label="Urgency" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span
+                                            class="px-2.5 py-0.5 rounded-full bg-rose-50 dark:bg-rose-950/20 text-rose-500 text-xs font-bold border border-rose-200 dark:border-rose-900">High</span>
+                                    </td>
+                                    <td data-label="Assigned Staff" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Dave Miller (HVAC
+                                        specialist)</td>
+                                    <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
+                                            onclick="resolveTicketRow(this, 'MNT-28491')"
+                                            class="bg-primary-500 hover:bg-primary-600 text-white font-bold px-3 py-1 rounded-lg text-xs shadow-sm cursor-pointer">Resolve</button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                    <td data-label="Ticket ID"
+                                        class="px-4 lg:px-6 py-3 lg:py-4 font-mono font-bold text-xs text-primary-500 whitespace-nowrap">
+                                        MNT-29841</td>
+                                    <td data-label="Issue Description" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold">Master bathroom toilet clog /
+                                        leak overflow</td>
+                                    <td data-label="Residence Unit" class="px-4 lg:px-6 py-3 lg:py-4">Sunset Heights Villa (Sarah Jenkins)</td>
+                                    <td data-label="Urgency" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span
+                                            class="px-2.5 py-0.5 rounded-full bg-red-100 dark:bg-red-950/50 text-red-600 dark:text-red-400 text-xs font-bold border border-red-200 dark:border-red-900">Emergency</span>
+                                    </td>
+                                    <td data-label="Assigned Staff" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Quick Plumb Response
+                                        Dispatch</td>
+                                    <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
+                                            onclick="resolveTicketRow(this, 'MNT-29841')"
+                                            class="bg-primary-500 hover:bg-primary-600 text-white font-bold px-3 py-1 rounded-lg text-xs shadow-sm cursor-pointer">Resolve</button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                    <td data-label="Ticket ID"
+                                        class="px-4 lg:px-6 py-3 lg:py-4 font-mono font-bold text-xs text-primary-500 whitespace-nowrap">
+                                        MNT-19201</td>
+                                    <td data-label="Issue Description" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold">Kitchen sink drain pipe leak
+                                        slow drip</td>
+                                    <td data-label="Residence Unit" class="px-4 lg:px-6 py-3 lg:py-4">Brooklyn Brownstone #2</td>
+                                    <td data-label="Urgency" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span
+                                            class="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-750 text-slate-500 text-xs font-bold border border-slate-200 dark:border-slate-700">Medium</span>
+                                    </td>
+                                    <td data-label="Assigned Staff" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Mark Wilson (Property
+                                        manager)</td>
+                                    <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><span
+                                            class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 text-xs font-bold">Resolved</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Expanded Card: Staff Availability and Specialist Dispatch Registry -->
+                <div
+                    class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4 mt-6">
+                    <h3 class="font-heading font-bold text-lg">Staff Availability & Active Workloads</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Staff 1 -->
+                        <div
+                            class="p-4 rounded-xl border border-slate-150 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex items-center justify-between">
+                            <div class="space-y-1">
+                                <p class="font-bold text-sm text-slate-800 dark:text-white">Dave Miller</p>
+                                <p class="text-[10px] text-slate-400 font-semibold">HVAC Specialist • Active: 2 tickets
+                                </p>
+                            </div>
+                            <span
+                                class="px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/45 text-amber-600 dark:text-amber-400 text-xs font-bold">Busy</span>
+                        </div>
+                        <!-- Staff 2 -->
+                        <div
+                            class="p-4 rounded-xl border border-slate-150 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex items-center justify-between">
+                            <div class="space-y-1">
+                                <p class="font-bold text-sm text-slate-800 dark:text-white">Sarah Connor</p>
+                                <p class="text-[10px] text-slate-400 font-semibold">Plumbing Dispatch • Active: 0
+                                    tickets</p>
+                            </div>
+                            <span
+                                class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/45 text-emerald-600 dark:text-emerald-400 text-xs font-bold">Available</span>
+                        </div>
+                        <!-- Staff 3 -->
+                        <div
+                            class="p-4 rounded-xl border border-slate-150 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex items-center justify-between">
+                            <div class="space-y-1">
+                                <p class="font-bold text-sm text-slate-800 dark:text-white">John Smith</p>
+                                <p class="text-[10px] text-slate-400 font-semibold">General Handyman • Active: 1 ticket
+                                </p>
+                            </div>
+                            <span
+                                class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/45 text-emerald-600 dark:text-emerald-400 text-xs font-bold">Available</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== SECTION 5: FINANCES ==================== -->
+            <div id="section-finances" class="dashboard-section hidden space-y-8">
+
+                <!-- KPI Row -->
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-6">
+                    <div
+                        class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Total Revenue YTD</p>
+                        <h4 class="text-2xl font-bold mt-1 text-emerald-500">$8,490,000</h4>
+                    </div>
+                    <div
+                        class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Operating Expenses</p>
+                        <h4 class="text-2xl font-bold mt-1 text-slate-650 dark:text-slate-350">$1,240,000</h4>
+                    </div>
+                    <div
+                        class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Net Cash Flow</p>
+                        <h4 class="text-2xl font-bold mt-1 text-primary-500">$7,250,000</h4>
+                    </div>
+                    <div
+                        class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Outstanding Arrears</p>
+                        <h4 class="text-2xl font-bold mt-1 text-rose-500">$8,200</h4>
+                    </div>
+                </div>
+
+                <!-- Revenue Graph Panel -->
+                <div
+                    class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-4">
+                    <h3 class="font-heading font-bold text-lg">Income vs Expenses Analysis (Monthly)</h3>
+
+                    <!-- High Fidelity Premium Custom Vector SVG Chart -->
+                    <div
+                        class="w-full h-64 bg-slate-50 dark:bg-slate-900 rounded-2xl p-4 border border-slate-150 dark:border-slate-800 relative">
+                        <svg class="w-full h-full" viewBox="0 0 800 220" preserveAspectRatio="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <!-- Grid Lines -->
+                            <line x1="50" y1="20" x2="750" y2="20" stroke="#94a3b8" stroke-dasharray="4"
+                                stroke-opacity="0.15" />
+                            <line x1="50" y1="70" x2="750" y2="70" stroke="#94a3b8" stroke-dasharray="4"
+                                stroke-opacity="0.15" />
+                            <line x1="50" y1="120" x2="750" y2="120" stroke="#94a3b8" stroke-dasharray="4"
+                                stroke-opacity="0.15" />
+                            <line x1="50" y1="170" x2="750" y2="170" stroke="#94a3b8" stroke-dasharray="4"
+                                stroke-opacity="0.15" />
+
+                            <!-- Chart lines -->
+                            <!-- Green Income curve -->
+                            <path d="M 50 170 C 150 120, 250 80, 350 70 S 550 50, 750 30" fill="none" stroke="#10b981"
+                                stroke-width="4.5" stroke-linecap="round" />
+                            <!-- Blue Expense curve -->
+                            <path d="M 50 190 C 150 170, 250 160, 350 150 S 550 140, 750 135" fill="none"
+                                stroke="#3b82f6" stroke-width="3.5" stroke-linecap="round" />
+
+                            <!-- Data points circles -->
+                            <circle cx="350" cy="70" r="5.5" fill="#10b981" stroke="#ffffff" stroke-width="2" />
+                            <circle cx="750" cy="30" r="5.5" fill="#10b981" stroke="#ffffff" stroke-width="2" />
+                            <circle cx="350" cy="150" r="5.5" fill="#3b82f6" stroke="#ffffff" stroke-width="2" />
+
+                            <!-- Label Texts -->
+                            <text x="45" y="175" fill="#94a3b8" font-size="10" font-weight="bold">Jan</text>
+                            <text x="180" y="175" fill="#94a3b8" font-size="10" font-weight="bold">Feb</text>
+                            <text x="340" y="175" fill="#94a3b8" font-size="10" font-weight="bold">Mar</text>
+                            <text x="500" y="175" fill="#94a3b8" font-size="10" font-weight="bold">Apr</text>
+                            <text x="660" y="175" fill="#94a3b8" font-size="10" font-weight="bold">May</text>
+                            <text x="740" y="175" fill="#94a3b8" font-size="10" font-weight="bold">Jun</text>
+                        </svg>
+
+                        <!-- Legend -->
+                        <div class="absolute bottom-2.5 right-6 flex items-center gap-4 text-xs font-bold">
+                            <span class="flex items-center gap-1.5"><span
+                                    class="w-3 h-3 rounded-full bg-emerald-500"></span> Income</span>
+                            <span class="flex items-center gap-1.5"><span
+                                    class="w-3 h-3 rounded-full bg-blue-500"></span> Expenses</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ledger Entries -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
+                    <div class="p-5 border-b border-slate-100 dark:border-slate-700">
+                        <h3 class="font-bold text-lg font-heading">Income Ledger & Auditing Transactions</h3>
+                    </div>
+
+                    <div class="r-table-wrap">
+                        <table class="r-table w-full text-left border-collapse text-sm">
+                            <thead
+                                class="bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700">
+                                <tr>
+                                    <th
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
+                                        Payment Date</th>
+                                    <th
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
+                                        Transaction ID</th>
+                                    <th
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
+                                        Invoiced Item</th>
+                                    <th
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
+                                        Tenant Name</th>
+                                    <th
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
+                                        Amount</th>
+                                    <th
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase text-right whitespace-nowrap">
+                                        Audit</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                    <td data-label="Payment Date" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Jun 18, 2026</td>
+                                    <td data-label="Transaction ID" class="px-4 lg:px-6 py-3 lg:py-4 font-mono text-xs whitespace-nowrap">TXN-492091
+                                    </td>
+                                    <td data-label="Invoiced Item" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold whitespace-nowrap">Rent - June
+                                        2026</td>
+                                    <td data-label="Tenant Name" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">John Doe</td>
+                                    <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-emerald-600 whitespace-nowrap">
+                                        +$2,500.00</td>
+                                    <td data-label="Audit" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
+                                            onclick="showNotification('Audit receipt triggered!')"
+                                            class="text-primary-500 hover:text-primary-600"><i
+                                                data-lucide="shield-check" class="w-4.5 h-4.5 ml-auto"></i></button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                    <td data-label="Payment Date" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Jun 15, 2026</td>
+                                    <td data-label="Transaction ID" class="px-4 lg:px-6 py-3 lg:py-4 font-mono text-xs whitespace-nowrap">TXN-839103
+                                    </td>
+                                    <td data-label="Invoiced Item" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold whitespace-nowrap">Rent - June
+                                        2026</td>
+                                    <td data-label="Tenant Name" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Sarah Jenkins</td>
+                                    <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-emerald-600 whitespace-nowrap">
+                                        +$4,200.00</td>
+                                    <td data-label="Audit" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
+                                            onclick="showNotification('Audit receipt triggered!')"
+                                            class="text-primary-500 hover:text-primary-600"><i
+                                                data-lucide="shield-check" class="w-4.5 h-4.5 ml-auto"></i></button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                    <td data-label="Payment Date" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">May 18, 2026</td>
+                                    <td data-label="Transaction ID" class="px-4 lg:px-6 py-3 lg:py-4 font-mono text-xs whitespace-nowrap">TXN-392091
+                                    </td>
+                                    <td data-label="Invoiced Item" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold whitespace-nowrap">Rent - May
+                                        2026</td>
+                                    <td data-label="Tenant Name" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">John Doe</td>
+                                    <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-emerald-600 whitespace-nowrap">
+                                        +$2,500.00</td>
+                                    <td data-label="Audit" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
+                                            onclick="showNotification('Audit receipt triggered!')"
+                                            class="text-primary-500 hover:text-primary-600"><i
+                                                data-lucide="shield-check" class="w-4.5 h-4.5 ml-auto"></i></button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                    <td data-label="Payment Date" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">May 15, 2026</td>
+                                    <td data-label="Transaction ID" class="px-4 lg:px-6 py-3 lg:py-4 font-mono text-xs whitespace-nowrap">TXN-902183
+                                    </td>
+                                    <td data-label="Invoiced Item" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold whitespace-nowrap">Rent - May
+                                        2026</td>
+                                    <td data-label="Tenant Name" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Sarah Jenkins</td>
+                                    <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-emerald-600 whitespace-nowrap">
+                                        +$4,200.00</td>
+                                    <td data-label="Audit" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
+                                            onclick="showNotification('Audit receipt triggered!')"
+                                            class="text-primary-500 hover:text-primary-600"><i
+                                                data-lucide="shield-check" class="w-4.5 h-4.5 ml-auto"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Expanded Card: Ledger Export & Reporting options -->
+                <div
+                    class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4 mt-6">
+                    <h3 class="font-heading font-bold text-lg">Financial Statement Exports</h3>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed max-w-xl">Generate auditing
+                            balances and expense sheets categorised by building structures or calendar cycles. Financial
+                            data logs compile Chase ACH routing records and credit merchant ledger invoices.</p>
+                        <div class="flex gap-2.5 w-full sm:w-auto shrink-0">
+                            <button onclick="showNotification('Audited PDF Statement generated.')"
+                                class="flex-1 sm:flex-initial bg-primary-500 hover:bg-primary-600 text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow-md shadow-primary-500/25 transition-colors cursor-pointer flex items-center justify-center gap-1.5"><i
+                                    data-lucide="file-text" class="w-4 h-4"></i> PDF Statement</button>
+                            <button onclick="showNotification('CSV ledger ledger compilation downloaded.')"
+                                class="flex-1 sm:flex-initial bg-slate-50 hover:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 font-bold px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-750 text-xs transition-colors cursor-pointer flex items-center justify-center gap-1.5"><i
+                                    data-lucide="file-spreadsheet" class="w-4 h-4"></i> Export CSV</button>
+                        </div>
+                    </div>
                 </div>
 
             </div>
+            <!-- END scrollable content container -->
         </main>
     </div>
 
-    <script>lucide.createIcons();</script>
+    <!-- Notification Toast Element -->
+    <div id="toast"
+        class="fixed bottom-5 right-5 z-[100] px-5 py-3.5 rounded-2xl shadow-xl flex items-center gap-3 text-sm font-semibold border transition-all duration-300 transform translate-y-10 opacity-0 bg-slate-900 border-slate-800 text-white dark:bg-white dark:border-slate-200 dark:text-slate-900 pointer-events-none">
+        <i data-lucide="check-circle" class="w-5 h-5 shrink-0 text-emerald-400"></i>
+        <span id="toast-message">Action completed successfully</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initMobileSidebar();
+            initSidebarNavigation();
+        });
+
+        // Mobile Sidebar toggler
+        function initMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const closeBtn = document.getElementById('close-sidebar-btn');
+
+            if (menuBtn && sidebar && overlay) {
+                menuBtn.addEventListener('click', () => {
+                    sidebar.classList.add('is-open');
+                    overlay.classList.remove('hidden');
+                    setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+                });
+            }
+
+            const closeSidebar = () => {
+                if (sidebar && overlay) {
+                    sidebar.classList.remove('is-open');
+                    overlay.classList.add('opacity-0');
+                    setTimeout(() => {
+                        overlay.classList.add('hidden');
+                    }, 300);
+                }
+            };
+
+            if (overlay) overlay.addEventListener('click', closeSidebar);
+            if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+        }
+
+        // Section switcher navigation
+        function initSidebarNavigation() {
+            const links = document.querySelectorAll('.sidebar-link');
+
+            links.forEach(link => {
+                link.addEventListener('click', () => {
+                    const targetSection = link.getAttribute('data-section');
+                    switchToSection(targetSection);
+                });
+            });
+        }
+
+        function switchToSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.dashboard-section');
+            sections.forEach(sec => sec.classList.add('hidden'));
+
+            // Show target
+            const targetSec = document.getElementById(`section-${sectionId}`);
+            if (targetSec) targetSec.classList.remove('hidden');
+
+            // Scroll to top of content viewport
+            const contentContainer = document.querySelector('main > div.overflow-y-auto');
+            if (contentContainer) {
+                contentContainer.scrollTop = 0;
+            }
+
+            // Update topbar title text
+            const topbarTitle = document.getElementById('topbar-title');
+            if (topbarTitle) {
+                const titles = {
+                    overview: 'Management Overview',
+                    properties: 'Properties Register',
+                    tenants: 'Active Tenants Directory',
+                    maintenance: 'Maintenance Dispatch Database',
+                    finances: 'Financial Analytics & Audit'
+                };
+                topbarTitle.textContent = titles[sectionId] || 'Management';
+            }
+
+            // Update sidebar buttons style highlights
+            const links = document.querySelectorAll('.sidebar-link');
+            links.forEach(l => {
+                if (l.getAttribute('data-section') === sectionId) {
+                    l.className = "sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary-50 text-primary-500 dark:bg-slate-700/80 dark:text-primary-400 font-bold border-l-4 rtl:border-l-0 rtl:border-r-4 border-primary-500 transition-all text-left rtl:text-right";
+                } else {
+                    l.className = "sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white font-semibold transition-all border-l-4 rtl:border-l-0 rtl:border-r-4 border-transparent text-left rtl:text-right";
+                }
+            });
+
+            // Close mobile sidebar in case it is open
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            if (sidebar && sidebar.classList.contains('is-open')) {
+                sidebar.classList.remove('is-open');
+                if (overlay) {
+                    overlay.classList.add('opacity-0');
+                    setTimeout(() => overlay.classList.add('hidden'), 300);
+                }
+            }
+        }
+
+        // Resolve Maintenance ticket callback
+        function resolveTicketRow(btnEl, ticketId) {
+            if (btnEl) {
+                btnEl.disabled = true;
+                btnEl.textContent = 'Resolving...';
+
+                setTimeout(() => {
+                    const parentTd = btnEl.parentElement;
+                    if (parentTd) {
+                        parentTd.innerHTML = `<span class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 text-xs font-bold">Resolved</span>`;
+                    }
+                    showNotification(`Maintenance Ticket ${ticketId} resolved and logged.`);
+                }, 1000);
+            }
+        }
+
+        // Toast notifications
+        function showNotification(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            if (toast && toastMsg) {
+                toastMsg.textContent = message;
+                toast.classList.remove('translate-y-10', 'opacity-0');
+
+                setTimeout(() => {
+                    toast.classList.add('translate-y-10', 'opacity-0');
+                }, 3500);
+            }
+        }
+
+    </script>
     <script src="../assets/js/main.js"></script>
+    <script>lucide.createIcons();</script>
 </body>
+
 </html>

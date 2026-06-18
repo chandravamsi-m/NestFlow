@@ -11,149 +11,903 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../assets/js/tailwind-config.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom overrides for dark mode checkbox and dashboard utilities */
+        .dark input[type="checkbox"], .dark input[type="radio"], .dark select {
+            color-scheme: dark;
+            accent-color: #14b8a6;
+        }
+        
+        /* Mobile Sidebar transitions */
+        #sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            z-index: 50;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        html[dir="ltr"] #sidebar {
+            left: 0;
+            transform: translateX(-100%);
+        }
+        html[dir="ltr"] #sidebar.is-open {
+            transform: translateX(0);
+        }
+        html[dir="rtl"] #sidebar {
+            right: 0;
+            transform: translateX(100%);
+        }
+        html[dir="rtl"] #sidebar.is-open {
+            transform: translateX(0);
+        }
+        @media (min-width: 768px) {
+            #sidebar {
+                position: static;
+                transform: none !important;
+            }
+        }
+
+        /* ============================================================
+           RESPONSIVE TABLE → CARD LAYOUT (mobile < 768px)
+           Each <tr> becomes a labelled card. Add data-label="Column"
+           to every <td> and class="r-table" to the <table>.
+        ============================================================ */
+        @media (max-width: 767px) {
+
+            /* Hide horizontal scroll wrapper chrome on mobile */
+            .r-table-wrap {
+                overflow: visible;
+            }
+
+            /* Hide the thead */
+            .r-table thead {
+                display: none;
+            }
+
+            /* tbody rows → cards */
+            .r-table tbody {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                padding: 12px;
+            }
+            .r-table tbody tr {
+                display: block;
+                background: #fff;
+                border: 1px solid #e2e8f0;
+                border-radius: 14px;
+                padding: 4px 0;
+                box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+                transition: box-shadow 0.2s;
+            }
+            .r-table tbody tr:hover {
+                box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+                background: #fff !important;
+            }
+
+            /* Each cell → label : value row */
+            .r-table tbody td {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+                padding: 9px 14px;
+                border-bottom: 1px solid #f1f5f9;
+                font-size: 0.8125rem;
+                text-align: right;
+            }
+            .r-table tbody td:last-child {
+                border-bottom: none;
+            }
+
+            /* Prevent inner element nowrap/min-width constraints from causing mobile overflow */
+            .r-table tbody td,
+            .r-table tbody td * {
+                white-space: normal !important;
+                min-width: 0 !important;
+                max-width: 100% !important;
+                word-break: break-word;
+            }
+
+            /* Label pseudo-element */
+            .r-table tbody td::before {
+                content: attr(data-label);
+                font-size: 10px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                color: #94a3b8;
+                flex-shrink: 0;
+                text-align: left;
+                min-width: 90px;
+            }
+
+            /* Dark mode card styles */
+            .dark .r-table tbody tr {
+                background: #1e293b;
+                border-color: #334155;
+            }
+            .dark .r-table tbody tr:hover {
+                background: #1e293b !important;
+            }
+            .dark .r-table tbody td {
+                border-color: #1e293b;
+            }
+        }
+
+        /* Desktop: keep normal table behaviour but prevent layout overflow by reducing paddings */
+        @media (min-width: 768px) {
+            .r-table-wrap {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .r-table th,
+            .r-table td {
+                padding-left: 0.75rem !important;  /* px-3 override */
+                padding-right: 0.75rem !important; /* px-3 override */
+            }
+        }
+        @media (min-width: 768px) and (max-width: 1279px) {
+            /* On tablet and laptop screens, allow text wrapping in cells to prevent horizontal scrollbars */
+            .r-table th,
+            .r-table td,
+            .r-table td * {
+                white-space: normal !important;
+            }
+        }
+        @media (min-width: 1024px) {
+            .r-table th,
+            .r-table td {
+                padding-left: 1rem !important;  /* px-4 override */
+                padding-right: 1rem !important; /* px-4 override */
+            }
+        }
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300">
 
-    <div class="flex h-screen overflow-hidden">
+    <div class="flex h-screen overflow-hidden relative">
         
+        <!-- Sidebar Overlay (mobile only) -->
+        <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/50 z-40 hidden opacity-0 transition-opacity duration-300 md:hidden backdrop-blur-sm"></div>
+
         <!-- Sidebar -->
-        <aside class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 hidden md:flex flex-col h-full z-20">
-            <div class="p-6">
+        <aside id="sidebar" class="w-[80%] md:w-64 bg-white dark:bg-slate-800 border-r rtl:border-r-0 rtl:border-l border-slate-200 dark:border-slate-700 flex flex-col h-full shrink-0">
+            <div class="p-5 border-b border-slate-150 dark:border-slate-700 flex items-center justify-between">
                 <a href="../index.html" class="flex items-center gap-2 group">
-                    <div class="w-10 h-10 rounded-xl bg-primary-500 flex items-center justify-center text-white">
-                        <i data-lucide="home"></i>
-                    </div>
+                    <img src="../assets/images/logo.svg" alt="NestFlow Logo" class="w-10 h-10 group-hover:scale-105 transition-transform">
                     <span class="font-heading font-bold text-2xl tracking-tight text-slate-900 dark:text-white">Nest<span class="text-primary-500">Flow</span></span>
                 </a>
+                <button id="close-sidebar-btn" class="md:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
             </div>
             
-            <div class="px-4 py-2 flex-1 overflow-y-auto space-y-1">
-                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary-50 text-primary-500 dark:bg-slate-700 font-medium border-l-4 border-primary-500">
+            <div class="px-4 py-4 flex-1 overflow-y-auto space-y-1">
+                <!-- Navigation links with data-section attribute -->
+                <button data-section="overview" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary-50 text-primary-500 dark:bg-slate-700/80 dark:text-primary-400 font-bold border-l-4 rtl:border-l-0 rtl:border-r-4 border-primary-500 transition-all text-left rtl:text-right">
                     <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-                    Overview
-                </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-medium transition-colors border-l-4 border-transparent">
+                    <span>Overview</span>
+                </button>
+                <button data-section="payments" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white font-semibold transition-all border-l-4 rtl:border-l-0 rtl:border-r-4 border-transparent text-left rtl:text-right">
                     <i data-lucide="credit-card" class="w-5 h-5"></i>
-                    Payments
-                </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-medium transition-colors border-l-4 border-transparent">
+                    <span>Payments</span>
+                </button>
+                <button data-section="maintenance" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white font-semibold transition-all border-l-4 rtl:border-l-0 rtl:border-r-4 border-transparent text-left rtl:text-right">
                     <i data-lucide="wrench" class="w-5 h-5"></i>
-                    Maintenance
-                </a>
-                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-medium transition-colors border-l-4 border-transparent">
+                    <span>Maintenance</span>
+                </button>
+                <button data-section="lease" class="sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white font-semibold transition-all border-l-4 rtl:border-l-0 rtl:border-r-4 border-transparent text-left rtl:text-right">
                     <i data-lucide="file-text" class="w-5 h-5"></i>
-                    Lease Info
+                    <span>Lease Info</span>
+                </button>
+                <a href="login.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-rose-50 dark:hover:bg-rose-900/20 text-rose-500 font-bold transition-all border-l-4 rtl:border-l-0 rtl:border-r-4 border-transparent text-left rtl:text-right">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                    <span>Logout</span>
                 </a>
             </div>
 
-            <div class="p-4 border-t border-slate-200 dark:border-slate-700">
-                <a href="login.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-rose-50 dark:hover:bg-rose-900/20 text-rose-500 font-medium transition-colors border-l-4 border-transparent">
-                    <i data-lucide="log-out" class="w-5 h-5"></i>
-                    Logout
-                </a>
+            <div class="p-4 border-t border-slate-200 dark:border-slate-700 space-y-3 md:hidden">
+                <!-- Toggles visible on mobile drawer, hidden on desktop -->
+                <div class="flex items-center justify-between gap-2">
+                    <button class="rtl-toggle flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400 font-bold text-xs uppercase tracking-wider transition-all" aria-label="Toggle RTL">
+                        <span>RTL</span>
+                    </button>
+                    <button class="theme-toggle flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400 font-bold text-xs uppercase tracking-wider transition-all" aria-label="Toggle Dark Mode">
+                        <i data-lucide="moon" class="dark:hidden w-4 h-4"></i>
+                        <i data-lucide="sun" class="hidden dark:block w-4 h-4"></i>
+                        <span class="dark:hidden">Dark</span>
+                        <span class="hidden dark:inline">Light</span>
+                    </button>
+                </div>
             </div>
         </aside>
 
         <!-- Main Content -->
         <main class="flex-1 flex flex-col h-full overflow-hidden">
             <!-- Topbar -->
-            <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                    <button class="md:hidden text-slate-500 hover:text-slate-900 dark:hover:text-white"><i data-lucide="menu"></i></button>
-                    <h2 class="text-xl font-bold font-heading">Dashboard</h2>
+            <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <button id="mobile-menu-btn" class="md:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" aria-label="Open sidebar menu"><i data-lucide="menu"></i></button>
+                    <h2 id="topbar-title" class="text-base sm:text-xl font-bold font-heading">Dashboard Overview</h2>
                 </div>
-                <div class="flex items-center gap-4">
-                    <button class="theme-toggle p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500"><i data-lucide="moon" class="dark:hidden"></i><i data-lucide="sun" class="hidden dark:block"></i></button>
-                    <button class="relative p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500">
-                        <i data-lucide="bell"></i>
-                        <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-primary-500 rounded-full border-2 border-white dark:border-slate-800"></span>
+                <div class="flex items-center gap-1.5 sm:gap-3">
+                    <button class="rtl-toggle hidden md:flex p-1.5 sm:p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 transition-colors items-center justify-center font-bold text-xs uppercase tracking-wider" aria-label="Toggle RTL">
+                        <span>RTL</span>
                     </button>
-                    <div class="w-10 h-10 rounded-full overflow-hidden cursor-pointer border-2 border-slate-200 dark:border-slate-700">
+                    <button class="theme-toggle hidden md:inline-flex p-1.5 sm:p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 transition-colors items-center justify-center" aria-label="Toggle Dark Mode"><i data-lucide="moon" class="dark:hidden w-4.5 h-4.5 sm:w-5 h-5"></i><i data-lucide="sun" class="hidden dark:block w-4.5 h-4.5 sm:w-5 h-5"></i></button>
+                    <button class="relative p-1.5 sm:p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 transition-colors">
+                        <i data-lucide="bell" class="w-4.5 h-4.5 sm:w-5 h-5"></i>
+                        <span class="absolute top-1 right-1 rtl:right-auto rtl:left-1 w-2 h-2 bg-primary-500 rounded-full border border-white dark:border-slate-800"></span>
+                    </button>
+                    <div class="w-8 h-8 sm:w-10 h-10 rounded-full overflow-hidden border-2 border-slate-200 dark:border-slate-700 cursor-pointer">
                         <img src="../assets/images/avatar_1.png" alt="Profile" class="w-full h-full object-cover">
                     </div>
                 </div>
             </header>
 
-            <!-- Scrollable Content -->
-            <div class="flex-1 overflow-y-auto p-6">
-                
-                <h3 class="text-2xl font-bold mb-6 font-heading">Welcome back, John!</h3>
+            <!-- Scrollable Content Container -->
+            <div class="flex-1 overflow-y-auto p-5 sm:p-6 md:p-8 space-y-8">
 
-                <!-- Alert Banner -->
-                <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 flex items-start gap-4 mb-8">
-                    <div class="p-2 bg-amber-100 dark:bg-amber-800/50 rounded-lg text-amber-600 dark:text-amber-400">
-                        <i data-lucide="alert-circle" class="w-6 h-6"></i>
+                <!-- ==================== SECTION 1: OVERVIEW ==================== -->
+                <div id="section-overview" class="dashboard-section space-y-8">
+                    <h3 class="text-2xl font-bold font-heading">Welcome back, John!</h3>
+
+                    <!-- Alert Banner -->
+                    <div class="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-sm">
+                        <div class="p-3 bg-amber-100 dark:bg-amber-900/60 rounded-xl text-amber-600 dark:text-amber-400 shrink-0">
+                            <i data-lucide="alert-circle" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-amber-800 dark:text-amber-300">Rent Payment Due</h4>
+                            <p class="text-amber-700 dark:text-amber-400/80 text-sm mt-0.5">Your monthly rent of $2,500 is due in 3 days (June 20, 2026).</p>
+                        </div>
+                        <button onclick="switchToSection('payments')" class="bg-primary-500 hover:bg-primary-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md shadow-primary-500/20 transition-colors shrink-0">Pay Rent Now</button>
                     </div>
-                    <div>
-                        <h4 class="font-bold text-amber-800 dark:text-amber-300">Upcoming Payment Reminder</h4>
-                        <p class="text-amber-700 dark:text-amber-400/80 text-sm mt-1">Your rent of $2,500 is due in 3 days (June 20, 2026).</p>
+
+                    <!-- Stat Cards Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm flex items-center gap-4">
+                            <div class="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500"><i data-lucide="calendar-check" class="w-6 h-6"></i></div>
+                            <div>
+                                <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Rent Due Date</p>
+                                <h4 class="text-lg font-bold mt-0.5">Jun 20, 2026</h4>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm flex items-center gap-4">
+                            <div class="p-3.5 rounded-xl bg-primary-50 dark:bg-primary-950/40 text-primary-500"><i data-lucide="dollar-sign" class="w-6 h-6"></i></div>
+                            <div>
+                                <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Next Payment</p>
+                                <h4 class="text-lg font-bold mt-0.5">$2,500.00</h4>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm flex items-center gap-4">
+                            <div class="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-500"><i data-lucide="wrench" class="w-6 h-6"></i></div>
+                            <div>
+                                <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Open Requests</p>
+                                <h4 class="text-lg font-bold mt-0.5">1 Request</h4>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm flex items-center gap-4">
+                            <div class="p-3.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-500"><i data-lucide="file-text" class="w-6 h-6"></i></div>
+                            <div>
+                                <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Lease Expiry</p>
+                                <h4 class="text-lg font-bold mt-0.5">Dec 15, 2026</h4>
+                            </div>
+                        </div>
                     </div>
-                    <button class="ml-auto bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-lg shadow-primary-500/30">Pay Now</button>
+
+                    <!-- Payment Overview Table -->
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm overflow-hidden">
+                        <div class="p-5 border-b border-slate-100 dark:border-slate-700/60 flex items-center justify-between">
+                            <h3 class="font-bold text-lg font-heading">Recent Payments</h3>
+                            <button onclick="switchToSection('payments')" class="text-primary-500 text-sm font-semibold hover:underline">View Ledger</button>
+                        </div>
+                        <div class="r-table-wrap">
+                            <table class="r-table w-full text-left border-collapse">
+                                <thead class="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-700/60">
+                                    <tr>
+                                        <th class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap">Month</th>
+                                        <th class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap">Amount</th>
+                                        <th class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap">Status</th>
+                                        <th class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right whitespace-nowrap">Receipt</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 dark:divide-slate-700/60">
+                                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                        <td data-label="Month" class="px-4 lg:px-6 py-3 lg:py-4 text-sm font-medium whitespace-nowrap">May 2026</td>
+                                        <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 text-sm font-bold whitespace-nowrap">$2,500.00</td>
+                                        <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold">Paid</span></td>
+                                        <td data-label="Receipt" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button class="text-primary-500 hover:text-primary-600 cursor-pointer" onclick="showNotification('Receipt downloaded successfully!')"><i data-lucide="download" class="w-4 h-4 ml-auto"></i></button></td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                        <td data-label="Month" class="px-4 lg:px-6 py-3 lg:py-4 text-sm font-medium whitespace-nowrap">April 2026</td>
+                                        <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 text-sm font-bold whitespace-nowrap">$2,500.00</td>
+                                        <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold">Paid</span></td>
+                                        <td data-label="Receipt" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button class="text-primary-500 hover:text-primary-600 cursor-pointer" onclick="showNotification('Receipt downloaded successfully!')"><i data-lucide="download" class="w-4 h-4 ml-auto"></i></button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Expanded Sub-grid: Property Status and Support Links -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                        <!-- My Property Status Card -->
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-4">
+                            <h3 class="font-bold text-base font-heading flex items-center gap-2 text-slate-800 dark:text-white">
+                                <i data-lucide="home" class="w-5 h-5 text-primary-500"></i>
+                                Residence Snapshot
+                            </h3>
+                            <div class="grid grid-cols-2 gap-4 text-xs">
+                                <div>
+                                    <p class="text-slate-400 font-bold uppercase tracking-wider">Property Name</p>
+                                    <p class="font-bold text-slate-700 dark:text-slate-200 mt-0.5">The Oasis Apartment</p>
+                                </div>
+                                <div>
+                                    <p class="text-slate-400 font-bold uppercase tracking-wider">Unit Number</p>
+                                    <p class="font-bold text-slate-700 dark:text-slate-200 mt-0.5">Apt 304</p>
+                                </div>
+                                <div>
+                                    <p class="text-slate-400 font-bold uppercase tracking-wider">Active Lease Term</p>
+                                    <p class="font-bold text-slate-700 dark:text-slate-200 mt-0.5">12 Months (Fixed)</p>
+                                </div>
+                                <div>
+                                    <p class="text-slate-400 font-bold uppercase tracking-wider">Rent Status</p>
+                                    <p class="font-bold text-amber-500 mt-0.5 flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> Due soon</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Support Actions -->
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-4">
+                            <h3 class="font-bold text-base font-heading flex items-center gap-2 text-slate-800 dark:text-white">
+                                <i data-lucide="help-circle" class="w-5 h-5 text-primary-500"></i>
+                                Support & Navigation Shortcuts
+                            </h3>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button onclick="switchToSection('maintenance')" class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-150 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors text-left text-xs font-semibold cursor-pointer">
+                                    <i data-lucide="wrench" class="w-4 h-4 text-primary-500"></i>
+                                    <span>Request Service</span>
+                                </button>
+                                <button onclick="switchToSection('payments')" class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-150 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors text-left text-xs font-semibold cursor-pointer">
+                                    <i data-lucide="dollar-sign" class="w-4 h-4 text-primary-500"></i>
+                                    <span>Make a Payment</span>
+                                </button>
+                                <button onclick="switchToSection('lease')" class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-150 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors text-left text-xs font-semibold cursor-pointer">
+                                    <i data-lucide="file-text" class="w-4 h-4 text-primary-500"></i>
+                                    <span>Lease Milestones</span>
+                                </button>
+                                <button onclick="showNotification('Calling front desk concierge...')" class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-150 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors text-left text-xs font-semibold cursor-pointer">
+                                    <i data-lucide="phone-call" class="w-4 h-4 text-primary-500"></i>
+                                    <span>Call Concierge</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Stat Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-soft">
-                        <div class="flex justify-between items-start mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-500"><i data-lucide="calendar-check"></i></div>
+                <!-- ==================== SECTION 2: PAYMENTS ==================== -->
+                <div id="section-payments" class="dashboard-section hidden space-y-8">
+                    
+                    <!-- Billing Summary Stat Row -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <div class="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-150 dark:border-emerald-900 p-5 rounded-2xl shadow-sm">
+                            <p class="text-emerald-600 dark:text-emerald-400 text-xs font-semibold uppercase tracking-wider">Total Paid in Lease</p>
+                            <h4 class="text-2xl font-bold text-emerald-700 dark:text-emerald-300 mt-1">$15,000.00</h4>
                         </div>
-                        <p class="text-slate-500 text-sm font-medium mb-1">Rent Due Date</p>
-                        <h4 class="text-2xl font-bold">Jun 20, 2026</h4>
+                        <div class="bg-primary-50 dark:bg-primary-950/20 border border-primary-150 dark:border-primary-900 p-5 rounded-2xl shadow-sm">
+                            <p class="text-primary-600 dark:text-primary-400 text-xs font-semibold uppercase tracking-wider">Next Due Amount</p>
+                            <h4 class="text-2xl font-bold text-primary-700 dark:text-primary-300 mt-1">$2,500.00</h4>
+                        </div>
+                        <div class="bg-amber-50 dark:bg-amber-950/20 border border-amber-150 dark:border-amber-900 p-5 rounded-2xl shadow-sm">
+                            <p class="text-amber-600 dark:text-amber-400 text-xs font-semibold uppercase tracking-wider">Current Bill Status</p>
+                            <h4 class="text-2xl font-bold text-amber-700 dark:text-amber-300 mt-1">Due Jun 20, 2026</h4>
+                        </div>
                     </div>
-                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-soft">
-                        <div class="flex justify-between items-start mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center text-primary-500"><i data-lucide="dollar-sign"></i></div>
+
+                    <!-- Payment Grid Layout -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        
+                        <!-- Pay Rent Form -->
+                        <div class="lg:col-span-1 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-5 h-fit">
+                            <h3 class="font-bold text-lg font-heading border-b border-slate-100 dark:border-slate-700 pb-3">Pay Rent Form</h3>
+                            
+                            <form id="payment-form" class="space-y-4" onsubmit="handlePaymentSubmit(event)">
+                                <div>
+                                    <label class="block text-xs font-bold mb-1 text-slate-500">Rent Month</label>
+                                    <select class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 focus:outline-none focus:border-primary-500 text-sm font-semibold">
+                                        <option value="june-2026">June 2026 ($2,500.00)</option>
+                                        <option value="july-2026">July 2026 ($2,500.00)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold mb-1 text-slate-500">Amount ($)</label>
+                                    <input type="text" readonly value="2500.00" class="w-full bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm font-bold text-slate-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold mb-1 text-slate-500">Card Number</label>
+                                    <input type="text" required placeholder="•••• •••• •••• ••••" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-primary-500">
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-bold mb-1 text-slate-500">Expiry</label>
+                                        <input type="text" required placeholder="MM/YY" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-primary-500">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold mb-1 text-slate-500">CVV</label>
+                                        <input type="text" required placeholder="•••" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-primary-500">
+                                    </div>
+                                </div>
+                                <button type="submit" id="pay-submit-btn" class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-primary-500/20 transition-colors flex items-center justify-center gap-2 mt-2 cursor-pointer">
+                                    Pay $2,500.00
+                                </button>
+                            </form>
                         </div>
-                        <p class="text-slate-500 text-sm font-medium mb-1">Next Payment</p>
-                        <h4 class="text-2xl font-bold">$2,500.00</h4>
+
+                        <!-- Historical Ledger Log -->
+                        <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm overflow-hidden h-fit">
+                            <div class="p-5 border-b border-slate-100 dark:border-slate-700/60">
+                                <h3 class="font-bold text-lg font-heading">Historical Payments Ledger</h3>
+                            </div>
+                            <div class="r-table-wrap">
+                                <table class="r-table w-full text-left border-collapse">
+                                    <thead class="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-700/60">
+                                        <tr>
+                                            <th class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap">Date Paid</th>
+                                            <th class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap">Invoiced Item</th>
+                                            <th class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap">Method</th>
+                                            <th class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap">Amount</th>
+                                            <th class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-right whitespace-nowrap">Invoice</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="ledger-tbody" class="divide-y divide-slate-100 dark:divide-slate-700/60 text-sm">
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                            <td data-label="Date Paid" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">May 02, 2026</td>
+                                            <td data-label="Invoiced Item" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold whitespace-nowrap">Rent - May 2026</td>
+                                            <td data-label="Method" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Card •••• 4242</td>
+                                            <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-emerald-600 whitespace-nowrap">$2,500.00</td>
+                                            <td data-label="Invoice" class="px-4 lg:px-6 py-3 lg:py-4 text-right"><button onclick="showNotification('PDF Invoice downloaded!')" class="text-primary-500 hover:text-primary-600"><i data-lucide="file-down" class="w-4 h-4 ml-auto"></i></button></td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                            <td data-label="Date Paid" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Apr 01, 2026</td>
+                                            <td data-label="Invoiced Item" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold whitespace-nowrap">Rent - Apr 2026</td>
+                                            <td data-label="Method" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Card •••• 4242</td>
+                                            <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-emerald-600 whitespace-nowrap">$2,500.00</td>
+                                            <td data-label="Invoice" class="px-4 lg:px-6 py-3 lg:py-4 text-right"><button onclick="showNotification('PDF Invoice downloaded!')" class="text-primary-500 hover:text-primary-600"><i data-lucide="file-down" class="w-4 h-4 ml-auto"></i></button></td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                            <td data-label="Date Paid" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Mar 03, 2026</td>
+                                            <td data-label="Invoiced Item" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold whitespace-nowrap">Rent - Mar 2026</td>
+                                            <td data-label="Method" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Card •••• 4242</td>
+                                            <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-emerald-600 whitespace-nowrap">$2,500.00</td>
+                                            <td data-label="Invoice" class="px-4 lg:px-6 py-3 lg:py-4 text-right"><button onclick="showNotification('PDF Invoice downloaded!')" class="text-primary-500 hover:text-primary-600"><i data-lucide="file-down" class="w-4 h-4 ml-auto"></i></button></td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                            <td data-label="Date Paid" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Feb 02, 2026</td>
+                                            <td data-label="Invoiced Item" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold whitespace-nowrap">Rent - Feb 2026</td>
+                                            <td data-label="Method" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Card •••• 4242</td>
+                                            <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-emerald-600 whitespace-nowrap">$2,500.00</td>
+                                            <td data-label="Invoice" class="px-4 lg:px-6 py-3 lg:py-4 text-right"><button onclick="showNotification('PDF Invoice downloaded!')" class="text-primary-500 hover:text-primary-600"><i data-lucide="file-down" class="w-4 h-4 ml-auto"></i></button></td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                                            <td data-label="Date Paid" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Jan 02, 2026</td>
+                                            <td data-label="Invoiced Item" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold whitespace-nowrap">Rent - Jan 2026</td>
+                                            <td data-label="Method" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Card •••• 4242</td>
+                                            <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-emerald-600 whitespace-nowrap">$2,500.00</td>
+                                            <td data-label="Invoice" class="px-4 lg:px-6 py-3 lg:py-4 text-right"><button onclick="showNotification('PDF Invoice downloaded!')" class="text-primary-500 hover:text-primary-600"><i data-lucide="file-down" class="w-4 h-4 ml-auto"></i></button></td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors border-t border-dashed border-slate-200">
+                                            <td data-label="Date Paid" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Dec 15, 2025</td>
+                                            <td data-label="Invoiced Item" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold whitespace-nowrap">Security Deposit</td>
+                                            <td data-label="Method" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Bank Transfer</td>
+                                            <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-emerald-600 whitespace-nowrap">$5,000.00</td>
+                                            <td data-label="Invoice" class="px-4 lg:px-6 py-3 lg:py-4 text-right"><button onclick="showNotification('PDF Invoice downloaded!')" class="text-primary-500 hover:text-primary-600"><i data-lucide="file-down" class="w-4 h-4 ml-auto"></i></button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                     </div>
-                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-soft">
-                        <div class="flex justify-between items-start mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-rose-50 dark:bg-rose-900/30 flex items-center justify-center text-rose-500"><i data-lucide="wrench"></i></div>
+
+                    <!-- Expanded Card: Saved Payment Methods and Settings -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-5 mt-6">
+                        <h3 class="font-bold text-lg font-heading border-b border-slate-100 dark:border-slate-700 pb-3 flex items-center gap-2">
+                            <i data-lucide="shield-check" class="text-primary-500"></i>
+                            Saved Accounts & Auto-Pay Settings
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <!-- Visa Card -->
+                            <div class="p-4 rounded-xl border border-slate-150 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2.5 bg-white dark:bg-slate-800 rounded-lg text-slate-500">
+                                        <i data-lucide="credit-card" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-sm text-slate-700 dark:text-slate-200">Visa ending in 4242</p>
+                                        <p class="text-[10px] text-slate-400 font-semibold">Expires 12/28 • Primary Account</p>
+                                    </div>
+                                </div>
+                                <button onclick="showNotification('Payment method settings opened.')" class="text-slate-400 hover:text-slate-650 cursor-pointer"><i data-lucide="settings" class="w-4 h-4"></i></button>
+                            </div>
+                            <!-- Bank routing -->
+                            <div class="p-4 rounded-xl border border-slate-150 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2.5 bg-white dark:bg-slate-800 rounded-lg text-slate-500">
+                                        <i data-lucide="landmark" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-sm text-slate-700 dark:text-slate-200">CHASE Routing *8912</p>
+                                        <p class="text-[10px] text-slate-400 font-semibold">Savings Account Linked</p>
+                                    </div>
+                                </div>
+                                <button onclick="showNotification('Payment method settings opened.')" class="text-slate-400 hover:text-slate-650 cursor-pointer"><i data-lucide="settings" class="w-4 h-4"></i></button>
+                            </div>
+                            <!-- Autopay Settings -->
+                            <div class="p-4 rounded-xl border border-slate-150 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2.5 bg-white dark:bg-slate-800 rounded-lg text-slate-500">
+                                        <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-sm text-slate-700 dark:text-slate-200">Recurring Autopay</p>
+                                        <p class="text-[10px] text-slate-400 font-semibold">Auto-pay on 1st of every month</p>
+                                    </div>
+                                </div>
+                                <div class="relative inline-flex items-center cursor-pointer" onclick="showNotification('Autopay toggle status changed.')">
+                                    <input type="checkbox" checked class="sr-only peer">
+                                    <div class="w-9 h-5 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-500"></div>
+                                </div>
+                            </div>
                         </div>
-                        <p class="text-slate-500 text-sm font-medium mb-1">Open Requests</p>
-                        <h4 class="text-2xl font-bold">1</h4>
-                    </div>
-                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-soft">
-                        <div class="flex justify-between items-start mb-4">
-                            <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-500"><i data-lucide="file-text"></i></div>
-                        </div>
-                        <p class="text-slate-500 text-sm font-medium mb-1">Lease Expiry</p>
-                        <h4 class="text-2xl font-bold">Dec 15, 2026</h4>
                     </div>
                 </div>
 
-                <!-- Recent Activity Table -->
-                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-soft border border-slate-100 dark:border-slate-700 overflow-hidden mb-8">
-                    <div class="p-6 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-                        <h3 class="font-bold text-lg font-heading">Recent Payments</h3>
-                        <a href="#" class="text-primary-500 text-sm font-medium hover:underline">View All</a>
+                <!-- ==================== SECTION 3: MAINTENANCE ==================== -->
+                <div id="section-maintenance" class="dashboard-section hidden space-y-8">
+                    
+                    <!-- Metrics grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm flex items-center gap-4">
+                            <div class="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-500"><i data-lucide="activity" class="w-6 h-6"></i></div>
+                            <div>
+                                <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold">Active Issues</p>
+                                <h4 class="text-xl font-bold mt-0.5">1 Ticket</h4>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm flex items-center gap-4">
+                            <div class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500"><i data-lucide="check-circle" class="w-6 h-6"></i></div>
+                            <div>
+                                <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold">Completed Requests</p>
+                                <h4 class="text-xl font-bold mt-0.5">4 Tickets</h4>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm flex items-center gap-4">
+                            <div class="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-500"><i data-lucide="clock" class="w-6 h-6"></i></div>
+                            <div>
+                                <p class="text-slate-500 dark:text-slate-400 text-xs font-semibold">Average Resolution</p>
+                                <h4 class="text-xl font-bold mt-0.5">24 Hours</h4>
+                            </div>
+                        </div>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left">
-                            <thead class="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
-                                <tr>
-                                    <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Month</th>
-                                    <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Amount</th>
-                                    <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
-                                    <th class="px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wider text-right">Receipt</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
-                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                                    <td class="px-6 py-4 font-medium">May 2026</td>
-                                    <td class="px-6 py-4">$2,500.00</td>
-                                    <td class="px-6 py-4"><span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold">Paid</span></td>
-                                    <td class="px-6 py-4 text-right"><button class="text-primary-500 hover:text-primary-600"><i data-lucide="download" class="w-5 h-5 ml-auto"></i></button></td>
-                                </tr>
-                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-                                    <td class="px-6 py-4 font-medium">Apr 2026</td>
-                                    <td class="px-6 py-4">$2,500.00</td>
-                                    <td class="px-6 py-4"><span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold">Paid</span></td>
-                                    <td class="px-6 py-4 text-right"><button class="text-primary-500 hover:text-primary-600"><i data-lucide="download" class="w-5 h-5 ml-auto"></i></button></td>
-                                </tr>
-                            </tbody>
-                        </table>
+
+                    <!-- Layout splits -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        
+                        <!-- Submit Ticket Card -->
+                        <div class="lg:col-span-1 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm h-fit space-y-4">
+                            <h3 class="font-bold text-lg font-heading border-b border-slate-100 dark:border-slate-700 pb-3">Submit Maintenance Request</h3>
+                            
+                            <form id="maintenance-form" class="space-y-4" onsubmit="handleMaintenanceSubmit(event)">
+                                <div>
+                                    <label class="block text-xs font-bold mb-1 text-slate-500">Issue Category</label>
+                                    <select required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 focus:outline-none focus:border-primary-500 text-sm font-semibold">
+                                        <option value="plumbing">Plumbing (Leak, blockage)</option>
+                                        <option value="electrical">Electrical (Outlet, light, fan)</option>
+                                        <option value="hvac">HVAC (Heating & A/C)</option>
+                                        <option value="appliance">Appliance (Fridge, washer, dryer)</option>
+                                        <option value="pest-control">Pest Control</option>
+                                        <option value="other">Other (Structural, window, key)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold mb-1 text-slate-500">Urgency Level</label>
+                                    <div class="grid grid-cols-3 gap-2">
+                                        <label class="flex flex-col items-center justify-center p-2.5 border border-slate-200 dark:border-slate-700 rounded-xl cursor-pointer text-xs font-bold hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
+                                            <input type="radio" name="urgency" value="low" class="sr-only">
+                                            <span class="text-slate-500">Low</span>
+                                        </label>
+                                        <label class="flex flex-col items-center justify-center p-2.5 border border-slate-200 dark:border-slate-700 rounded-xl cursor-pointer text-xs font-bold hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors bg-primary-50/50 border-primary-300 text-primary-500 dark:bg-slate-900 dark:border-primary-500">
+                                            <input type="radio" name="urgency" value="medium" checked class="sr-only">
+                                            <span>Medium</span>
+                                        </label>
+                                        <label class="flex flex-col items-center justify-center p-2.5 border border-slate-200 dark:border-slate-700 rounded-xl cursor-pointer text-xs font-bold hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
+                                            <input type="radio" name="urgency" value="high" class="sr-only">
+                                            <span class="text-rose-500">High</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold mb-1 text-slate-500">Description</label>
+                                    <textarea required rows="4" placeholder="Describe the issue in detail, including location..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-primary-500"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold mb-1 text-slate-500">Upload Photos (Optional)</label>
+                                    <div class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-4 flex flex-col items-center justify-center text-center hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer">
+                                        <i data-lucide="image" class="w-6 h-6 text-slate-400 mb-1"></i>
+                                        <span class="text-xs font-semibold text-slate-500">Drag images or click to select</span>
+                                    </div>
+                                </div>
+                                <button type="submit" id="ticket-submit-btn" class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-primary-500/20 transition-colors flex items-center justify-center gap-2 cursor-pointer">
+                                    Submit Ticket
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Ticket Log & Timelines -->
+                        <div class="lg:col-span-2 space-y-6">
+                            <h3 class="font-bold text-lg font-heading border-b border-slate-100 dark:border-slate-700 pb-3">Requests History</h3>
+                            
+                            <!-- Ticket Card 1 (Active) -->
+                            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <span class="px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 text-xs font-bold">In Progress</span>
+                                        <span class="px-3 py-1 rounded-full bg-rose-50 dark:bg-rose-950/20 text-rose-500 text-xs font-bold">Urgency: High</span>
+                                    </div>
+                                    <span class="text-slate-400 text-xs font-medium">Ticket #MNT-28491</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-base">HVAC: Bedroom unit heating blowing cold air</h4>
+                                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Submitted: Jun 17, 2026. The wall units in both the master bedroom and guest bedroom do not blow hot air when set to heat mode.</p>
+                                </div>
+                                <!-- Timeline steps visual -->
+                                <div class="relative pt-4 border-t border-slate-100 dark:border-slate-700">
+                                    <div class="absolute left-4 top-[28px] -translate-y-1/2 w-[calc(100%-2rem)] h-0.5 bg-slate-100 dark:bg-slate-700"></div>
+                                    <div class="absolute left-4 top-[28px] -translate-y-1/2 w-2/3 h-0.5 bg-primary-500"></div>
+                                    <div class="grid grid-cols-4 relative z-10 text-[10px] text-center font-bold">
+                                        <div class="flex flex-col items-center gap-1.5 text-primary-500">
+                                            <div class="w-6 h-6 rounded-full bg-primary-500 text-white flex items-center justify-center"><i data-lucide="check" class="w-3.5 h-3.5"></i></div>
+                                            <span>Submitted</span>
+                                        </div>
+                                        <div class="flex flex-col items-center gap-1.5 text-primary-500">
+                                            <div class="w-6 h-6 rounded-full bg-primary-500 text-white flex items-center justify-center"><i data-lucide="check" class="w-3.5 h-3.5"></i></div>
+                                            <span>Assigned</span>
+                                        </div>
+                                        <div class="flex flex-col items-center gap-1.5 text-primary-500">
+                                            <div class="w-6 h-6 rounded-full bg-primary-500 text-white flex items-center justify-center"><i data-lucide="wrench" class="w-3.5 h-3.5"></i></div>
+                                            <span>In Progress</span>
+                                        </div>
+                                        <div class="flex flex-col items-center gap-1.5 text-slate-400">
+                                            <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 text-white flex items-center justify-center">4</div>
+                                            <span>Resolved</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Ticket Card 2 (Resolved) -->
+                            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold">Resolved</span>
+                                        <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-750 text-slate-500 text-xs font-bold">Urgency: Medium</span>
+                                    </div>
+                                    <span class="text-slate-400 text-xs font-medium">Ticket #MNT-19201</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-base">Plumbing: Kitchen sink drain pipe slow and leaking</h4>
+                                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Submitted: May 12, 2026. The under-sink drain seal was leaking small amounts of water. Plumber replaced the gasket on May 13.</p>
+                                </div>
+                                <div class="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900 rounded-xl p-3 text-xs text-emerald-700 dark:text-emerald-300 font-semibold flex items-center gap-2">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i>
+                                    Resolved on May 13, 2026 by Tech: Mark Wilson. Gasket replaced under warranty.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Expanded Card: Maintenance FAQs and Emergency Contacts -->
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-5 mt-6">
+                        <h3 class="font-bold text-lg font-heading border-b border-slate-100 dark:border-slate-700 pb-3 flex items-center gap-2">
+                            <i data-lucide="alert-triangle" class="text-primary-500"></i>
+                            Tenant Maintenance Guidelines
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+                            <div class="space-y-3">
+                                <h4 class="font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> What constitutes a Maintenance Emergency?</h4>
+                                <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">Emergency issues are those that pose an immediate threat to your safety or the property structure. Examples include: total loss of heating/cooling in extreme weather, flooding pipes, electrical sparks, gas odor, or being locked out. Please call our 24/7 hotline at <strong class="text-rose-500 font-bold">(800) 555-0199</strong> immediately for emergency dispatches.</p>
+                            </div>
+                            <div class="space-y-3">
+                                <h4 class="font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Standard Maintenance Turnaround Policies</h4>
+                                <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">Routine requests (like slow drains, window lock fixes, cabinet adjustments) are generally scheduled and solved within 24 to 48 hours. Once submitted, our team will review the issue and match it with a qualified specialist. Tenants do not need to be present at home if consent to enter has been checked in the request profile.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== SECTION 4: LEASE INFO ==================== -->
+                <div id="section-lease" class="dashboard-section hidden space-y-8">
+                    
+                    <!-- Property & Landlord Details Card -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        
+                        <!-- Rented Property -->
+                        <div class="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-5">
+                            <h3 class="font-bold text-lg font-heading border-b border-slate-100 dark:border-slate-700 pb-3 flex items-center gap-2">
+                                <i data-lucide="building" class="text-primary-500"></i>
+                                Rented Residence Details
+                            </h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div class="space-y-4">
+                                    <div>
+                                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Property Address</span>
+                                        <p class="font-bold text-slate-700 dark:text-slate-200 mt-0.5 text-base">124 Sunset Blvd, Apt 304, Beverly Hills, CA 90210</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Unit Specifications</span>
+                                        <p class="font-bold text-slate-700 dark:text-slate-200 mt-0.5">2 Bedrooms, 2 Bathrooms, 1,200 sq ft</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Assigned Parking</span>
+                                        <p class="font-bold text-slate-700 dark:text-slate-200 mt-0.5">Space #42 (Level B Garage)</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-4">
+                                    <div>
+                                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Security Deposit</span>
+                                        <p class="font-bold text-slate-700 dark:text-slate-200 mt-0.5">$5,000.00 (Received & Staged)</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Lease Key Items</span>
+                                        <p class="font-bold text-slate-700 dark:text-slate-200 mt-0.5">Rent Due: 1st of month (Grace period till 5th)</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Late Fee Policy</span>
+                                        <p class="font-bold text-slate-700 dark:text-slate-200 mt-0.5">10% charge after June 05 / monthly deadline</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Management Agency Contact -->
+                        <div class="md:col-span-1 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-lg font-heading border-b border-slate-100 dark:border-slate-700 pb-3 flex items-center gap-2 mb-4">
+                                    <i data-lucide="shield" class="text-primary-500"></i>
+                                    Account Manager
+                                </h3>
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-700 flex items-center justify-center font-bold text-primary-500 text-lg">RH</div>
+                                    <div>
+                                        <h4 class="font-bold text-sm">Robert Harris</h4>
+                                        <p class="text-slate-500 text-xs font-semibold">NestFlow Properties LLC</p>
+                                    </div>
+                                </div>
+                                <div class="space-y-3.5 text-sm">
+                                    <div class="flex items-center gap-2.5 text-slate-600 dark:text-slate-300">
+                                        <i data-lucide="mail" class="w-4 h-4 shrink-0 text-slate-450"></i>
+                                        <span>robert@nestflow.com</span>
+                                    </div>
+                                    <div class="flex items-center gap-2.5 text-slate-600 dark:text-slate-300">
+                                        <i data-lucide="phone" class="w-4 h-4 shrink-0 text-slate-450"></i>
+                                        <span>(310) 555-0199</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button onclick="showNotification('Opening mail client...')" class="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-bold py-2.5 rounded-xl transition-colors text-xs border border-slate-200 dark:border-slate-600 mt-4 cursor-pointer">
+                                Email Landlord
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Lease agreement specs and file download -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        
+                        <!-- Timeline dates -->
+                        <div class="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-5">
+                            <h3 class="font-bold text-lg font-heading border-b border-slate-100 dark:border-slate-700 pb-3 flex items-center gap-2">
+                                <i data-lucide="calendar" class="text-primary-500"></i>
+                                Term Milestones
+                            </h3>
+                            <div class="relative pl-6 rtl:pl-0 rtl:pr-6 border-l-2 rtl:border-l-0 rtl:border-r-2 border-primary-500 py-2 space-y-6">
+                                <div class="relative">
+                                    <div class="absolute -left-[31px] rtl:-right-[31px] rtl:left-auto top-1.5 w-4.5 h-4.5 rounded-full border-4 border-white dark:border-slate-800 bg-primary-500"></div>
+                                    <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Lease Activated</p>
+                                    <h4 class="font-bold text-slate-700 dark:text-slate-200">December 15, 2025</h4>
+                                    <p class="text-sm text-slate-500 mt-0.5">Agreement initialized with a total security deposit of $5,000.</p>
+                                </div>
+                                <div class="relative">
+                                    <div class="absolute -left-[31px] rtl:-right-[31px] rtl:left-auto top-1.5 w-4.5 h-4.5 rounded-full border-4 border-white dark:border-slate-800 bg-emerald-500"></div>
+                                    <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Midterm Review</p>
+                                    <h4 class="font-bold text-slate-705 dark:text-slate-200">June 15, 2026 (Active)</h4>
+                                    <p class="text-sm text-slate-500 mt-0.5">Property inspection and lease terms compliance check.</p>
+                                </div>
+                                <div class="relative">
+                                    <div class="absolute -left-[31px] rtl:-right-[31px] rtl:left-auto top-1.5 w-4.5 h-4.5 rounded-full border-4 border-white dark:border-slate-800 bg-slate-200 dark:bg-slate-700"></div>
+                                    <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Expiration Date</p>
+                                    <h4 class="font-bold text-slate-700 dark:text-slate-200">December 15, 2026</h4>
+                                    <p class="text-sm text-slate-500 mt-0.5">Eligible for renewal or key return checkout procedures.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rules and Download -->
+                        <div class="md:col-span-1 space-y-6">
+                            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-4">
+                                <h3 class="font-bold text-base font-heading">Agreement Files</h3>
+                                <div class="p-4 rounded-xl border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex items-center gap-3">
+                                    <i data-lucide="file-text" class="w-8 h-8 text-primary-500 shrink-0"></i>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="font-bold text-xs truncate">lease_agreement_signed.pdf</p>
+                                        <p class="text-[10px] text-slate-400 font-semibold">2.4 MB • PDF Document</p>
+                                    </div>
+                                    <button onclick="showNotification('PDF Lease Agreement downloading...')" class="p-2 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-350 rounded-lg shadow-sm border border-slate-200/50 dark:border-slate-700 hover:text-primary-500 cursor-pointer shrink-0"><i data-lucide="download" class="w-4 h-4"></i></button>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-3 text-xs">
+                                <h3 class="font-bold text-base font-heading mb-1">Key Policies</h3>
+                                <div class="flex items-start gap-2.5 text-slate-650 dark:text-slate-400 leading-relaxed">
+                                    <i data-lucide="dog" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i>
+                                    <span><strong>Pet Policy:</strong> Registered pets allowed, subject to a monthly fee of $50.</span>
+                                </div>
+                                <div class="flex items-start gap-2.5 text-slate-650 dark:text-slate-400 leading-relaxed">
+                                    <i data-lucide="users" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i>
+                                    <span><strong>Guests:</strong> Overnight guests permitted for a maximum of 14 consecutive days.</span>
+                                </div>
+                                <div class="flex items-start gap-2.5 text-slate-650 dark:text-slate-400 leading-relaxed">
+                                    <i data-lucide="trash-2" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i>
+                                    <span><strong>Trash pickup:</strong> Sun-Thu between 6:00 PM – 8:00 PM outside apartment door.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Expanded Grid: Renter's Insurance and Renewal Intentions -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                        <!-- Renter's Insurance Policy Status -->
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-5">
+                            <h3 class="font-bold text-lg font-heading border-b border-slate-100 dark:border-slate-700 pb-3 flex items-center gap-2">
+                                <i data-lucide="shield" class="text-primary-500"></i>
+                                Renter's Insurance Coverage
+                            </h3>
+                            <div class="flex justify-between items-start gap-4">
+                                <div class="space-y-2.5 text-xs">
+                                    <div>
+                                        <span class="text-slate-400 font-bold uppercase tracking-wider">Insurance Provider</span>
+                                        <p class="font-bold text-slate-700 dark:text-slate-200 mt-0.5">State Farm Renters Premium</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-slate-400 font-bold uppercase tracking-wider">Policy & Coverage</span>
+                                        <p class="font-bold text-slate-700 dark:text-slate-200 mt-0.5">Policy #: SF-92841-RNT • $100K Liability / $25K Personal</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-slate-400 font-bold uppercase tracking-wider">Expiration Date</span>
+                                        <p class="font-bold text-emerald-500 mt-0.5 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Active (Expires Dec 15, 2026)</p>
+                                    </div>
+                                </div>
+                                <button onclick="showNotification('Opening insurance document editor...')" class="bg-slate-50 hover:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-750 text-slate-600 dark:text-slate-300 font-bold px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-750 text-xs shrink-0 cursor-pointer">Update Policy</button>
+                            </div>
+                        </div>
+
+                        <!-- Lease Renewal Intentions Action Card -->
+                        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-5">
+                            <h3 class="font-bold text-lg font-heading border-b border-slate-100 dark:border-slate-700 pb-3 flex items-center gap-2">
+                                <i data-lucide="key" class="text-primary-500"></i>
+                                Lease Term Management
+                            </h3>
+                            <div class="space-y-4">
+                                <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">Your fixed lease ends on December 15, 2026. Management requires a minimum of 60 days notification regarding your intention to renew, request a lease modification, or submit notice to vacate.</p>
+                                <div class="flex flex-wrap gap-2.5">
+                                    <button onclick="showNotification('Your request to renew has been forwarded to Sarah Jenkins.')" class="bg-primary-500 hover:bg-primary-600 text-white font-bold px-4 py-2 rounded-xl text-xs shadow-md shadow-primary-500/25 transition-all cursor-pointer">Request Renewal</button>
+                                    <button onclick="showNotification('Intention to move out notice form opened.')" class="bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/20 dark:hover:bg-rose-900/30 text-rose-500 font-bold px-4 py-2 rounded-xl text-xs transition-all cursor-pointer">Notice to Vacate</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -161,7 +915,190 @@
         </main>
     </div>
 
-    <script>lucide.createIcons();</script>
+    <!-- Notification Toast Element -->
+    <div id="toast" class="fixed bottom-5 right-5 z-[100] px-5 py-3.5 rounded-2xl shadow-xl flex items-center gap-3 text-sm font-semibold border transition-all duration-300 transform translate-y-10 opacity-0 bg-slate-900 border-slate-800 text-white dark:bg-white dark:border-slate-200 dark:text-slate-900 pointer-events-none">
+        <i data-lucide="check-circle" class="w-5 h-5 shrink-0 text-emerald-400"></i>
+        <span id="toast-message">Action completed successfully</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initMobileSidebar();
+            initSidebarNavigation();
+        });
+
+        // Mobile Sidebar toggler
+        function initMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const closeBtn = document.getElementById('close-sidebar-btn');
+
+            if (menuBtn && sidebar && overlay) {
+                menuBtn.addEventListener('click', () => {
+                    sidebar.classList.add('is-open');
+                    overlay.classList.remove('hidden');
+                    setTimeout(() => overlay.classList.remove('opacity-0'), 10);
+                });
+            }
+
+            const closeSidebar = () => {
+                if (sidebar && overlay) {
+                    sidebar.classList.remove('is-open');
+                    overlay.classList.add('opacity-0');
+                    setTimeout(() => {
+                        overlay.classList.add('hidden');
+                    }, 300);
+                }
+            };
+
+            if (overlay) overlay.addEventListener('click', closeSidebar);
+            if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+        }
+
+        // Section switcher navigation
+        function initSidebarNavigation() {
+            const links = document.querySelectorAll('.sidebar-link');
+            
+            links.forEach(link => {
+                link.addEventListener('click', () => {
+                    const targetSection = link.getAttribute('data-section');
+                    switchToSection(targetSection);
+                });
+            });
+        }
+
+        function switchToSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.dashboard-section');
+            sections.forEach(sec => sec.classList.add('hidden'));
+
+            // Show target
+            const targetSec = document.getElementById(`section-${sectionId}`);
+            if (targetSec) targetSec.classList.remove('hidden');
+
+            // Scroll to top of content viewport
+            const contentContainer = document.querySelector('main > div.overflow-y-auto');
+            if (contentContainer) {
+                contentContainer.scrollTop = 0;
+            }
+
+            // Update topbar title text
+            const topbarTitle = document.getElementById('topbar-title');
+            if (topbarTitle) {
+                const titles = {
+                    overview: 'Dashboard Overview',
+                    payments: 'Rent Payments Ledger',
+                    maintenance: 'Maintenance & Service Tickets',
+                    lease: 'Lease Agreement details'
+                };
+                topbarTitle.textContent = titles[sectionId] || 'Dashboard';
+            }
+
+            // Update sidebar buttons style highlights
+            const links = document.querySelectorAll('.sidebar-link');
+            links.forEach(l => {
+                if (l.getAttribute('data-section') === sectionId) {
+                    l.className = "sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary-50 text-primary-500 dark:bg-slate-700/80 dark:text-primary-400 font-bold border-l-4 rtl:border-l-0 rtl:border-r-4 border-primary-500 transition-all text-left rtl:text-right";
+                } else {
+                    l.className = "sidebar-link w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white font-semibold transition-all border-l-4 rtl:border-l-0 rtl:border-r-4 border-transparent text-left rtl:text-right";
+                }
+            });
+
+            // Close mobile sidebar in case it is open
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            if (sidebar && sidebar.classList.contains('is-open')) {
+                sidebar.classList.remove('is-open');
+                if (overlay) {
+                    overlay.classList.add('opacity-0');
+                    setTimeout(() => overlay.classList.add('hidden'), 300);
+                }
+            }
+        }
+
+        // Handle payment form submit
+        function handlePaymentSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('pay-submit-btn');
+            if (btn) {
+                btn.disabled = true;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg> Processing Payment...`;
+
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                    
+                    // Add new payment record to ledger body dynamically
+                    const tbody = document.getElementById('ledger-tbody');
+                    if (tbody) {
+                        const tr = document.createElement('tr');
+                        tr.className = "hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors animate-pulse";
+                        tr.innerHTML = `
+                            <td data-label="Date Paid" class="px-6 py-4">Jun 18, 2026</td>
+                            <td data-label="Invoiced Item" class="px-6 py-4 font-semibold">Rent - June 2026</td>
+                            <td data-label="Method" class="px-6 py-4">Card •••• 4242</td>
+                            <td data-label="Amount" class="px-6 py-4 font-bold text-emerald-600">$2,500.00</td>
+                            <td data-label="Invoice" class="px-6 py-4 text-right"><button onclick="showNotification('PDF Invoice downloaded!')" class="text-primary-500 hover:text-primary-600"><i data-lucide="file-down" class="w-4 h-4 ml-auto"></i></button></td>
+                        `;
+                        tbody.insertBefore(tr, tbody.firstChild);
+                        if (typeof lucide !== 'undefined') lucide.createIcons();
+                    }
+
+                    showNotification('Rent payment of $2,500 processed! Receipt added to ledger.');
+                    
+                    // Reset fields
+                    e.target.reset();
+                    
+                    // Hide alert banner on overview tab (optionally hide it)
+                    const alertBanner = document.querySelector('.bg-amber-50');
+                    if (alertBanner) alertBanner.remove();
+                }, 1500);
+            }
+        }
+
+        // Handle maintenance request submit
+        function handleMaintenanceSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('ticket-submit-btn');
+            if (btn) {
+                btn.disabled = true;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg> Submitting Ticket...`;
+
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                    
+                    showNotification('Maintenance request submitted! A technician has been assigned.');
+                    e.target.reset();
+                }, 1200);
+            }
+        }
+
+        // Toast notifications
+        function showNotification(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            if (toast && toastMsg) {
+                toastMsg.textContent = message;
+                toast.classList.remove('translate-y-10', 'opacity-0');
+                
+                setTimeout(() => {
+                    toast.classList.add('translate-y-10', 'opacity-0');
+                }, 3500);
+            }
+        }
+
+    </script>
     <script src="../assets/js/main.js"></script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>

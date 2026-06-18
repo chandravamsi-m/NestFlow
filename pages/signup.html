@@ -5,95 +5,275 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up | NestFlow</title>
     
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link class="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/dark-mode.css">
     <link rel="stylesheet" href="../assets/css/rtl.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../assets/js/tailwind-config.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom overrides for dark mode standard controls */
+        .dark input[type="checkbox"] {
+            color-scheme: dark;
+            accent-color: #14b8a6;
+        }
+        /* Custom animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.25s ease-out forwards;
+        }
+        /* RTL overrides for password fields */
+        html[dir="rtl"] .password-toggle-btn {
+            right: auto !important;
+            left: 1rem !important;
+        }
+        html[dir="rtl"] .password-input-field {
+            padding-right: 1rem !important;
+            padding-left: 2.5rem !important;
+        }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300 min-h-screen flex items-center justify-center p-4">
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300 min-h-screen flex flex-col items-center justify-center py-8 px-4 relative">
+
+    <!-- Ambient Decorative Shapes Container (prevents overflow while allowing vertical scroll) -->
+    <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        <div class="absolute -top-20 -left-20 w-96 h-96 bg-primary-500/10 dark:bg-primary-500/5 rounded-full blur-3xl animate-pulse" style="animation-duration: 8s;"></div>
+        <div class="absolute -bottom-20 -right-20 w-96 h-96 bg-[#10b981]/5 rounded-full blur-3xl animate-pulse" style="animation-duration: 8s;"></div>
+    </div>
 
     <!-- Top Corner Actions -->
-    <div class="absolute top-6 right-6 flex items-center gap-4">
-        <button class="theme-toggle p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
-            <i data-lucide="moon" class="dark:hidden"></i>
-            <i data-lucide="sun" class="hidden dark:block"></i>
+    <div class="w-full max-w-xl sm:max-w-none sm:w-auto flex justify-end gap-2.5 mb-2 sm:mb-0 sm:absolute sm:top-6 sm:right-6 sm:rtl:right-auto sm:rtl:left-6 z-50">
+        <button class="rtl-toggle p-2.5 rounded-full bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors border border-slate-200/50 dark:border-slate-700 shadow-sm flex items-center justify-center" aria-label="Toggle RTL">
+            <span class="font-bold text-xs uppercase tracking-wider">RTL</span>
         </button>
-        <button class="rtl-toggle font-bold text-sm hover:text-primary-500">RTL</button>
+        <button class="theme-toggle p-2.5 rounded-full bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors border border-slate-200/50 dark:border-slate-700 shadow-sm flex items-center justify-center" aria-label="Toggle Dark Mode">
+            <i data-lucide="moon" class="dark:hidden w-4 h-4"></i>
+            <i data-lucide="sun" class="hidden dark:block w-4 h-4"></i>
+        </button>
     </div>
 
     <!-- Auth Card -->
-    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-8 md:p-10 w-full max-w-xl border border-slate-100 dark:border-slate-700 my-8">
+    <div class="bg-white dark:bg-slate-800/90 backdrop-blur-md rounded-3xl shadow-2xl p-5 sm:p-7 md:p-8 w-full max-w-xl border border-slate-100 dark:border-slate-700/80 relative z-10 my-4 animate-fade-in">
         
-        <div class="flex justify-center mb-8">
+        <div class="flex justify-center mb-4">
             <a href="../index.html" class="flex items-center gap-2 group">
-                <div class="w-12 h-12 rounded-xl bg-primary-500 flex items-center justify-center text-white shadow-lg shadow-primary-500/30">
-                    <i data-lucide="home"></i>
-                </div>
-                <span class="font-heading font-bold text-3xl tracking-tight text-slate-900 dark:text-white">Nest<span class="text-primary-500">Flow</span></span>
+                <img src="../assets/images/logo.svg" alt="NestFlow Logo" class="w-10 h-10 group-hover:scale-105 transition-transform">
+                <span class="font-heading font-bold text-2xl tracking-tight text-slate-900 dark:text-white">Nest<span class="text-primary-500">Flow</span></span>
             </a>
         </div>
 
-        <h2 class="text-2xl font-bold font-heading text-center mb-2">Create an Account</h2>
-        <p class="text-slate-500 text-center mb-8">Join NestFlow to manage or discover properties.</p>
+        <h2 class="text-xl sm:text-2xl font-bold font-heading text-center text-slate-900 dark:text-white mb-0.5">Create an Account</h2>
+        <p class="text-slate-500 dark:text-slate-400 text-center text-xs sm:text-sm mb-5">Join NestFlow to manage or discover properties.</p>
 
-        <!-- Role Selection -->
-        <div class="flex p-1 bg-slate-100 dark:bg-slate-900 rounded-xl mb-8">
-            <button class="w-1/2 py-2 rounded-lg bg-white dark:bg-slate-800 shadow text-sm font-bold transition-all">I am a Tenant</button>
-            <button class="w-1/2 py-2 rounded-lg text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 text-sm font-medium transition-all">I am an Owner</button>
-        </div>
-
-        <form class="space-y-5">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <form class="space-y-3.5" onsubmit="event.preventDefault()">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-semibold mb-2">First Name</label>
-                    <input type="text" placeholder="John" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 transition-colors">
+                    <label class="block text-xs sm:text-sm font-semibold mb-1.5 text-slate-700 dark:text-slate-300">First Name</label>
+                    <input type="text" required placeholder="John" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors text-xs sm:text-sm text-slate-800 dark:text-slate-100">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold mb-2">Last Name</label>
-                    <input type="text" placeholder="Doe" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 transition-colors">
+                    <label class="block text-xs sm:text-sm font-semibold mb-1.5 text-slate-700 dark:text-slate-300">Last Name</label>
+                    <input type="text" required placeholder="Doe" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors text-xs sm:text-sm text-slate-800 dark:text-slate-100">
                 </div>
             </div>
 
             <div>
-                <label class="block text-sm font-semibold mb-2">Email Address</label>
-                <input type="email" placeholder="name@example.com" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 transition-colors">
+                <label class="block text-xs sm:text-sm font-semibold mb-1.5 text-slate-700 dark:text-slate-300">Email Address</label>
+                <input type="email" required placeholder="name@example.com" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors text-xs sm:text-sm text-slate-800 dark:text-slate-100">
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-semibold mb-2">Password</label>
+                    <label class="block text-xs sm:text-sm font-semibold mb-1.5 text-slate-700 dark:text-slate-300">Password</label>
                     <div class="relative">
-                        <input type="password" placeholder="••••••••" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 transition-colors">
-                        <button type="button" class="absolute right-4 top-3 text-slate-400 hover:text-slate-600"><i data-lucide="eye" class="w-5 h-5"></i></button>
+                        <input type="password" required id="password-input" placeholder="••••••••" class="password-input-field w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl pl-4 pr-10 py-2.5 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors text-xs sm:text-sm text-slate-800 dark:text-slate-100">
+                        <button type="button" id="password-toggle" class="password-toggle-btn absolute right-4 top-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 focus:outline-none"><i data-lucide="eye" class="w-4 h-4"></i></button>
                     </div>
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold mb-2">Confirm Password</label>
+                    <label class="block text-xs sm:text-sm font-semibold mb-1.5 text-slate-700 dark:text-slate-300">Confirm Password</label>
                     <div class="relative">
-                        <input type="password" placeholder="••••••••" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 transition-colors">
-                        <button type="button" class="absolute right-4 top-3 text-slate-400 hover:text-slate-600"><i data-lucide="eye" class="w-5 h-5"></i></button>
+                        <input type="password" required id="confirm-password-input" placeholder="••••••••" class="password-input-field w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl pl-4 pr-10 py-2.5 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors text-xs sm:text-sm text-slate-800 dark:text-slate-100">
+                        <button type="button" id="confirm-password-toggle" class="password-toggle-btn absolute right-4 top-3 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 focus:outline-none"><i data-lucide="eye" class="w-4 h-4"></i></button>
                     </div>
                 </div>
             </div>
 
-            <div class="flex items-start gap-2 pt-2 text-sm">
-                <input type="checkbox" class="mt-1 rounded text-primary-500 focus:ring-primary-500 cursor-pointer">
-                <span class="text-slate-500">I agree to the <a href="#" class="text-primary-500 hover:underline">Terms & Conditions</a> and <a href="#" class="text-primary-500 hover:underline">Privacy Policy</a></span>
+            <div class="flex items-start gap-2.5 pt-1 text-xs sm:text-sm">
+                <input type="checkbox" required id="consent-checkbox" class="mt-1 rounded text-primary-500 focus:ring-primary-500 cursor-pointer w-4 h-4 accent-primary-500">
+                <label for="consent-checkbox" class="text-slate-600 dark:text-slate-400 cursor-pointer select-none leading-normal">
+                    I agree to the <a href="#" class="font-bold text-primary-500 hover:underline">Terms & Conditions</a> and <a href="#" class="font-bold text-primary-500 hover:underline">Privacy Policy</a>
+                </label>
             </div>
 
-            <button type="button" class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold rounded-xl py-3.5 transition-colors shadow-lg shadow-primary-500/30">
+            <button type="submit" id="submit-btn" class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold rounded-xl py-3 transition-colors shadow-lg shadow-primary-500/30 flex items-center justify-center gap-2 text-sm sm:text-base">
                 Create Account
             </button>
         </form>
 
-        <p class="text-center text-slate-500 mt-8 text-sm">
-            Already have an account? <a href="login.html" class="font-bold text-primary-500 hover:text-primary-600">Sign In</a>
+        <div class="relative my-5">
+            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200 dark:border-slate-700/80"></div></div>
+            <div class="relative flex justify-center text-[10px] sm:text-xs uppercase"><span class="px-2 bg-white dark:bg-slate-800 text-slate-400 font-semibold tracking-wider">Or continue with</span></div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2.5">
+            <button type="button" class="flex justify-center items-center gap-1.5 py-2.5 border border-slate-200 dark:border-slate-700/80 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-all font-semibold text-[10px] sm:text-xs md:text-sm text-slate-700 dark:text-slate-300 bg-transparent">
+                <svg class="w-4 h-4 sm:w-5 h-5 shrink-0" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                </svg>
+                Google
+            </button>
+            <button type="button" class="flex justify-center items-center gap-1.5 py-2.5 border border-slate-200 dark:border-slate-700/80 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-all font-semibold text-[10px] sm:text-xs md:text-sm text-slate-700 dark:text-slate-300 bg-transparent">
+                <svg class="w-4 h-4 sm:w-5 h-5 fill-current text-slate-900 dark:text-white shrink-0" viewBox="0 0 24 24">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.2.67-2.92 1.49-.62.71-1.16 1.85-1.01 2.96 1.11.09 2.23-.58 2.94-1.39z"/>
+                </svg>
+                Apple
+            </button>
+            <button type="button" class="flex justify-center items-center gap-1.5 py-2.5 border border-slate-200 dark:border-slate-700/80 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-all font-semibold text-[10px] sm:text-xs md:text-sm text-slate-700 dark:text-slate-300 bg-transparent">
+                <svg class="w-4 h-4 sm:w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="#1877F2">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+                Facebook
+            </button>
+        </div>
+
+        <p class="text-center text-slate-500 dark:text-slate-400 mt-6 text-xs sm:text-sm">
+            Already have an account? <a href="login.html" class="font-bold text-primary-500 hover:text-primary-600 transition-colors">Sign In</a>
         </p>
     </div>
 
-    <script>lucide.createIcons();</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('form');
+            const submitBtn = document.getElementById('submit-btn');
+            const passwordInput = document.getElementById('password-input');
+            const passwordToggle = document.getElementById('password-toggle');
+            const confirmPasswordInput = document.getElementById('confirm-password-input');
+            const confirmPasswordToggle = document.getElementById('confirm-password-toggle');
+
+            // Password Toggle logic helper
+            function setupPasswordToggle(inputEl, toggleBtn) {
+                if (inputEl && toggleBtn) {
+                    toggleBtn.addEventListener('click', () => {
+                        const isPassword = inputEl.getAttribute('type') === 'password';
+                        inputEl.setAttribute('type', isPassword ? 'text' : 'password');
+                        
+                        const icon = toggleBtn.querySelector('i, svg');
+                        if (icon) {
+                            icon.setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
+                            if (typeof lucide !== 'undefined') {
+                                lucide.createIcons();
+                            }
+                        }
+                    });
+                }
+            }
+
+            setupPasswordToggle(passwordInput, passwordToggle);
+            setupPasswordToggle(confirmPasswordInput, confirmPasswordToggle);
+
+            // Form Submission Validator
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    let isValid = true;
+                    const inputs = form.querySelectorAll('[required]');
+                    
+                    inputs.forEach(input => {
+                        if (!input.value.trim()) {
+                            isValid = false;
+                            input.classList.add('border-red-500', 'dark:border-red-500', 'ring-1', 'ring-red-500');
+                            input.classList.remove('border-slate-200', 'dark:border-slate-700');
+                        } else {
+                            input.classList.remove('border-red-500', 'dark:border-red-500', 'ring-1', 'ring-red-500');
+                            input.classList.add('border-slate-200', 'dark:border-slate-700');
+                        }
+                    });
+
+                    // Match Password check
+                    if (passwordInput && confirmPasswordInput) {
+                        if (passwordInput.value !== confirmPasswordInput.value) {
+                            isValid = false;
+                            confirmPasswordInput.classList.add('border-red-500', 'dark:border-red-500', 'ring-1', 'ring-red-500');
+                            showToast('Passwords do not match.', 'error');
+                            return;
+                        }
+                    }
+
+                    // Check Consent
+                    const consent = document.getElementById('consent-checkbox');
+                    if (consent && !consent.checked) {
+                        isValid = false;
+                        showToast('You must agree to the Terms & Conditions.', 'error');
+                        return;
+                    }
+
+                    if (isValid) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg> Creating Account...`;
+                        
+                        showToast('Account created successfully! Redirecting...', 'success');
+                        setTimeout(() => {
+                            window.location.href = 'user-dashboard.html';
+                        }, 1500);
+                    } else {
+                        showToast('Please fill out all required fields.', 'error');
+                    }
+                });
+            }
+
+            // Toast notification
+            function showToast(message, type = 'info') {
+                const toast = document.createElement('div');
+                toast.className = `fixed bottom-5 right-5 z-[200] px-5 py-3.5 rounded-2xl shadow-xl flex items-center gap-3 text-sm font-semibold border transition-all duration-300 transform translate-y-10 opacity-0`;
+                
+                const colors = {
+                    success: 'bg-emerald-50 dark:bg-emerald-950 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300',
+                    error: 'bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800 text-red-800 dark:text-red-300',
+                    info: 'bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-300'
+                };
+                
+                const icons = {
+                    success: 'check-circle',
+                    error: 'alert-triangle',
+                    info: 'info'
+                };
+                
+                toast.className += ' ' + colors[type];
+                toast.innerHTML = `<i data-lucide="${icons[type]}" class="w-5 h-5 shrink-0"></i> <span>${message}</span>`;
+                
+                document.body.appendChild(toast);
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+                
+                setTimeout(() => {
+                    toast.classList.remove('translate-y-10', 'opacity-0');
+                }, 50);
+                
+                setTimeout(() => {
+                    toast.classList.add('translate-y-10', 'opacity-0');
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 300);
+                }, 4000);
+            }
+        });
+
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    </script>
     <script src="../assets/js/main.js"></script>
 </body>
 </html>
