@@ -11,6 +11,25 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../assets/js/tailwind-config.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom overrides for dark mode standard controls */
+        .dark input[type="checkbox"] {
+            color-scheme: dark;
+            accent-color: #14b8a6;
+        }
+        /* Style adjustments for custom select elements */
+        select {
+            background-image: none !important;
+        }
+        /* Custom animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.25s ease-out forwards;
+        }
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300">
 
@@ -124,99 +143,346 @@
         </div>
     </nav>
 
-    <!-- Page Header -->
-    <section class="py-16 bg-slate-100 dark:bg-slate-800 text-center">
-        <div class="container mx-auto px-4">
-            <h1 class="text-4xl md:text-5xl font-bold font-heading text-slate-900 dark:text-white mb-4">List Your Property</h1>
-            <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">Join thousands of property owners. Get your property listed and start receiving applications in minutes.</p>
+    <!-- Page Hero Header -->
+    <header class="py-14 md:py-20 lg:py-24 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800/30 border-b border-slate-200 dark:border-slate-800 relative overflow-hidden text-center">
+        <!-- Ambient Decorative Shapes -->
+        <div class="absolute -top-10 -left-10 w-72 h-72 bg-primary-500/10 dark:bg-primary-500/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-10 -right-10 w-96 h-96 bg-[#10b981]/5 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="container mx-auto px-4 md:px-6 lg:px-8 relative z-10">
+            <span class="text-primary-500 font-bold tracking-wider uppercase text-xs mb-2.5 block">List Your Property</span>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold font-heading text-slate-900 dark:text-white tracking-tight mb-4 leading-tight">
+                Become a NestFlow Host
+            </h1>
+            <p class="text-slate-600 dark:text-slate-400 max-w-2xl text-sm sm:text-base md:text-lg leading-relaxed mx-auto">
+                List your property in just three simple steps and connect with thousands of qualified tenants in minutes.
+            </p>
         </div>
-    </section>
+    </header>
 
-    <!-- Add Property Form -->
-    <section class="py-16 bg-white dark:bg-slate-900">
+    <!-- Add Property Form Section -->
+    <section class="py-10 md:py-16 bg-white dark:bg-slate-900">
         <div class="container mx-auto px-4 lg:px-8 max-w-4xl">
-            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-8 md:p-12 border border-slate-100 dark:border-slate-700">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl p-5 sm:p-8 md:p-12 border border-slate-100 dark:border-slate-700/80">
                 
                 <!-- Progress Tabs -->
                 <div class="flex items-center justify-between mb-12 relative">
-                    <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-100 dark:bg-slate-700 z-0"></div>
-                    <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1/3 h-1 bg-primary-500 z-0"></div>
+                    <!-- Progress Tracker Bar Container -->
+                    <div class="absolute left-5 right-5 top-5 -translate-y-1/2 h-1 bg-slate-100 dark:bg-slate-700 z-0">
+                        <div id="progress-bar-fill" class="absolute left-0 top-0 h-full w-0 bg-primary-500 transition-all duration-300"></div>
+                    </div>
                     
-                    <div class="relative z-10 flex flex-col items-center gap-2">
-                        <div class="w-10 h-10 rounded-full bg-primary-500 text-white flex items-center justify-center font-bold shadow-lg shadow-primary-500/30">1</div>
-                        <span class="text-xs font-bold text-primary-500 hidden md:block">Basic Details</span>
+                    <div id="step-tab-1" class="relative z-10 flex flex-col items-center gap-2">
+                        <div class="step-num-bubble w-10 h-10 rounded-full bg-primary-500 text-white flex items-center justify-center font-bold shadow-lg shadow-primary-500/30 border-2 border-primary-500 transition-all duration-300">
+                            <i data-lucide="check" class="w-5 h-5 hidden"></i>
+                            <span class="step-num-text">1</span>
+                        </div>
+                        <span class="step-label text-xs font-bold text-primary-500 hidden md:block">Basic Details</span>
                     </div>
-                    <div class="relative z-10 flex flex-col items-center gap-2">
-                        <div class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-600 text-slate-400 flex items-center justify-center font-bold">2</div>
-                        <span class="text-xs font-bold text-slate-400 hidden md:block">Location</span>
+                    <div id="step-tab-2" class="relative z-10 flex flex-col items-center gap-2">
+                        <div class="step-num-bubble w-10 h-10 rounded-full bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-600 text-slate-400 flex items-center justify-center font-bold transition-all duration-300">
+                            <i data-lucide="check" class="w-5 h-5 hidden"></i>
+                            <span class="step-num-text">2</span>
+                        </div>
+                        <span class="step-label text-xs font-bold text-slate-400 hidden md:block">Location</span>
                     </div>
-                    <div class="relative z-10 flex flex-col items-center gap-2">
-                        <div class="w-10 h-10 rounded-full bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-600 text-slate-400 flex items-center justify-center font-bold">3</div>
-                        <span class="text-xs font-bold text-slate-400 hidden md:block">Photos & Media</span>
+                    <div id="step-tab-3" class="relative z-10 flex flex-col items-center gap-2">
+                        <div class="step-num-bubble w-10 h-10 rounded-full bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-600 text-slate-400 flex items-center justify-center font-bold transition-all duration-300">
+                            <i data-lucide="check" class="w-5 h-5 hidden"></i>
+                            <span class="step-num-text">3</span>
+                        </div>
+                        <span class="step-label text-xs font-bold text-slate-400 hidden md:block">Amenities & Media</span>
                     </div>
                 </div>
 
-                <form class="space-y-8">
-                    <!-- Title & Description -->
-                    <div class="space-y-6">
-                        <h3 class="text-2xl font-bold font-heading border-b border-slate-100 dark:border-slate-700 pb-4">Basic Information</h3>
+                <form id="add-property-form" class="space-y-8" onsubmit="event.preventDefault()">
+                    <!-- STEP 1: BASIC DETAILS -->
+                    <div id="step-1-panel" class="space-y-6 transition-all duration-300">
+                        <h3 class="text-xl sm:text-2xl font-bold font-heading border-b border-slate-100 dark:border-slate-700 pb-4 flex items-center gap-2">
+                            <i data-lucide="info" class="text-primary-500"></i> Basic Information
+                        </h3>
                         <div>
-                            <label class="block text-sm font-semibold mb-2">Property Title</label>
-                            <input type="text" placeholder="e.g. Modern Luxury Apartment in Downtown" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 transition-colors">
+                            <label class="block text-sm font-semibold mb-2" for="property-title">Property Title <span class="text-red-500">*</span></label>
+                            <input type="text" id="property-title" required placeholder="e.g. Modern Luxury Apartment in Downtown" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors">
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                             <div>
-                                <label class="block text-sm font-semibold mb-2">Property Type</label>
-                                <select class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 transition-colors appearance-none">
-                                    <option>Apartment</option>
-                                    <option>Single Family Home</option>
-                                    <option>Condo</option>
-                                    <option>Townhouse</option>
-                                </select>
+                                <label class="block text-sm font-semibold mb-2" for="property-type">Property Type <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <select id="property-type" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors appearance-none text-slate-700 dark:text-slate-200">
+                                        <option>Apartment</option>
+                                        <option>Single Family Home</option>
+                                        <option>Condo</option>
+                                        <option>Villa</option>
+                                        <option>Townhouse</option>
+                                        <option>Studio</option>
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400 dark:text-slate-500">
+                                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                                    </div>
+                                </div>
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold mb-2">Listing Type</label>
-                                <select class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 transition-colors appearance-none">
-                                    <option>For Rent</option>
-                                    <option>For Sale</option>
-                                </select>
+                                <label class="block text-sm font-semibold mb-2" for="listing-type">Listing Type <span class="text-red-500">*</span></label>
+                                <div class="relative">
+                                    <select id="listing-type" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors appearance-none text-slate-700 dark:text-slate-200">
+                                        <option>For Rent</option>
+                                        <option>For Sale</option>
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400 dark:text-slate-500">
+                                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold mb-2">Description</label>
-                            <textarea rows="5" placeholder="Describe the key features, neighborhood, and highlights..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 transition-colors resize-none"></textarea>
+                            <label class="block text-sm font-semibold mb-2" for="property-desc">Description <span class="text-red-500">*</span></label>
+                            <textarea id="property-desc" required rows="5" placeholder="Describe the key features, neighborhood, building amenities, and lease details..." class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors resize-none"></textarea>
+                        </div>
+                        
+                        <h4 class="text-lg sm:text-xl font-bold font-heading border-b border-slate-100 dark:border-slate-700 pb-3 pt-6 flex items-center gap-2">
+                            <i data-lucide="dollar-sign" class="text-primary-500"></i> Price, Size & Terms
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2" for="property-price">Listing Price ($) <span class="text-red-500">*</span></label>
+                                <input type="number" id="property-price" required placeholder="e.g. 2500" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2" for="property-deposit">Security Deposit ($)</label>
+                                <input type="number" id="property-deposit" placeholder="e.g. 2500" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2" for="property-lease">Lease Duration</label>
+                                <div class="relative">
+                                    <select id="property-lease" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors appearance-none text-slate-700 dark:text-slate-200">
+                                        <option>12 Months</option>
+                                        <option>6 Months</option>
+                                        <option>Month-to-Month</option>
+                                        <option>24 Months</option>
+                                        <option>Flexible</option>
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400 dark:text-slate-500">
+                                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2" for="property-beds">Bedrooms <span class="text-red-500">*</span></label>
+                                <input type="number" id="property-beds" required placeholder="e.g. 2" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2" for="property-baths">Bathrooms <span class="text-red-500">*</span></label>
+                                <input type="number" id="property-baths" required placeholder="e.g. 1.5" step="0.5" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2" for="property-sqft">Sq Footage (Sq Ft) <span class="text-red-500">*</span></label>
+                                <input type="number" id="property-sqft" required placeholder="e.g. 1100" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors">
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Price & Size -->
-                    <div class="space-y-6">
-                        <h3 class="text-2xl font-bold font-heading border-b border-slate-100 dark:border-slate-700 pb-4 mt-8">Price & Size</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div>
-                                <label class="block text-sm font-semibold mb-2">Monthly Rent ($)</label>
-                                <input type="number" placeholder="2500" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 transition-colors">
+                    <!-- STEP 2: LOCATION DETAILS -->
+                    <div id="step-2-panel" class="space-y-6 hidden transition-all duration-300">
+                        <h3 class="text-xl sm:text-2xl font-bold font-heading border-b border-slate-100 dark:border-slate-700 pb-4 flex items-center gap-2">
+                            <i data-lucide="map-pin" class="text-primary-500"></i> Property Location
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-semibold mb-2" for="property-address">Street Address <span class="text-red-500">*</span></label>
+                                <input type="text" id="property-address" required placeholder="e.g. 123 Innovation Drive" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors">
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold mb-2">Bedrooms</label>
-                                <input type="number" placeholder="3" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 transition-colors">
+                                <label class="block text-sm font-semibold mb-2" for="property-suite">Suite / Apt (Optional)</label>
+                                <input type="text" id="property-suite" placeholder="e.g. Suite 402" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2" for="property-city">City <span class="text-red-500">*</span></label>
+                                <input type="text" id="property-city" required placeholder="e.g. Seattle" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors">
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold mb-2">Bathrooms</label>
-                                <input type="number" placeholder="2" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 transition-colors">
+                                <label class="block text-sm font-semibold mb-2" for="property-state">State / Region <span class="text-red-500">*</span></label>
+                                <input type="text" id="property-state" required placeholder="e.g. WA" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2" for="property-zip">Zip / Postal Code <span class="text-red-500">*</span></label>
+                                <input type="text" id="property-zip" required placeholder="e.g. 98101" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors">
+                            </div>
+                        </div>
+
+                        <!-- Map Integration -->
+                        <div class="pt-4 space-y-4">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                <label class="block text-sm font-semibold text-slate-800 dark:text-slate-200">Interactive Location Coordinates</label>
+                                <div class="flex items-center gap-2 max-w-sm w-full">
+                                    <input type="text" id="map-search-input" placeholder="Search address on map..." class="w-full text-xs bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 focus:outline-none focus:border-primary-500">
+                                    <button type="button" id="map-search-btn" class="px-3 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-500 text-slate-700 dark:text-slate-200 text-xs rounded-xl font-bold transition-all whitespace-nowrap flex items-center gap-1">
+                                        <i data-lucide="search" class="w-3.5 h-3.5"></i> Search
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Embed Google Map -->
+                            <div class="relative overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700/80 shadow-md bg-slate-100 dark:bg-slate-900">
+                                <iframe id="map-iframe" src="https://maps.google.com/maps?q=Seattle%2C%20WA%2098101&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed" class="w-full h-[280px] rounded-2xl dark:invert-[90%] dark:hue-rotate-180 dark:opacity-85 transition-all duration-300"></iframe>
+                                <div class="absolute bottom-2 right-2 bg-white/95 dark:bg-slate-900/95 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-800 text-[10px] text-slate-500 dark:text-slate-400 font-medium flex items-center gap-1 shadow-sm">
+                                    <i data-lucide="navigation" class="w-3 h-3 text-primary-500"></i> Interactive dynamic view
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Actions -->
-                    <div class="flex items-center justify-between pt-8 border-t border-slate-100 dark:border-slate-700">
-                        <button type="button" class="px-6 py-3 rounded-xl font-bold border border-[#10b981] text-[#10b981] hover:bg-[#10b981] hover:text-white transition-colors bg-transparent">Cancel</button>
-                        <button type="button" class="px-8 py-3 rounded-xl bg-primary-500 hover:bg-primary-600 text-white font-bold transition-colors shadow-lg shadow-primary-500/30 flex items-center gap-2">Next Step <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                    <!-- STEP 3: AMENITIES & MEDIA -->
+                    <div id="step-3-panel" class="space-y-6 hidden transition-all duration-300">
+                        <h3 class="text-xl sm:text-2xl font-bold font-heading border-b border-slate-100 dark:border-slate-700 pb-4 flex items-center gap-2">
+                            <i data-lucide="sparkles" class="text-primary-500"></i> Amenities Checklist
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+                            <label class="amenity-card cursor-pointer border border-slate-200 dark:border-slate-700 rounded-xl p-3 flex items-center gap-2.5 bg-slate-50 dark:bg-slate-900/60 hover:border-primary-500/50 hover:bg-primary-500/5 transition-all select-none">
+                                <input type="checkbox" name="amenities" value="wifi" class="rounded text-primary-500 focus:ring-primary-500 border-slate-300 dark:border-slate-700 dark:bg-slate-900 w-4.5 h-4.5 accent-primary-500">
+                                <span class="text-xs font-semibold">High-Speed Wi-Fi</span>
+                            </label>
+                            <label class="amenity-card cursor-pointer border border-slate-200 dark:border-slate-700 rounded-xl p-3 flex items-center gap-2.5 bg-slate-50 dark:bg-slate-900/60 hover:border-primary-500/50 hover:bg-primary-500/5 transition-all select-none">
+                                <input type="checkbox" name="amenities" value="ac" class="rounded text-primary-500 focus:ring-primary-500 border-slate-300 dark:border-slate-700 dark:bg-slate-900 w-4.5 h-4.5 accent-primary-500">
+                                <span class="text-xs font-semibold">Air Conditioning</span>
+                            </label>
+                            <label class="amenity-card cursor-pointer border border-slate-200 dark:border-slate-700 rounded-xl p-3 flex items-center gap-2.5 bg-slate-50 dark:bg-slate-900/60 hover:border-primary-500/50 hover:bg-primary-500/5 transition-all select-none">
+                                <input type="checkbox" name="amenities" value="smartlock" class="rounded text-primary-500 focus:ring-primary-500 border-slate-300 dark:border-slate-700 dark:bg-slate-900 w-4.5 h-4.5 accent-primary-500">
+                                <span class="text-xs font-semibold">Smart Lock Entry</span>
+                            </label>
+                            <label class="amenity-card cursor-pointer border border-slate-200 dark:border-slate-700 rounded-xl p-3 flex items-center gap-2.5 bg-slate-50 dark:bg-slate-900/60 hover:border-primary-500/50 hover:bg-primary-500/5 transition-all select-none">
+                                <input type="checkbox" name="amenities" value="parking" class="rounded text-primary-500 focus:ring-primary-500 border-slate-300 dark:border-slate-700 dark:bg-slate-900 w-4.5 h-4.5 accent-primary-500">
+                                <span class="text-xs font-semibold">Dedicated Parking</span>
+                            </label>
+                            <label class="amenity-card cursor-pointer border border-slate-200 dark:border-slate-700 rounded-xl p-3 flex items-center gap-2.5 bg-slate-50 dark:bg-slate-900/60 hover:border-primary-500/50 hover:bg-primary-500/5 transition-all select-none">
+                                <input type="checkbox" name="amenities" value="laundry" class="rounded text-primary-500 focus:ring-primary-500 border-slate-300 dark:border-slate-700 dark:bg-slate-900 w-4.5 h-4.5 accent-primary-500">
+                                <span class="text-xs font-semibold">Washer / Dryer</span>
+                            </label>
+                            <label class="amenity-card cursor-pointer border border-slate-200 dark:border-slate-700 rounded-xl p-3 flex items-center gap-2.5 bg-slate-50 dark:bg-slate-900/60 hover:border-primary-500/50 hover:bg-primary-500/5 transition-all select-none">
+                                <input type="checkbox" name="amenities" value="gym" class="rounded text-primary-500 focus:ring-primary-500 border-slate-300 dark:border-slate-700 dark:bg-slate-900 w-4.5 h-4.5 accent-primary-500">
+                                <span class="text-xs font-semibold">Fitness Center</span>
+                            </label>
+                            <label class="amenity-card cursor-pointer border border-slate-200 dark:border-slate-700 rounded-xl p-3 flex items-center gap-2.5 bg-slate-50 dark:bg-slate-900/60 hover:border-primary-500/50 hover:bg-primary-500/5 transition-all select-none">
+                                <input type="checkbox" name="amenities" value="pool" class="rounded text-primary-500 focus:ring-primary-500 border-slate-300 dark:border-slate-700 dark:bg-slate-900 w-4.5 h-4.5 accent-primary-500">
+                                <span class="text-xs font-semibold">Swimming Pool</span>
+                            </label>
+                            <label class="amenity-card cursor-pointer border border-slate-200 dark:border-slate-700 rounded-xl p-3 flex items-center gap-2.5 bg-slate-50 dark:bg-slate-900/60 hover:border-primary-500/50 hover:bg-primary-500/5 transition-all select-none">
+                                <input type="checkbox" name="amenities" value="pets" class="rounded text-primary-500 focus:ring-primary-500 border-slate-300 dark:border-slate-700 dark:bg-slate-900 w-4.5 h-4.5 accent-primary-500">
+                                <span class="text-xs font-semibold">Pet Friendly</span>
+                            </label>
+                            <label class="amenity-card cursor-pointer border border-slate-200 dark:border-slate-700 rounded-xl p-3 flex items-center gap-2.5 bg-slate-50 dark:bg-slate-900/60 hover:border-primary-500/50 hover:bg-primary-500/5 transition-all select-none">
+                                <input type="checkbox" name="amenities" value="balcony" class="rounded text-primary-500 focus:ring-primary-500 border-slate-300 dark:border-slate-700 dark:bg-slate-900 w-4.5 h-4.5 accent-primary-500">
+                                <span class="text-xs font-semibold">Balcony / Patio</span>
+                            </label>
+                            <label class="amenity-card cursor-pointer border border-slate-200 dark:border-slate-700 rounded-xl p-3 flex items-center gap-2.5 bg-slate-50 dark:bg-slate-900/60 hover:border-primary-500/50 hover:bg-primary-500/5 transition-all select-none">
+                                <input type="checkbox" name="amenities" value="heating" class="rounded text-primary-500 focus:ring-primary-500 border-slate-300 dark:border-slate-700 dark:bg-slate-900 w-4.5 h-4.5 accent-primary-500">
+                                <span class="text-xs font-semibold">Central Heating</span>
+                            </label>
+                            <label class="amenity-card cursor-pointer border border-slate-200 dark:border-slate-700 rounded-xl p-3 flex items-center gap-2.5 bg-slate-50 dark:bg-slate-900/60 hover:border-primary-500/50 hover:bg-primary-500/5 transition-all select-none">
+                                <input type="checkbox" name="amenities" value="furnished" class="rounded text-primary-500 focus:ring-primary-500 border-slate-300 dark:border-slate-700 dark:bg-slate-900 w-4.5 h-4.5 accent-primary-500">
+                                <span class="text-xs font-semibold">Fully Furnished</span>
+                            </label>
+                            <label class="amenity-card cursor-pointer border border-slate-200 dark:border-slate-700 rounded-xl p-3 flex items-center gap-2.5 bg-slate-50 dark:bg-slate-900/60 hover:border-primary-500/50 hover:bg-primary-500/5 transition-all select-none">
+                                <input type="checkbox" name="amenities" value="wheelchair" class="rounded text-primary-500 focus:ring-primary-500 border-slate-300 dark:border-slate-700 dark:bg-slate-900 w-4.5 h-4.5 accent-primary-500">
+                                <span class="text-xs font-semibold">Wheelchair Access</span>
+                            </label>
+                        </div>
+
+                        <h3 class="text-xl sm:text-2xl font-bold font-heading border-b border-slate-100 dark:border-slate-700 pb-4 pt-6 flex items-center gap-2">
+                            <i data-lucide="image" class="text-primary-500"></i> Media & Photos
+                        </h3>
+                        
+                        <!-- Drag and drop upload zone -->
+                        <div id="drag-drop-zone" class="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-8 text-center bg-slate-50/50 dark:bg-slate-900/40 hover:bg-slate-50 dark:hover:bg-slate-900/80 hover:border-primary-500 transition-all cursor-pointer relative group">
+                            <input type="file" id="media-files" name="media-files" multiple accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20">
+                            <div class="flex flex-col items-center justify-center relative z-10">
+                                <div class="p-4 bg-primary-50 dark:bg-primary-950/30 rounded-full text-primary-500 mb-4 group-hover:scale-110 transition-transform">
+                                    <i data-lucide="upload-cloud" class="w-8 h-8"></i>
+                                </div>
+                                <p class="text-base font-bold text-slate-800 dark:text-slate-100">Drag & drop your property photos here</p>
+                                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">or <span class="text-primary-500 font-semibold underline decoration-2">browse files</span> from your computer</p>
+                                <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">Supports JPG, PNG, WEBP files up to 10MB each (minimum 3 photos recommended)</p>
+                            </div>
+                        </div>
+
+                        <!-- Photo Previews Grid (includes staged placeholders initially) -->
+                        <div id="media-preview-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-6">
+                            <div class="relative rounded-xl overflow-hidden aspect-video border border-slate-200 dark:border-slate-700 shadow-sm group">
+                                <img src="../assets/images/property_1.png" alt="Living Room Mock" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <button type="button" class="delete-mock-btn p-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-lg transition-colors">
+                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                                <span class="absolute bottom-2 left-2 bg-slate-900/70 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">Staged 1</span>
+                            </div>
+                            <div class="relative rounded-xl overflow-hidden aspect-video border border-slate-200 dark:border-slate-700 shadow-sm group">
+                                <img src="../assets/images/property_loft.png" alt="Kitchen Mock" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <button type="button" class="delete-mock-btn p-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-lg transition-colors">
+                                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                                <span class="absolute bottom-2 left-2 bg-slate-900/70 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">Staged 2</span>
+                            </div>
+                        </div>
+
+                        <!-- Listing Consent Agreement -->
+                        <div class="pt-6 border-t border-slate-100 dark:border-slate-700 mt-6">
+                            <label class="flex items-start gap-3 text-slate-600 dark:text-slate-400 cursor-pointer select-none">
+                                <input type="checkbox" id="listing-consent" class="rounded text-primary-500 focus:ring-primary-500 border-slate-300 dark:border-slate-700 dark:bg-slate-900 mt-1 w-5 h-5 accent-primary-500">
+                                <span class="text-sm leading-relaxed">
+                                    I certify that I am the owner or authorized listing agent of this property and agree to NestFlow's <a href="#" class="text-primary-500 hover:underline">Terms of Service</a>, <a href="#" class="text-primary-500 hover:underline">Privacy Policy</a>, and listing guidelines.
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Wizard Form Actions Footer -->
+                    <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 pt-8 border-t border-slate-100 dark:border-slate-700 mt-10">
+                        <button type="button" id="prev-btn" class="hidden w-full sm:w-auto px-6 py-3 rounded-xl font-bold border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors bg-transparent flex items-center justify-center gap-2">
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
+                        </button>
+                        <button type="button" id="next-btn" class="sm:ml-auto w-full sm:w-auto px-8 py-3 rounded-xl bg-primary-500 hover:bg-primary-600 text-white font-bold transition-colors shadow-lg shadow-primary-500/30 flex items-center justify-center gap-2">
+                            <span>Next Step</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
                     </div>
                 </form>
 
             </div>
         </div>
     </section>
+
+    <!-- Success Modal Overlay -->
+    <div id="success-modal" class="fixed inset-0 bg-slate-900/60 z-[100] hidden items-center justify-center p-4 backdrop-blur-sm opacity-0 transition-opacity duration-300">
+        <div class="bg-white dark:bg-slate-800 rounded-3xl max-w-lg w-full p-5 sm:p-8 md:p-10 shadow-2xl border border-slate-100 dark:border-slate-700/80 text-center transform scale-95 transition-all duration-300 relative overflow-hidden">
+            <!-- Decorative checkmark icon -->
+            <div class="w-20 h-20 rounded-full bg-emerald-50 dark:bg-emerald-950/30 text-emerald-500 flex items-center justify-center mx-auto mb-6 shadow-inner relative z-10">
+                <i data-lucide="check" class="w-10 h-10 stroke-[3]"></i>
+            </div>
+            
+            <h3 class="text-2xl md:text-3xl font-extrabold font-heading text-slate-900 dark:text-white mb-2">Property Listed Successfully!</h3>
+            <p class="text-slate-600 dark:text-slate-400 mb-6 max-w-sm mx-auto">Your property has been submitted and is currently being processed. It should be active within a few minutes.</p>
+            
+            <!-- Details confirmation block -->
+            <div class="bg-slate-50 dark:bg-slate-900/60 rounded-2xl p-5 mb-8 border border-slate-100 dark:border-slate-800 text-left text-sm space-y-2.5">
+                <div class="flex justify-between"><span class="text-slate-400">Listing ID:</span> <span class="font-bold text-slate-800 dark:text-slate-200 tracking-wider">NFL-839201</span></div>
+                <div class="flex justify-between"><span class="text-slate-400">Status:</span> <span class="font-bold text-emerald-500 flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Pending Review</span></div>
+                <div class="flex justify-between"><span class="text-slate-400">Listing Plan:</span> <span class="font-bold text-slate-800 dark:text-slate-200">Standard Free</span></div>
+            </div>
+            
+            <div>
+                <a href="properties.html" class="w-full text-center py-3 px-4 rounded-xl font-bold bg-primary-500 hover:bg-primary-600 text-white transition-colors shadow-lg shadow-primary-500/30 inline-block">View Listing</a>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <!-- Footer -->
@@ -301,7 +567,386 @@
         </div>
     </footer>
 
-    <script>lucide.createIcons();</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let currentStep = 1;
+            const totalSteps = 3;
+            
+            // Step DOM panels
+            const stepPanels = {
+                1: document.getElementById('step-1-panel'),
+                2: document.getElementById('step-2-panel'),
+                3: document.getElementById('step-3-panel')
+            };
+            
+            // Progress Tab DOM elements
+            const stepTabs = {
+                1: document.getElementById('step-tab-1'),
+                2: document.getElementById('step-tab-2'),
+                3: document.getElementById('step-tab-3')
+            };
+            
+            const progressBarFill = document.getElementById('progress-bar-fill');
+            
+            // Navigation buttons
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            // Modal & Submission
+            const successModal = document.getElementById('success-modal');
+            
+            // File inputs & drag-drop
+            const fileInput = document.getElementById('media-files');
+            const dragDropZone = document.getElementById('drag-drop-zone');
+            const previewContainer = document.getElementById('media-preview-container');
+            
+            // Search address on map
+            const mapSearchInput = document.getElementById('map-search-input');
+            const mapSearchBtn = document.getElementById('map-search-btn');
+            const mapIframe = document.getElementById('map-iframe');
+            
+            // Function to update layout states with robust null-checks
+            function updateStepUI() {
+                // Hide/show panels
+                for (let i = 1; i <= totalSteps; i++) {
+                    if (stepPanels[i]) {
+                        if (i === currentStep) {
+                            stepPanels[i].classList.remove('hidden');
+                        } else {
+                            stepPanels[i].classList.add('hidden');
+                        }
+                    }
+                }
+                
+                // Reflow map iframe width when step 2 becomes visible safely
+                if (currentStep === 2 && mapIframe) {
+                    const currentSrc = mapIframe.getAttribute('src');
+                    if (currentSrc) {
+                        mapIframe.setAttribute('src', currentSrc);
+                    }
+                }
+                
+                // Progress bar fill width
+                if (progressBarFill) {
+                    const fillWidths = { 1: '0%', 2: '50%', 3: '100%' };
+                    progressBarFill.style.width = fillWidths[currentStep];
+                }
+                
+                // Update Step Bubbles
+                for (let i = 1; i <= totalSteps; i++) {
+                    if (!stepTabs[i]) continue;
+                    const bubble = stepTabs[i].querySelector('.step-num-bubble');
+                    const label = stepTabs[i].querySelector('.step-label');
+                    if (!bubble) continue;
+                    
+                    // Query for the checkmark icon (can be <i> initially, or <svg> after lucide runs)
+                    const checkIcon = bubble.querySelector('i, svg');
+                    const numText = bubble.querySelector('.step-num-text');
+                    
+                    if (i < currentStep) {
+                        // Completed step
+                        bubble.className = 'step-num-bubble w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold shadow-lg shadow-emerald-500/20 border-2 border-emerald-500 transition-all duration-300';
+                        if (checkIcon) checkIcon.classList.remove('hidden');
+                        if (numText) numText.classList.add('hidden');
+                        if (label) label.className = 'step-label text-xs font-bold text-emerald-500 hidden md:block';
+                    } else if (i === currentStep) {
+                        // Active step
+                        bubble.className = 'step-num-bubble w-10 h-10 rounded-full bg-primary-500 text-white flex items-center justify-center font-bold shadow-lg shadow-primary-500/30 border-2 border-primary-500 transition-all duration-300';
+                        if (checkIcon) checkIcon.classList.add('hidden');
+                        if (numText) numText.classList.remove('hidden');
+                        if (label) label.className = 'step-label text-xs font-bold text-primary-500 hidden md:block';
+                    } else {
+                        // Inactive step
+                        bubble.className = 'step-num-bubble w-10 h-10 rounded-full bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-600 text-slate-400 flex items-center justify-center font-bold transition-all duration-300';
+                        if (checkIcon) checkIcon.classList.add('hidden');
+                        if (numText) numText.classList.remove('hidden');
+                        if (label) label.className = 'step-label text-xs font-bold text-slate-400 hidden md:block';
+                    }
+                }
+                
+                // Update Navigation Button labels and visibility
+                if (prevBtn && nextBtn) {
+                    if (currentStep === 1) {
+                        prevBtn.classList.add('hidden');
+                        nextBtn.innerHTML = `<span>Next Step</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+                    } else {
+                        prevBtn.classList.remove('hidden');
+                        if (currentStep === totalSteps) {
+                            nextBtn.innerHTML = `<span>Submit Listing</span> <i data-lucide="check" class="w-4 h-4"></i>`;
+                        } else {
+                            nextBtn.innerHTML = `<span>Next Step</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+                        }
+                    }
+                }
+                
+                // Refresh icons since we modified data-lucide attributes dynamically
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            }
+            
+            // Step validation helper
+            function validateStep(stepNum) {
+                let isValid = true;
+                const requiredFields = stepPanels[stepNum].querySelectorAll('[required]');
+                
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        field.classList.add('border-red-500', 'dark:border-red-500');
+                        field.classList.remove('border-slate-200', 'dark:border-slate-700');
+                        field.classList.add('ring-1', 'ring-red-500');
+                    } else {
+                        field.classList.remove('border-red-500', 'dark:border-red-500', 'ring-1', 'ring-red-500');
+                        field.classList.add('border-slate-200', 'dark:border-slate-700');
+                    }
+                });
+                
+                if (!isValid) {
+                    showToast('Please fill in all required fields.', 'error');
+                }
+                
+                // Custom verification for step 3: files and consent
+                if (stepNum === 3 && isValid) {
+                    const consentCheckbox = document.getElementById('listing-consent');
+                    if (consentCheckbox && !consentCheckbox.checked) {
+                        isValid = false;
+                        consentCheckbox.closest('label').classList.add('text-red-500');
+                        showToast('You must agree to the Terms of Service to list your property.', 'error');
+                    } else if (consentCheckbox) {
+                        consentCheckbox.closest('label').classList.remove('text-red-500');
+                    }
+                }
+                
+                return isValid;
+            }
+            
+            // Navigation Action Event Listeners
+            nextBtn.addEventListener('click', () => {
+                if (!validateStep(currentStep)) return;
+                
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    updateStepUI();
+                    window.scrollTo({ top: document.getElementById('navbar').offsetHeight, behavior: 'smooth' });
+                } else {
+                    submitListing();
+                }
+            });
+            
+            prevBtn.addEventListener('click', () => {
+                if (currentStep > 1) {
+                    currentStep--;
+                    updateStepUI();
+                    window.scrollTo({ top: document.getElementById('navbar').offsetHeight, behavior: 'smooth' });
+                }
+            });
+
+            
+            // Google Maps Location search action
+            if (mapSearchBtn && mapSearchInput) {
+                mapSearchBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const query = mapSearchInput.value.trim();
+                    if (query) {
+                        showToast(`Centering map to: ${query}`, 'success');
+                        mapIframe.src = `https://maps.google.com/maps?q=${encodeURIComponent(query)}&t=&z=13&ie=UTF8&iwloc=&output=embed`;
+                    } else {
+                        showToast('Please type a location to search.', 'error');
+                    }
+                });
+                
+                mapSearchInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        mapSearchBtn.click();
+                    }
+                });
+            }
+            
+            // Real File Upload & Preview Handler
+            let uploadedFiles = [];
+            
+            if (fileInput) {
+                fileInput.addEventListener('change', (e) => {
+                    handleSelectedFiles(e.target.files);
+                });
+            }
+            
+            if (dragDropZone) {
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    dragDropZone.addEventListener(eventName, preventDefaults, false);
+                });
+                
+                function preventDefaults(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    dragDropZone.addEventListener(eventName, () => {
+                        dragDropZone.classList.add('border-primary-500', 'bg-slate-100', 'dark:bg-slate-800/80');
+                    }, false);
+                });
+                
+                ['dragleave', 'drop'].forEach(eventName => {
+                    dragDropZone.addEventListener(eventName, () => {
+                        dragDropZone.classList.remove('border-primary-500', 'bg-slate-100', 'dark:bg-slate-800/80');
+                    }, false);
+                });
+                
+                dragDropZone.addEventListener('drop', (e) => {
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    handleSelectedFiles(files);
+                });
+            }
+            
+            function handleSelectedFiles(files) {
+                if (!files.length) return;
+                
+                // Remove existing staged mocks on the first file drop
+                const stagedPreviews = previewContainer.querySelectorAll('.delete-mock-btn');
+                if (stagedPreviews.length && uploadedFiles.length === 0) {
+                    previewContainer.innerHTML = '';
+                }
+                
+                Array.from(files).forEach(file => {
+                    if (!file.type.startsWith('image/')) {
+                        showToast(`File "${file.name}" is not an image.`, 'error');
+                        return;
+                    }
+                    
+                    uploadedFiles.push(file);
+                    const objectUrl = URL.createObjectURL(file);
+                    
+                    const previewCard = document.createElement('div');
+                    previewCard.className = 'relative rounded-xl overflow-hidden aspect-video border border-slate-200 dark:border-slate-700 shadow-sm group animate-fade-in';
+                    
+                    previewCard.innerHTML = `
+                        <img src="${objectUrl}" alt="${file.name}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button type="button" class="remove-upload-btn p-1.5 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-lg transition-colors">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <span class="absolute bottom-2 left-2 bg-slate-900/70 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">Uploaded</span>
+                    `;
+                    
+                    previewCard.querySelector('.remove-upload-btn').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        uploadedFiles = uploadedFiles.filter(f => f !== file);
+                        previewCard.remove();
+                        URL.revokeObjectURL(objectUrl);
+                        showToast('Image removed.', 'info');
+                        
+                        if (uploadedFiles.length === 0) {
+                            previewContainer.innerHTML = `
+                                <div class="col-span-full py-8 text-center text-slate-400 dark:text-slate-500 text-sm">
+                                    No files selected. Drag new photos to start.
+                                </div>
+                            `;
+                        }
+                    });
+                    
+                    previewContainer.appendChild(previewCard);
+                });
+                
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+                
+                showToast(`Successfully added ${files.length} images!`, 'success');
+            }
+            
+            // Support deleting pre-staged mock cards
+            const deleteMockButtons = document.querySelectorAll('.delete-mock-btn');
+            deleteMockButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const parent = btn.closest('.relative');
+                    parent.remove();
+                    showToast('Staged image removed.', 'info');
+                    
+                    if (previewContainer.children.length === 0) {
+                        previewContainer.innerHTML = `
+                            <div class="col-span-full py-8 text-center text-slate-400 dark:text-slate-500 text-sm">
+                                No files selected. Drag new photos to start.
+                            </div>
+                        `;
+                    }
+                });
+            });
+            
+            // Submit listing action simulator
+            function submitListing() {
+                nextBtn.disabled = true;
+                nextBtn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg> Submitting...`;
+                
+                setTimeout(() => {
+                    nextBtn.disabled = false;
+                    nextBtn.innerHTML = `<span>Submit Listing</span> <i data-lucide="check" class="w-4 h-4"></i>`;
+                    if (typeof lucide !== 'undefined') {
+                        lucide.createIcons();
+                    }
+                    
+                    successModal.classList.remove('hidden');
+                    successModal.classList.add('flex');
+                    setTimeout(() => {
+                        successModal.classList.remove('opacity-0');
+                        successModal.querySelector('.transform').classList.remove('scale-95');
+                    }, 50);
+                }, 1500);
+            }
+            
+            // Toast notification manager
+            function showToast(message, type = 'info') {
+                const toast = document.createElement('div');
+                toast.className = `fixed bottom-5 right-5 z-[200] px-5 py-3.5 rounded-2xl shadow-xl flex items-center gap-3 text-sm font-semibold border transition-all duration-300 transform translate-y-10 opacity-0`;
+                
+                const colors = {
+                    success: 'bg-emerald-50 dark:bg-emerald-950 border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300',
+                    error: 'bg-red-50 dark:bg-red-950 border-red-200 dark:border-red-800 text-red-800 dark:text-red-300',
+                    info: 'bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-300'
+                };
+                
+                const icons = {
+                    success: 'check-circle',
+                    error: 'alert-triangle',
+                    info: 'info'
+                };
+                
+                toast.className += ' ' + colors[type];
+                toast.innerHTML = `<i data-lucide="${icons[type]}" class="w-5 h-5 shrink-0"></i> <span>${message}</span>`;
+                
+                document.body.appendChild(toast);
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+                
+                setTimeout(() => {
+                    toast.classList.remove('translate-y-10', 'opacity-0');
+                }, 50);
+                
+                setTimeout(() => {
+                    toast.classList.add('translate-y-10', 'opacity-0');
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 300);
+                }, 4000);
+            }
+            
+            // Initialize progress bar and step state UI on page load
+            updateStepUI();
+        });
+        
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    </script>
     <script src="../assets/js/main.js"></script>
 </body>
 </html>

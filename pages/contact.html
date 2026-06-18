@@ -11,6 +11,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="../assets/js/tailwind-config.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom overrides for dark mode standard controls */
+        .dark input[type="checkbox"] {
+            color-scheme: dark;
+            accent-color: #14b8a6;
+        }
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-300">
 
@@ -124,72 +131,201 @@
         </div>
     </nav>
 
-    <section class="py-20">
-        <div class="container mx-auto px-4 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-16">
-                <h1 class="text-4xl md:text-5xl font-bold font-heading mb-4 text-slate-900 dark:text-white">Get in Touch</h1>
-                <p class="text-slate-600 dark:text-slate-400">Have questions about our properties or management services? We're here to help.</p>
-            </div>
+    <!-- Page Hero Header -->
+    <header class="py-14 md:py-20 lg:py-24 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800/30 border-b border-slate-200 dark:border-slate-800 relative overflow-hidden text-center">
+        <!-- Ambient Decorative Shapes -->
+        <div class="absolute -top-10 -left-10 w-72 h-72 bg-primary-500/10 dark:bg-primary-500/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-10 -right-10 w-96 h-96 bg-[#10b981]/5 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="container mx-auto px-4 md:px-6 lg:px-8 relative z-10">
+            <span class="text-primary-500 font-bold tracking-wider uppercase text-xs mb-2.5 block">Contact Us</span>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold font-heading text-slate-900 dark:text-white tracking-tight mb-4 leading-tight">
+                Get in Touch
+            </h1>
+             <p class="text-slate-600 dark:text-slate-400 max-w-2xl text-sm sm:text-base md:text-lg leading-relaxed mx-auto">
+                 Have questions about our properties, dashboard capabilities, or management services? We are here to help you flow.
+             </p>
+        </div>
+    </header>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <!-- Contact Form -->
-                <div class="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-card border border-slate-100 dark:border-slate-700">
-                    <form class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Contact Form & Info Grid -->
+    <section class="py-20 bg-white dark:bg-slate-900">
+        <div class="container mx-auto px-4 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-start">
+                <!-- Contact Form Card -->
+                <div class="bg-white dark:bg-slate-800/90 border border-slate-100 dark:border-slate-700/80 rounded-[2.5rem] p-6 sm:p-8 md:p-10 shadow-card">
+                    <h3 class="text-2xl font-bold font-heading text-slate-900 dark:text-white mb-6">Send Us a Message</h3>
+                    <form class="space-y-6" onsubmit="event.preventDefault(); showSuccessToast();">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-sm font-semibold mb-2">First Name</label>
-                                <input type="text" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500">
+                                <label class="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">First Name</label>
+                                <input type="text" placeholder="John" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3.5 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all text-sm">
                             </div>
                             <div>
-                                <label class="block text-sm font-semibold mb-2">Last Name</label>
-                                <input type="text" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500">
+                                <label class="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">Last Name</label>
+                                <input type="text" placeholder="Doe" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3.5 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all text-sm">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">Email Address</label>
+                                <input type="email" placeholder="john@example.com" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3.5 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">Inquiry Subject</label>
+                                <select required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3.5 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all text-sm text-slate-700 dark:text-slate-300">
+                                     <option value="" disabled selected>Select a subject</option>
+                                     <option value="general">General Inquiry</option>
+                                     <option value="listing">Listing a Property</option>
+                                     <option value="tenant">Tenant Support</option>
+                                     <option value="partnership">Business Partnership</option>
+                                 </select>
                             </div>
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold mb-2">Email Address</label>
-                            <input type="email" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500">
+                            <label class="block text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">Message</label>
+                            <textarea rows="5" placeholder="How can we help you today?" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3.5 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-all text-sm resize-none"></textarea>
                         </div>
-                        <div>
-                            <label class="block text-sm font-semibold mb-2">Message</label>
-                            <textarea rows="5" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-primary-500 resize-none"></textarea>
+                        <!-- Privacy Consent Checkbox -->
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" required id="consent" class="mt-1 rounded border-slate-300 dark:border-slate-700 text-primary-500 focus:ring-primary-500 bg-white dark:bg-slate-900 cursor-pointer w-4.5 h-4.5 shrink-0 accent-primary-500">
+                            <label for="consent" class="text-xs text-slate-500 dark:text-slate-400 leading-normal cursor-pointer select-none">
+                                I agree to NestFlow's <a href="#" class="text-primary-500 hover:underline">Terms of Service</a> and <a href="#" class="text-primary-500 hover:underline">Privacy Policy</a>, and consent to receiving support follow-ups.
+                            </label>
                         </div>
-                        <button type="submit" class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold rounded-xl py-4 transition-colors shadow-lg shadow-primary-500/30">Send Message</button>
+                        <button type="submit" class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold rounded-xl py-4 transition-all shadow-lg shadow-primary-500/30 flex items-center justify-center gap-2">
+                            <span>Send Message</span>
+                            <i data-lucide="send" class="w-4 h-4"></i>
+                        </button>
                     </form>
                 </div>
 
-                <!-- Info Cards -->
-                <div class="space-y-6">
-                    <div class="flex items-start gap-4 p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-soft border border-slate-100 dark:border-slate-700">
-                        <div class="w-12 h-12 rounded-full bg-primary-50 dark:bg-slate-900 flex items-center justify-center text-primary-500 shrink-0">
-                            <i data-lucide="map-pin"></i>
+                <!-- Info Cards & Hours -->
+                <div class="space-y-6 lg:pl-4">
+                    <div class="space-y-2 mb-8">
+                        <span class="text-primary-500 font-bold tracking-wider uppercase text-xs block">Contact Channels</span>
+                        <h3 class="text-2xl font-bold font-heading text-slate-900 dark:text-white">Our Offices & Channels</h3>
+                        <p class="text-slate-500 text-sm leading-relaxed">
+                            Reach out to us via any of our formal communications channels or visit us in our workspace.
+                        </p>
+                    </div>
+                    
+                    <!-- Info Card 1 -->
+                    <div class="flex items-start gap-4 p-6 bg-white dark:bg-slate-800/90 rounded-2xl shadow-soft border border-slate-100 dark:border-slate-700/80 hover:-translate-y-1 transition-all duration-300 group">
+                        <div class="w-12 h-12 rounded-full bg-primary-50 dark:bg-slate-900 flex items-center justify-center text-primary-500 shrink-0 group-hover:scale-110 transition-transform">
+                            <i data-lucide="map-pin" class="w-5 h-5"></i>
                         </div>
                         <div>
-                            <h4 class="font-bold text-lg mb-1">Our Office</h4>
-                            <p class="text-slate-500">123 Innovation Drive, Tech City, TC 90210</p>
+                            <h4 class="font-bold text-lg mb-1 text-slate-900 dark:text-white">Our HQ Office</h4>
+                            <p class="text-slate-500 dark:text-slate-400 text-sm leading-normal">123 Innovation Drive, Tech City, TC 90210</p>
                         </div>
                     </div>
-                    <div class="flex items-start gap-4 p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-soft border border-slate-100 dark:border-slate-700">
-                        <div class="w-12 h-12 rounded-full bg-primary-50 dark:bg-slate-900 flex items-center justify-center text-primary-500 shrink-0">
-                            <i data-lucide="phone"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-lg mb-1">Phone Number</h4>
-                            <p class="text-slate-500">+1 (555) 123-4567<br>Mon-Fri, 9am - 6pm EST</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-4 p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-soft border border-slate-100 dark:border-slate-700">
-                        <div class="w-12 h-12 rounded-full bg-primary-50 dark:bg-slate-900 flex items-center justify-center text-primary-500 shrink-0">
-                            <i data-lucide="mail"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-lg mb-1">Email Support</h4>
-                            <p class="text-slate-500">support@nestflow.com<br>sales@nestflow.com</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                    
+                    <!-- Info Card 2 -->
+                    <div class="flex items-start gap-4 p-6 bg-white dark:bg-slate-800/90 rounded-2xl shadow-soft border border-slate-100 dark:border-slate-700/80 hover:-translate-y-1 transition-all duration-300 group">
+                        <div class="w-12 h-12 rounded-full bg-primary-50 dark:bg-slate-900 flex items-center justify-center text-primary-500 shrink-0 group-hover:scale-110 transition-transform">
+                            <i data-lucide="phone" class="w-5 h-5"></i>
+                         </div>
+                         <div>
+                             <h4 class="font-bold text-lg mb-1 text-slate-900 dark:text-white">Phone Numbers</h4>
+                             <p class="text-slate-500 dark:text-slate-400 text-sm leading-normal">+1 (555) 123-4567</p>
+                             <span class="text-xs text-slate-400 block mt-1">Available Mon-Fri, 9am - 6pm EST</span>
+                         </div>
+                     </div>
+                     
+                     <!-- Info Card 3 -->
+                     <div class="flex items-start gap-4 p-6 bg-white dark:bg-slate-800/90 rounded-2xl shadow-soft border border-slate-100 dark:border-slate-700/80 hover:-translate-y-1 transition-all duration-300 group">
+                         <div class="w-12 h-12 rounded-full bg-primary-50 dark:bg-slate-900 flex items-center justify-center text-primary-500 shrink-0 group-hover:scale-110 transition-transform">
+                             <i data-lucide="mail" class="w-5 h-5"></i>
+                         </div>
+                         <div>
+                             <h4 class="font-bold text-lg mb-1 text-slate-900 dark:text-white">Email Support</h4>
+                             <p class="text-slate-500 dark:text-slate-400 text-sm leading-normal">support@nestflow.com</p>
+                             <p class="text-slate-500 dark:text-slate-400 text-sm leading-normal">sales@nestflow.com</p>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </section>
+
+     <!-- Map Section -->
+     <section class="py-20 bg-slate-50 dark:bg-slate-800/30 border-t border-b border-slate-100 dark:border-slate-800">
+         <div class="container mx-auto px-4 lg:px-8">
+             <!-- Section Header -->
+             <div class="text-center max-w-2xl mx-auto mb-12">
+                 <span class="text-primary-500 font-bold tracking-wider uppercase text-xs mb-2 block">Our Location</span>
+                 <h2 class="text-3xl md:text-4xl font-extrabold font-heading text-slate-900 dark:text-white">Find Us on the Map</h2>
+                 <p class="text-slate-600 dark:text-slate-400 mt-3 text-sm sm:text-base leading-relaxed">
+                     Visit our tech headquarters located in the heart of the innovation district.
+                 </p>
+             </div>
+             
+             <!-- Google Map Iframe Container with Premium Filter -->
+             <div class="relative w-full overflow-hidden rounded-[2rem] border border-slate-200/50 dark:border-slate-800 shadow-card bg-slate-100 dark:bg-slate-900">
+                 <!-- Map Iframe with Dark Mode Filter Inversion -->
+                 <iframe 
+                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.014056268808!2d-122.40141208468202!3d37.79095697975662!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808580620f4c39cb%3A0x403b22cfd95b50d5!2s123%20Innovation%20Way%2C%20San%20Francisco%2C%20CA%2094105!5e0!3m2!1sen!2sus!4v1655845012549!5m2!1sen!2sus" 
+                     class="w-full h-[320px] sm:h-[400px] md:h-[450px] border-0 dark:invert-[90%] dark:hue-rotate-180 dark:opacity-85 transition-all duration-300"
+                     allowfullscreen="" 
+                     loading="lazy" 
+                     referrerpolicy="no-referrer-when-downgrade">
+                 </iframe>
+             </div>
+         </div>
+     </section>
+
+     <!-- Department Direct Directory -->
+     <section class="py-20 bg-white dark:bg-slate-900">
+         <div class="container mx-auto px-4 lg:px-8">
+             <!-- Section Header -->
+             <div class="text-center max-w-2xl mx-auto mb-16">
+                 <span class="text-primary-500 font-bold tracking-wider uppercase text-xs mb-2 block">Direct Channels</span>
+                 <h2 class="text-3xl md:text-4xl font-extrabold font-heading text-slate-900 dark:text-white">Our Departments</h2>
+                 <p class="text-slate-600 dark:text-slate-400 mt-3 text-sm sm:text-base leading-relaxed">
+                     Need to speak to a specific team? Reach out directly to skip support queues.
+                 </p>
+             </div>
+             
+             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                 <!-- Department Card 1 -->
+                 <div class="bg-white dark:bg-slate-800/90 border border-slate-100 dark:border-slate-700/80 rounded-2xl p-6 sm:p-8 shadow-soft hover:-translate-y-1.5 transition-all duration-300 flex flex-col group">
+                     <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Sales & Listings</h4>
+                     <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm leading-relaxed mb-6">
+                         Get expert guidance on onboarding your real estate portfolio, premium pricing tiers, and advertising tools.
+                     </p>
+                     <div class="mt-auto space-y-1 border-t border-slate-100 dark:border-slate-700/50 pt-4">
+                         <span class="text-xs text-slate-400 block">Email Address</span>
+                         <a href="mailto:sales@nestflow.com" class="text-primary-500 hover:underline font-medium text-sm">sales@nestflow.com</a>
+                     </div>
+                 </div>
+                 
+                 <!-- Department Card 2 -->
+                 <div class="bg-white dark:bg-slate-800/90 border border-slate-100 dark:border-slate-700/80 rounded-2xl p-6 sm:p-8 shadow-soft hover:-translate-y-1.5 transition-all duration-300 flex flex-col group">
+                     <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Tenant Support</h4>
+                     <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm leading-relaxed mb-6">
+                         Report lease agreement questions, rental transaction discrepancies, or dashboard account connection issues.
+                     </p>
+                     <div class="mt-auto space-y-1 border-t border-slate-100 dark:border-slate-700/50 pt-4">
+                         <span class="text-xs text-slate-400 block">Email Address</span>
+                         <a href="mailto:support@nestflow.com" class="text-primary-500 hover:underline font-medium text-sm">support@nestflow.com</a>
+                     </div>
+                 </div>
+                 
+                 <!-- Department Card 3 -->
+                 <div class="bg-white dark:bg-slate-800/90 border border-slate-100 dark:border-slate-700/80 rounded-2xl p-6 sm:p-8 shadow-soft hover:-translate-y-1.5 transition-all duration-300 flex flex-col group md:col-span-2 lg:col-span-1">
+                     <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Media & Partnerships</h4>
+                     <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm leading-relaxed mb-6">
+                         Submit press releases, media kits requests, API integrations partnerships, or general real estate syndication deals.
+                     </p>
+                     <div class="mt-auto space-y-1 border-t border-slate-100 dark:border-slate-700/50 pt-4">
+                         <span class="text-xs text-slate-400 block">Email Address</span>
+                         <a href="mailto:partners@nestflow.com" class="text-primary-500 hover:underline font-medium text-sm">partners@nestflow.com</a>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </section>
 
     <!-- Footer -->
     <!-- Footer -->
@@ -275,7 +411,38 @@
         </div>
     </footer>
 
-    <script>lucide.createIcons();</script>
+    <!-- Toast Notification Widget -->
+    <div id="toast-success" class="fixed bottom-6 right-6 bg-slate-900 dark:bg-slate-800 text-white border border-slate-800 dark:border-slate-700 rounded-2xl p-4 shadow-xl z-[100] flex items-center gap-3.5 max-w-sm translate-y-20 opacity-0 pointer-events-none transition-all duration-500">
+        <div class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0">
+            <i data-lucide="check" class="w-4 h-4"></i>
+        </div>
+        <div>
+            <h5 class="font-bold text-sm">Message Sent!</h5>
+            <p class="text-xs text-slate-400 mt-0.5">Thank you, we'll respond shortly.</p>
+        </div>
+        <button onclick="hideToast()" class="text-slate-400 hover:text-white ml-auto">
+            <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function showSuccessToast() {
+            const toast = document.getElementById('toast-success');
+            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            
+            // Auto hide after 4 seconds
+            setTimeout(hideToast, 4000);
+        }
+
+        function hideToast() {
+            const toast = document.getElementById('toast-success');
+            toast.classList.remove('translate-y-0', 'opacity-100');
+            toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+        }
+    </script>
     <script src="../assets/js/main.js"></script>
 </body>
 </html>
