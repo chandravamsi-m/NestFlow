@@ -25,16 +25,33 @@ function initActiveNavlink() {
       const linkFile = linkPath.split('?')[0].split('#')[0].split('/').pop();
       if (linkFile === currentPath) {
         // Highlight the link
+        // Dynamically strip any text color classes to prevent Tailwind specificity overrides
+        const classesToRemove = [];
+        link.classList.forEach(className => {
+          if ((className.startsWith('text-') && className !== 'text-primary-500') || 
+              (className.startsWith('dark:text-') && className !== 'dark:text-primary-500')) {
+            classesToRemove.push(className);
+          }
+        });
+        classesToRemove.forEach(c => link.classList.remove(c));
+        
         link.classList.add('text-primary-500', 'font-bold');
-        link.classList.remove('text-slate-900', 'text-slate-700', 'text-white', 'text-slate-600', 'dark:text-slate-100', 'dark:text-slate-300');
         
         // If inside a desktop dropdown, highlight the parent dropdown button
         const dropdown = link.closest('.group');
         if (dropdown) {
           const btn = dropdown.querySelector('button');
           if (btn) {
+            const btnClassesToRemove = [];
+            btn.classList.forEach(className => {
+              if ((className.startsWith('text-') && className !== 'text-primary-500') || 
+                  (className.startsWith('dark:text-') && className !== 'dark:text-primary-500')) {
+                btnClassesToRemove.push(className);
+              }
+            });
+            btnClassesToRemove.forEach(c => btn.classList.remove(c));
+            
             btn.classList.add('text-primary-500', 'font-bold');
-            btn.classList.remove('text-slate-900', 'text-slate-700', 'text-white', 'dark:text-slate-100');
           }
         }
         
