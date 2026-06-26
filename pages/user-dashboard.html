@@ -41,7 +41,7 @@
         html[dir="rtl"] #sidebar.is-open {
             transform: translateX(0);
         }
-        @media (min-width: 768px) {
+        @media (min-width: 1024px) {
             #sidebar {
                 position: static;
                 transform: none !important;
@@ -170,16 +170,16 @@
     <div class="flex h-screen overflow-hidden relative">
         
         <!-- Sidebar Overlay (mobile only) -->
-        <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/50 z-40 hidden opacity-0 transition-opacity duration-300 md:hidden backdrop-blur-sm"></div>
+        <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/50 z-40 hidden opacity-0 transition-opacity duration-300 lg:hidden backdrop-blur-sm"></div>
 
         <!-- Sidebar -->
-        <aside id="sidebar" class="w-[80%] md:w-64 bg-white dark:bg-slate-800 border-r rtl:border-r-0 rtl:border-l border-slate-200 dark:border-slate-700 flex flex-col h-full shrink-0">
+        <aside id="sidebar" class="w-[80%] lg:w-64 bg-white dark:bg-slate-800 border-r rtl:border-r-0 rtl:border-l border-slate-200 dark:border-slate-700 flex flex-col h-full shrink-0">
             <div class="p-5 border-b border-slate-150 dark:border-slate-700 flex items-center justify-between">
                 <a href="../index.html" class="flex items-center gap-2 group">
                     <img src="../assets/images/logo.svg" alt="NestFlow Logo" class="w-10 h-10 group-hover:scale-105 transition-transform">
                     <span class="font-heading font-bold text-2xl tracking-tight text-slate-900 dark:text-white">Nest<span class="text-primary-500">Flow</span></span>
                 </a>
-                <button id="close-sidebar-btn" class="md:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                <button id="close-sidebar-btn" class="lg:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
@@ -202,26 +202,25 @@
                     <i data-lucide="file-text" class="w-5 h-5"></i>
                     <span>Lease Info</span>
                 </button>
-                <a href="login.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-rose-50 dark:hover:bg-rose-900/20 text-rose-500 font-bold transition-all border-l-4 rtl:border-l-0 rtl:border-r-4 border-transparent text-left rtl:text-right">
-                    <i data-lucide="log-out" class="w-5 h-5"></i>
-                    <span>Logout</span>
-                </a>
-            </div>
-
-            <div class="p-4 border-t border-slate-200 dark:border-slate-700 space-y-3 md:hidden">
-                <!-- Toggles visible on mobile drawer, hidden on desktop -->
-                <div class="flex items-center justify-between gap-2">
-                    <button class="rtl-toggle flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400 font-bold text-xs uppercase tracking-wider transition-all" aria-label="Toggle RTL">
+                                <!-- Mobile Toggles inside sidebar, right above logout -->
+                <div class="flex items-center justify-between gap-2 py-2 lg:hidden">
+                    <button class="rtl-toggle flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400 font-bold text-xs uppercase tracking-wider transition-all" aria-label="Toggle RTL">
                         <span>RTL</span>
                     </button>
-                    <button class="theme-toggle flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400 font-bold text-xs uppercase tracking-wider transition-all" aria-label="Toggle Dark Mode">
+                    <button class="theme-toggle flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-600 dark:text-slate-400 font-bold text-xs uppercase tracking-wider transition-all" aria-label="Toggle Dark Mode">
                         <i data-lucide="moon" class="dark:hidden w-4 h-4"></i>
                         <i data-lucide="sun" class="hidden dark:block w-4 h-4"></i>
                         <span class="dark:hidden">Dark</span>
                         <span class="hidden dark:inline">Light</span>
                     </button>
                 </div>
+                <a href="login.html" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-rose-50 dark:hover:bg-rose-900/20 text-rose-500 font-bold transition-all border-l-4 rtl:border-l-0 rtl:border-r-4 border-transparent text-left rtl:text-right">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                    <span>Logout</span>
+                </a>
             </div>
+
+
         </aside>
 
         <!-- Main Content -->
@@ -229,14 +228,14 @@
             <!-- Topbar -->
             <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between shrink-0">
                 <div class="flex items-center gap-2 sm:gap-4">
-                    <button id="mobile-menu-btn" class="md:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" aria-label="Open sidebar menu"><i data-lucide="menu"></i></button>
+                    <button id="mobile-menu-btn" class="lg:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" aria-label="Open sidebar menu"><i data-lucide="menu"></i></button>
                     <h2 id="topbar-title" class="text-base sm:text-xl font-bold font-heading">Dashboard Overview</h2>
                 </div>
                 <div class="flex items-center gap-1.5 sm:gap-3">
-                    <button class="rtl-toggle hidden md:flex p-1.5 sm:p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 transition-colors items-center justify-center font-bold text-xs uppercase tracking-wider" aria-label="Toggle RTL">
+                    <button class="rtl-toggle hidden lg:flex p-1.5 sm:p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 transition-colors items-center justify-center font-bold text-xs uppercase tracking-wider" aria-label="Toggle RTL">
                         <span>RTL</span>
                     </button>
-                    <button class="theme-toggle hidden md:inline-flex p-1.5 sm:p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 transition-colors items-center justify-center" aria-label="Toggle Dark Mode"><i data-lucide="moon" class="dark:hidden w-4.5 h-4.5 sm:w-5 h-5"></i><i data-lucide="sun" class="hidden dark:block w-4.5 h-4.5 sm:w-5 h-5"></i></button>
+                    <button class="theme-toggle hidden lg:inline-flex p-1.5 sm:p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 transition-colors items-center justify-center" aria-label="Toggle Dark Mode"><i data-lucide="moon" class="dark:hidden w-4.5 h-4.5 sm:w-5 h-5"></i><i data-lucide="sun" class="hidden dark:block w-4.5 h-4.5 sm:w-5 h-5"></i></button>
                     <button class="relative p-1.5 sm:p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 transition-colors">
                         <i data-lucide="bell" class="w-4.5 h-4.5 sm:w-5 h-5"></i>
                         <span class="absolute top-1 right-1 rtl:right-auto rtl:left-1 w-2 h-2 bg-primary-500 rounded-full border border-white dark:border-slate-800"></span>
