@@ -293,7 +293,7 @@
                     <!-- Icon node -->
                     <div class="absolute left-4 md:left-1/2 top-2 w-5 h-5 rounded-full bg-white dark:bg-slate-900 border-4 border-[#10b981] shadow-md -translate-x-1/2 z-10 ring-4 ring-emerald-100 dark:ring-emerald-950/40"></div>
                     <!-- Empty side for grid alignment -->
-                    <div class="hidden md:block w-1/2 pl-12 text-left">
+                    <div class="hidden md:block w-1/2 pl-12 rtl:pl-0 rtl:pr-12 text-left rtl:text-right">
                         <span class="text-3xl font-extrabold text-[#10b981] font-heading">2022</span>
                     </div>
                     <!-- Card content side -->
@@ -337,7 +337,7 @@
                     <!-- Icon node -->
                     <div class="absolute left-4 md:left-1/2 top-2 w-5 h-5 rounded-full bg-white dark:bg-slate-900 border-4 border-amber-500 shadow-md -translate-x-1/2 z-10 ring-4 ring-amber-100 dark:ring-amber-950/40"></div>
                     <!-- Empty side for grid alignment -->
-                    <div class="hidden md:block w-1/2 pl-12 text-left">
+                    <div class="hidden md:block w-1/2 pl-12 rtl:pl-0 rtl:pr-12 text-left rtl:text-right">
                         <span class="text-3xl font-extrabold text-amber-500 font-heading">2026</span>
                     </div>
                     <!-- Card content side -->
@@ -524,9 +524,9 @@
                     <h4 class="text-white font-bold font-heading text-lg mb-4">Newsletter</h4>
                     <p class="text-slate-400 mb-4">Subscribe to our newsletter to get the latest property updates.</p>
                     <form class="relative" onsubmit="event.preventDefault()">
-                        <input type="email" placeholder="Email address" class="w-full pl-4 pr-12 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-primary-500">
-                        <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-lg bg-primary-500 hover:bg-primary-600 text-white transition-colors">
-                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        <input type="email" placeholder="Email address" class="w-full pl-4 pr-12 rtl:pl-12 rtl:pr-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-primary-500">
+                        <button type="submit" class="absolute right-2 rtl:left-2 rtl:right-auto top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-lg bg-primary-500 hover:bg-primary-600 text-white transition-colors">
+                            <i data-lucide="arrow-right" class="w-5 h-5 rtl:rotate-180"></i>
                         </button>
                     </form>
                 </div>

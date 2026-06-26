@@ -214,7 +214,7 @@
     <!-- Footer -->
     <footer class="bg-slate-900 text-slate-300 pt-10 pb-6 border-t border-slate-800 mt-auto relative z-10 w-full">
         <div class="container mx-auto px-4 md:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 text-left">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 text-left rtl:text-right">
                 <!-- Brand Info -->
                 <div class="space-y-2">
                     <a href="../index.html" class="flex items-center gap-2 group">
@@ -258,9 +258,9 @@
                     <h4 class="text-white font-bold font-heading text-sm mb-4">Newsletter</h4>
                     <p class="text-slate-400 mb-4 text-xs">Subscribe to our newsletter to get the latest property updates.</p>
                     <form class="relative" onsubmit="event.preventDefault()">
-                        <input type="email" placeholder="Email address" class="w-full pl-4 pr-12 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-primary-500 text-xs">
-                        <button type="submit" class="absolute right-1.5 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-lg bg-primary-500 hover:bg-primary-600 text-white transition-colors">
-                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        <input type="email" placeholder="Email address" class="w-full pl-4 pr-12 rtl:pl-12 rtl:pr-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-primary-500 text-xs">
+                        <button type="submit" class="absolute right-1.5 rtl:left-1.5 rtl:right-auto top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-lg bg-primary-500 hover:bg-primary-600 text-white transition-colors">
+                            <i data-lucide="arrow-right" class="w-4 h-4 rtl:rotate-180"></i>
                         </button>
                     </form>
                 </div>

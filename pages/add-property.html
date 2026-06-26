@@ -473,7 +473,7 @@
             <p class="text-slate-600 dark:text-slate-400 mb-6 max-w-sm mx-auto">Your property has been submitted and is currently being processed. It should be active within a few minutes.</p>
             
             <!-- Details confirmation block -->
-            <div class="bg-slate-50 dark:bg-slate-900/60 rounded-2xl p-5 mb-8 border border-slate-100 dark:border-slate-800 text-left text-sm space-y-2.5">
+            <div class="bg-slate-50 dark:bg-slate-900/60 rounded-2xl p-5 mb-8 border border-slate-100 dark:border-slate-800 text-left rtl:text-right text-sm space-y-2.5">
                 <div class="flex justify-between"><span class="text-slate-400">Listing ID:</span> <span class="font-bold text-slate-800 dark:text-slate-200 tracking-wider">NFL-839201</span></div>
                 <div class="flex justify-between"><span class="text-slate-400">Status:</span> <span class="font-bold text-emerald-500 flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Pending Review</span></div>
                 <div class="flex justify-between"><span class="text-slate-400">Listing Plan:</span> <span class="font-bold text-slate-800 dark:text-slate-200">Standard Free</span></div>
@@ -550,9 +550,9 @@
                     <h4 class="text-white font-bold font-heading text-lg mb-4">Newsletter</h4>
                     <p class="text-slate-400 mb-4">Subscribe to our newsletter to get the latest property updates.</p>
                     <form class="relative" onsubmit="event.preventDefault()">
-                        <input type="email" placeholder="Email address" class="w-full pl-4 pr-12 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-primary-500">
-                        <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-lg bg-primary-500 hover:bg-primary-600 text-white transition-colors">
-                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        <input type="email" placeholder="Email address" class="w-full pl-4 pr-12 rtl:pl-12 rtl:pr-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-primary-500">
+                        <button type="submit" class="absolute right-2 rtl:left-2 rtl:right-auto top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-lg bg-primary-500 hover:bg-primary-600 text-white transition-colors">
+                            <i data-lucide="arrow-right" class="w-5 h-5 rtl:rotate-180"></i>
                         </button>
                     </form>
                 </div>

@@ -230,18 +230,18 @@
                                 123 Luxury Avenue, Beverly Hills, CA 90210
                             </p>
                         </div>
-                        <div class="text-left sm:text-right shrink-0">
+                        <div class="text-left rtl:text-right sm:text-right sm:rtl:text-left shrink-0">
                             <div class="text-3xl font-black text-primary-500">$2,500</div>
                             <div class="text-xs text-slate-400 font-bold uppercase tracking-wider">/ month</div>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-3 gap-2 sm:gap-4 border-y border-slate-200 dark:border-slate-800/80 py-6 my-8">
-                        <div class="flex items-center gap-2 sm:gap-3 border-r border-slate-200 dark:border-slate-700/50 pr-2 sm:pr-6">
+                        <div class="flex items-center gap-2 sm:gap-3 border-r rtl:border-r-0 rtl:border-l border-slate-200 dark:border-slate-700/50 pr-2 sm:pr-6 rtl:pr-0 rtl:pl-2 sm:rtl:pr-0 sm:rtl:pl-6">
                             <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-primary-50 dark:bg-slate-800/80 flex items-center justify-center text-primary-500 shrink-0"><i data-lucide="bed" class="w-4 h-4 sm:w-5 sm:h-5"></i></div>
                             <div><div class="font-extrabold text-slate-900 dark:text-white text-sm sm:text-base">3</div><div class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold tracking-wider">Bedrooms</div></div>
                         </div>
-                        <div class="flex items-center gap-2 sm:gap-3 border-r border-slate-200 dark:border-slate-700/50 pr-2 sm:pr-6">
+                        <div class="flex items-center gap-2 sm:gap-3 border-r rtl:border-r-0 rtl:border-l border-slate-200 dark:border-slate-700/50 pr-2 sm:pr-6 rtl:pr-0 rtl:pl-2 sm:rtl:pr-0 sm:rtl:pl-6">
                             <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-primary-50 dark:bg-slate-800/80 flex items-center justify-center text-primary-500 shrink-0"><i data-lucide="bath" class="w-4 h-4 sm:w-5 sm:h-5"></i></div>
                             <div><div class="font-extrabold text-slate-900 dark:text-white text-sm sm:text-base">2</div><div class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold tracking-wider">Bathrooms</div></div>
                         </div>
@@ -749,10 +749,10 @@
                     <p class="text-slate-400 mb-4">Subscribe to our newsletter to get the latest property updates.</p>
                     <form class="relative" onsubmit="event.preventDefault()">
                         <input type="email" placeholder="Email address"
-                            class="w-full pl-4 pr-12 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-primary-500">
+                            class="w-full pl-4 pr-12 rtl:pl-12 rtl:pr-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-primary-500">
                         <button type="submit"
-                            class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-lg bg-primary-500 hover:bg-primary-600 text-white transition-colors">
-                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                            class="absolute right-2 rtl:left-2 rtl:right-auto top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-lg bg-primary-500 hover:bg-primary-600 text-white transition-colors">
+                            <i data-lucide="arrow-right" class="w-5 h-5 rtl:rotate-180"></i>
                         </button>
                     </form>
                 </div>
