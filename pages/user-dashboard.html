@@ -339,7 +339,7 @@
                                 <i data-lucide="home" class="w-5 h-5 text-primary-500"></i>
                                 Residence Snapshot
                             </h3>
-                            <div class="grid grid-cols-2 gap-4 text-xs">
+                            <div class="grid grid-cols-1 xs:grid-cols-2 gap-4 text-xs">
                                 <div>
                                     <p class="text-slate-400 font-bold uppercase tracking-wider">Property Name</p>
                                     <p class="font-bold text-slate-700 dark:text-slate-200 mt-0.5">The Oasis Apartment</p>
@@ -365,7 +365,7 @@
                                 <i data-lucide="help-circle" class="w-5 h-5 text-primary-500"></i>
                                 Support & Navigation Shortcuts
                             </h3>
-                            <div class="grid grid-cols-2 gap-3">
+                            <div class="grid grid-cols-1 xs:grid-cols-2 gap-3">
                                 <button onclick="switchToSection('maintenance')" class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-150 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors text-left rtl:text-right text-xs font-semibold cursor-pointer">
                                     <i data-lucide="wrench" class="w-4 h-4 text-primary-500"></i>
                                     <span>Request Service</span>
@@ -517,7 +517,7 @@
                             <i data-lucide="shield-check" class="text-primary-500"></i>
                             Saved Accounts & Auto-Pay Settings
                         </h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             <!-- Visa Card -->
                             <div class="p-4 rounded-xl border border-slate-150 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
@@ -651,12 +651,12 @@
                             
                             <!-- Ticket Card 1 (Active) -->
                             <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-4">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-3">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                                    <div class="flex flex-wrap items-center gap-2">
                                         <span class="px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 text-xs font-bold">In Progress</span>
                                         <span class="px-3 py-1 rounded-full bg-rose-50 dark:bg-rose-950/20 text-rose-500 text-xs font-bold">Urgency: High</span>
                                     </div>
-                                    <span class="text-slate-400 text-xs font-medium">Ticket #MNT-28491</span>
+                                    <span class="text-slate-400 text-xs font-semibold">Ticket #MNT-28491</span>
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-base">HVAC: Bedroom unit heating blowing cold air</h4>
@@ -664,24 +664,24 @@
                                 </div>
                                 <!-- Timeline steps visual -->
                                 <div class="relative pt-4 border-t border-slate-100 dark:border-slate-700">
-                                    <div class="absolute left-4 top-[28px] -translate-y-1/2 w-[calc(100%-2rem)] h-0.5 bg-slate-100 dark:bg-slate-700"></div>
-                                    <div class="absolute left-4 top-[28px] -translate-y-1/2 w-2/3 h-0.5 bg-primary-500"></div>
-                                    <div class="grid grid-cols-4 relative z-10 text-[10px] text-center font-bold">
+                                    <div class="absolute left-6 right-6 top-[28px] -translate-y-1/2 h-0.5 bg-slate-100 dark:bg-slate-700"></div>
+                                    <div class="absolute left-6 top-[28px] -translate-y-1/2 w-[66%] h-0.5 bg-primary-500"></div>
+                                    <div class="grid grid-cols-4 relative z-10 text-[9px] sm:text-[10px] text-center font-bold">
                                         <div class="flex flex-col items-center gap-1.5 text-primary-500">
                                             <div class="w-6 h-6 rounded-full bg-primary-500 text-white flex items-center justify-center"><i data-lucide="check" class="w-3.5 h-3.5"></i></div>
-                                            <span>Submitted</span>
+                                            <span class="break-all xs:break-normal">Submitted</span>
                                         </div>
                                         <div class="flex flex-col items-center gap-1.5 text-primary-500">
                                             <div class="w-6 h-6 rounded-full bg-primary-500 text-white flex items-center justify-center"><i data-lucide="check" class="w-3.5 h-3.5"></i></div>
-                                            <span>Assigned</span>
+                                            <span class="break-all xs:break-normal">Assigned</span>
                                         </div>
                                         <div class="flex flex-col items-center gap-1.5 text-primary-500">
                                             <div class="w-6 h-6 rounded-full bg-primary-500 text-white flex items-center justify-center"><i data-lucide="wrench" class="w-3.5 h-3.5"></i></div>
-                                            <span>In Progress</span>
+                                            <span class="break-all xs:break-normal">In Progress</span>
                                         </div>
                                         <div class="flex flex-col items-center gap-1.5 text-slate-400">
                                             <div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700 text-white flex items-center justify-center">4</div>
-                                            <span>Resolved</span>
+                                            <span class="break-all xs:break-normal">Resolved</span>
                                         </div>
                                     </div>
                                 </div>
@@ -689,12 +689,12 @@
 
                             <!-- Ticket Card 2 (Resolved) -->
                             <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-4">
-                                <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-3">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                                    <div class="flex flex-wrap items-center gap-2">
                                         <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold">Resolved</span>
                                         <span class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-750 text-slate-500 text-xs font-bold">Urgency: Medium</span>
                                     </div>
-                                    <span class="text-slate-400 text-xs font-medium">Ticket #MNT-19201</span>
+                                    <span class="text-slate-400 text-xs font-semibold">Ticket #MNT-19201</span>
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-base">Plumbing: Kitchen sink drain pipe slow and leaking</h4>
@@ -732,10 +732,10 @@
                 <div id="section-lease" class="dashboard-section hidden space-y-8">
                     
                     <!-- Property & Landlord Details Card -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         
                         <!-- Rented Property -->
-                        <div class="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-5">
+                        <div class="lg:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-5">
                             <h3 class="font-bold text-lg font-heading border-b border-slate-100 dark:border-slate-700 pb-3 flex items-center gap-2">
                                 <i data-lucide="building" class="text-primary-500"></i>
                                 Rented Residence Details
@@ -773,7 +773,7 @@
                         </div>
 
                         <!-- Management Agency Contact -->
-                        <div class="md:col-span-1 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm flex flex-col justify-between">
+                        <div class="lg:col-span-1 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm flex flex-col justify-between">
                             <div>
                                 <h3 class="font-bold text-lg font-heading border-b border-slate-100 dark:border-slate-700 pb-3 flex items-center gap-2 mb-4">
                                     <i data-lucide="shield" class="text-primary-500"></i>
@@ -804,10 +804,10 @@
                     </div>
 
                     <!-- Lease agreement specs and file download -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         
                         <!-- Timeline dates -->
-                        <div class="md:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-5">
+                        <div class="lg:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-5">
                             <h3 class="font-bold text-lg font-heading border-b border-slate-100 dark:border-slate-700 pb-3 flex items-center gap-2">
                                 <i data-lucide="calendar" class="text-primary-500"></i>
                                 Term Milestones
@@ -835,7 +835,7 @@
                         </div>
 
                         <!-- Rules and Download -->
-                        <div class="md:col-span-1 space-y-6">
+                        <div class="lg:col-span-1 space-y-6">
                             <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-4">
                                 <h3 class="font-bold text-base font-heading">Agreement Files</h3>
                                 <div class="p-4 rounded-xl border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex items-center gap-3">
@@ -875,22 +875,22 @@
                                 <i data-lucide="shield" class="text-primary-500"></i>
                                 Renter's Insurance Coverage
                             </h3>
-                            <div class="flex justify-between items-start gap-4">
-                                <div class="space-y-2.5 text-xs">
+                            <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
+                                <div class="space-y-3 text-xs w-full">
                                     <div>
-                                        <span class="text-slate-400 font-bold uppercase tracking-wider">Insurance Provider</span>
+                                        <span class="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Insurance Provider</span>
                                         <p class="font-bold text-slate-700 dark:text-slate-200 mt-0.5">State Farm Renters Premium</p>
                                     </div>
                                     <div>
-                                        <span class="text-slate-400 font-bold uppercase tracking-wider">Policy & Coverage</span>
+                                        <span class="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Policy & Coverage</span>
                                         <p class="font-bold text-slate-700 dark:text-slate-200 mt-0.5">Policy #: SF-92841-RNT • $100K Liability / $25K Personal</p>
                                     </div>
                                     <div>
-                                        <span class="text-slate-400 font-bold uppercase tracking-wider">Expiration Date</span>
+                                        <span class="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Expiration Date</span>
                                         <p class="font-bold text-emerald-500 mt-0.5 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Active (Expires Dec 15, 2026)</p>
                                     </div>
                                 </div>
-                                <button onclick="showNotification('Opening insurance document editor...')" class="bg-slate-50 hover:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-750 text-slate-600 dark:text-slate-300 font-bold px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-750 text-xs shrink-0 cursor-pointer">Update Policy</button>
+                                <button onclick="showNotification('Opening insurance document editor...')" class="w-full sm:w-auto bg-slate-50 hover:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-750 text-slate-600 dark:text-slate-300 font-bold px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-750 text-xs shrink-0 cursor-pointer text-center">Update Policy</button>
                             </div>
                         </div>
 

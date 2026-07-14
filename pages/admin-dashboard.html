@@ -143,6 +143,46 @@
             .dark .r-table tbody td {
                 border-color: #1e293b;
             }
+            
+            /* Custom card layout optimization */
+            .r-table tbody tr {
+                position: relative;
+                padding-top: 8px;
+            }
+            .r-table tbody td.col-property {
+                display: block;
+                text-align: left;
+                padding: 14px 16px;
+                padding-right: 40px; /* Give room for the absolute actions button on the right */
+                border-bottom: 1px solid #f1f5f9;
+            }
+            html[dir="rtl"] .r-table tbody td.col-property {
+                text-align: right;
+                padding-right: 16px;
+                padding-left: 40px; /* Give room for the absolute actions button on the left in RTL */
+            }
+            .dark .r-table tbody td.col-property {
+                border-bottom-color: #334155;
+            }
+            .r-table tbody td.col-property::before {
+                display: none !important;
+            }
+            .r-table tbody td.col-actions {
+                position: absolute;
+                top: 14px;
+                right: 12px;
+                width: auto !important;
+                border-bottom: none !important;
+                padding: 0 !important;
+                background: transparent !important;
+            }
+            html[dir="rtl"] .r-table tbody td.col-actions {
+                right: auto;
+                left: 12px;
+            }
+            .r-table tbody td.col-actions::before {
+                display: none !important;
+            }
         }
 
         /* Desktop: keep normal table behaviour */
@@ -363,7 +403,7 @@
                                     </thead>
                                     <tbody class="divide-y divide-slate-100 dark:divide-slate-700/60 text-sm">
                                         <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                                            <td data-label="Property" class="px-4 lg:px-6 py-3 lg:py-4">
+                                            <td data-label="Property" class="col-property px-4 lg:px-6 py-3 lg:py-4">
                                                 <div class="flex items-center gap-3">
                                                     <div class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src="../assets/images/property_1.png" class="w-full h-full object-cover"></div>
                                                     <div>
@@ -374,10 +414,10 @@
                                             </td>
                                             <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4"><span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold">Occupied</span></td>
                                             <td data-label="Rent" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-slate-700 dark:text-slate-200">$2,500/mo</td>
-                                            <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right"><button onclick="showNotification('Opening actions menu...')" class="text-slate-400 hover:text-primary-500"><i data-lucide="more-vertical" class="w-5 h-5 ml-auto"></i></button></td>
+                                            <td data-label="Actions" class="col-actions px-4 lg:px-6 py-3 lg:py-4 text-right"><button onclick="showNotification('Opening actions menu...')" class="text-slate-400 hover:text-primary-500"><i data-lucide="more-vertical" class="w-5 h-5 ml-auto"></i></button></td>
                                         </tr>
                                         <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                                            <td data-label="Property" class="px-4 lg:px-6 py-3 lg:py-4">
+                                            <td data-label="Property" class="col-property px-4 lg:px-6 py-3 lg:py-4">
                                                 <div class="flex items-center gap-3">
                                                     <div class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src="../assets/images/property_loft.png" class="w-full h-full object-cover"></div>
                                                     <div>
@@ -388,10 +428,10 @@
                                             </td>
                                             <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4"><span class="px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 text-xs font-bold">Vacant</span></td>
                                             <td data-label="Rent" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-slate-700 dark:text-slate-200">$1,800/mo</td>
-                                            <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right"><button onclick="showNotification('Opening actions menu...')" class="text-slate-400 hover:text-primary-500"><i data-lucide="more-vertical" class="w-5 h-5 ml-auto"></i></button></td>
+                                            <td data-label="Actions" class="col-actions px-4 lg:px-6 py-3 lg:py-4 text-right"><button onclick="showNotification('Opening actions menu...')" class="text-slate-400 hover:text-primary-500"><i data-lucide="more-vertical" class="w-5 h-5 ml-auto"></i></button></td>
                                         </tr>
                                         <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                                            <td data-label="Property" class="px-4 lg:px-6 py-3 lg:py-4">
+                                            <td data-label="Property" class="col-property px-4 lg:px-6 py-3 lg:py-4">
                                                 <div class="flex items-center gap-3">
                                                     <div class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src="../assets/images/property_villa.png" class="w-full h-full object-cover"></div>
                                                     <div>
@@ -402,10 +442,10 @@
                                             </td>
                                             <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4"><span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold">Occupied</span></td>
                                             <td data-label="Rent" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-slate-700 dark:text-slate-200">$4,200/mo</td>
-                                            <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right"><button onclick="showNotification('Opening actions menu...')" class="text-slate-400 hover:text-primary-500"><i data-lucide="more-vertical" class="w-5 h-5 ml-auto"></i></button></td>
+                                            <td data-label="Actions" class="col-actions px-4 lg:px-6 py-3 lg:py-4 text-right"><button onclick="showNotification('Opening actions menu...')" class="text-slate-400 hover:text-primary-500"><i data-lucide="more-vertical" class="w-5 h-5 ml-auto"></i></button></td>
                                         </tr>
                                         <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                                            <td data-label="Property" class="px-4 lg:px-6 py-3 lg:py-4">
+                                            <td data-label="Property" class="col-property px-4 lg:px-6 py-3 lg:py-4">
                                                 <div class="flex items-center gap-3">
                                                     <div class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0"><img src="../assets/images/property_penthouse.png" class="w-full h-full object-cover"></div>
                                                     <div>
@@ -416,7 +456,7 @@
                                             </td>
                                             <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4"><span class="px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 text-xs font-bold">Maintenance</span></td>
                                             <td data-label="Rent" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-slate-700 dark:text-slate-200">$5,500/mo</td>
-                                            <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right"><button onclick="showNotification('Opening actions menu...')" class="text-slate-400 hover:text-primary-500"><i data-lucide="more-vertical" class="w-5 h-5 ml-auto"></i></button></td>
+                                            <td data-label="Actions" class="col-actions px-4 lg:px-6 py-3 lg:py-4 text-right"><button onclick="showNotification('Opening actions menu...')" class="text-slate-400 hover:text-primary-500"><i data-lucide="more-vertical" class="w-5 h-5 ml-auto"></i></button></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -522,7 +562,7 @@
                 <div id="section-properties" class="dashboard-section hidden space-y-8">
 
                     <!-- KPI Row -->
-                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         <div
                             class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
                             <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Total Portfolios</p>
@@ -571,9 +611,6 @@
                                             Property Details</th>
                                         <th
                                             class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
-                                            City / State</th>
-                                        <th
-                                            class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
                                             Status</th>
                                         <th
                                             class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
@@ -588,16 +625,18 @@
                                 </thead>
                                 <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
                                     <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                                        <td data-label="Property Details" class="px-4 lg:px-6 py-3 lg:py-4">
-                                            <div class="flex items-center gap-3 font-semibold">
+                                        <td data-label="Property Details" class="col-property px-4 lg:px-6 py-3 lg:py-4">
+                                            <div class="flex items-center gap-3">
                                                 <div
                                                     class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0">
                                                     <img src="../assets/images/property_1.png"
                                                         class="w-full h-full object-cover"></div>
-                                                <span>The Oasis Apartment (Apt 304)</span>
+                                                <div>
+                                                    <div class="font-bold">The Oasis Apartment (Apt 304)</div>
+                                                    <div class="text-xs text-slate-500 font-medium mt-0.5">Beverly Hills, CA</div>
+                                                </div>
                                             </div>
                                         </td>
-                                        <td data-label="City / State" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Beverly Hills, CA</td>
                                         <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span
                                                 class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold border border-emerald-200 dark:border-emerald-900">Occupied</span>
                                         </td>
@@ -606,23 +645,25 @@
                                         <td data-label="Rent"
                                             class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">
                                             $2,500.00</td>
-                                        <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
+                                        <td data-label="Actions" class="col-actions px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
                                                 onclick="showNotification('Property profile options...')"
                                                 class="text-slate-400 hover:text-primary-500"><i
                                                     data-lucide="more-horizontal" class="w-5 h-5 ml-auto"></i></button>
                                         </td>
                                     </tr>
                                     <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                                        <td data-label="Property Details" class="px-4 lg:px-6 py-3 lg:py-4">
-                                            <div class="flex items-center gap-3 font-semibold">
+                                        <td data-label="Property Details" class="col-property px-4 lg:px-6 py-3 lg:py-4">
+                                            <div class="flex items-center gap-3">
                                                 <div
                                                     class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0">
                                                     <img src="../assets/images/property_loft.png"
                                                         class="w-full h-full object-cover"></div>
-                                                <span>Skyline View Loft (Unit 12B)</span>
+                                                <div>
+                                                    <div class="font-bold">Skyline View Loft (Unit 12B)</div>
+                                                    <div class="text-xs text-slate-500 font-medium mt-0.5">Seattle, WA</div>
+                                                </div>
                                             </div>
                                         </td>
-                                        <td data-label="City / State" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Seattle, WA</td>
                                         <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span
                                                 class="px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 text-xs font-bold border border-amber-200 dark:border-amber-900">Vacant</span>
                                         </td>
@@ -630,23 +671,25 @@
                                         <td data-label="Rent"
                                             class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">
                                             $1,800.00</td>
-                                        <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
+                                        <td data-label="Actions" class="col-actions px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
                                                 onclick="showNotification('Property profile options...')"
                                                 class="text-slate-400 hover:text-primary-500"><i
                                                     data-lucide="more-horizontal" class="w-5 h-5 ml-auto"></i></button>
                                         </td>
                                     </tr>
                                     <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                                        <td data-label="Property Details" class="px-4 lg:px-6 py-3 lg:py-4">
-                                            <div class="flex items-center gap-3 font-semibold">
+                                        <td data-label="Property Details" class="col-property px-4 lg:px-6 py-3 lg:py-4">
+                                            <div class="flex items-center gap-3">
                                                 <div
                                                     class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0">
                                                     <img src="../assets/images/property_villa.png"
                                                         class="w-full h-full object-cover"></div>
-                                                <span>Sunset Heights Villa</span>
+                                                <div>
+                                                    <div class="font-bold">Sunset Heights Villa</div>
+                                                    <div class="text-xs text-slate-500 font-medium mt-0.5">Miami, FL</div>
+                                                </div>
                                             </div>
                                         </td>
-                                        <td data-label="City / State" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Miami, FL</td>
                                         <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span
                                                 class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold border border-emerald-200 dark:border-emerald-900">Occupied</span>
                                         </td>
@@ -655,23 +698,25 @@
                                         <td data-label="Rent"
                                             class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">
                                             $4,200.00</td>
-                                        <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
+                                        <td data-label="Actions" class="col-actions px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
                                                 onclick="showNotification('Property profile options...')"
                                                 class="text-slate-400 hover:text-primary-500"><i
                                                     data-lucide="more-horizontal" class="w-5 h-5 ml-auto"></i></button>
                                         </td>
                                     </tr>
                                     <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                                        <td data-label="Property Details" class="px-4 lg:px-6 py-3 lg:py-4">
-                                            <div class="flex items-center gap-3 font-semibold">
+                                        <td data-label="Property Details" class="col-property px-4 lg:px-6 py-3 lg:py-4">
+                                            <div class="flex items-center gap-3">
                                                 <div
                                                     class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0">
                                                     <img src="../assets/images/property_penthouse.png"
                                                         class="w-full h-full object-cover"></div>
-                                                <span>Oceanfront Penthouse (Apt 5)</span>
+                                                <div>
+                                                    <div class="font-bold">Oceanfront Penthouse (Apt 5)</div>
+                                                    <div class="text-xs text-slate-500 font-medium mt-0.5">Malibu, CA</div>
+                                                </div>
                                             </div>
                                         </td>
-                                        <td data-label="City / State" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Malibu, CA</td>
                                         <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span
                                                 class="px-2.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 text-xs font-bold border border-blue-200 dark:border-blue-900">Maintenance</span>
                                         </td>
@@ -679,24 +724,26 @@
                                         <td data-label="Rent"
                                             class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">
                                             $5,500.00</td>
-                                        <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
+                                        <td data-label="Actions" class="col-actions px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
                                                 onclick="showNotification('Property profile options...')"
                                                 class="text-slate-400 hover:text-primary-500"><i
                                                     data-lucide="more-horizontal" class="w-5 h-5 ml-auto"></i></button>
                                         </td>
                                     </tr>
                                     <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                                        <td data-label="Property Details" class="px-4 lg:px-6 py-3 lg:py-4">
-                                            <div class="flex items-center gap-3 font-semibold">
+                                        <td data-label="Property Details" class="col-property px-4 lg:px-6 py-3 lg:py-4">
+                                            <div class="flex items-center gap-3">
                                                 <div
                                                     class="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden shrink-0">
                                                     <img src="../assets/images/property_1.png"
                                                         class="w-full h-full object-cover"
                                                         style="filter: hue-rotate(240deg);"></div>
-                                                <span>Brooklyn Brownstone (Unit 2)</span>
+                                                <div>
+                                                    <div class="font-bold">Brooklyn Brownstone (Unit 2)</div>
+                                                    <div class="text-xs text-slate-500 font-medium mt-0.5">Brooklyn, NY</div>
+                                                </div>
                                             </div>
                                         </td>
-                                        <td data-label="City / State" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Brooklyn, NY</td>
                                         <td data-label="Status" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span
                                                 class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold border border-emerald-200 dark:border-emerald-900">Occupied</span>
                                         </td>
@@ -705,7 +752,7 @@
                                         <td data-label="Rent"
                                             class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-slate-700 dark:text-slate-200 whitespace-nowrap">
                                             $3,100.00</td>
-                                        <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
+                                        <td data-label="Actions" class="col-actions px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
                                                 onclick="showNotification('Property profile options...')"
                                                 class="text-slate-400 hover:text-primary-500"><i
                                                     data-lucide="more-horizontal" class="w-5 h-5 ml-auto"></i></button>
@@ -730,17 +777,17 @@
                             <div
                                 class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
                                 <span class="text-2xl font-bold text-slate-700 dark:text-white">74</span>
-                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">California (CA)</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1"><span class="hidden xs:inline">California </span>(CA)</p>
                             </div>
                             <div
                                 class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
                                 <span class="text-2xl font-bold text-slate-700 dark:text-white">38</span>
-                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Florida (FL)</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1"><span class="hidden xs:inline">Florida </span>(FL)</p>
                             </div>
                             <div
                                 class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
                                 <span class="text-2xl font-bold text-slate-700 dark:text-white">12</span>
-                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Washington (WA)</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1"><span class="hidden xs:inline">Washington </span>(WA)</p>
                             </div>
                         </div>
                     </div>
@@ -756,17 +803,17 @@
                             <div
                                 class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
                                 <span class="text-2xl font-bold text-slate-700 dark:text-white">82</span>
-                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Apartments</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1"><span class="hidden xs:inline">Apartments</span><span class="xs:hidden">Apts</span></p>
                             </div>
                             <div
                                 class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
                                 <span class="text-2xl font-bold text-slate-700 dark:text-white">24</span>
-                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Loft Spaces</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1"><span class="hidden xs:inline">Loft Spaces</span><span class="xs:hidden">Lofts</span></p>
                             </div>
                             <div
                                 class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
                                 <span class="text-2xl font-bold text-slate-700 dark:text-white">18</span>
-                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Family Villas</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1"><span class="hidden xs:inline">Family Villas</span><span class="xs:hidden">Villas</span></p>
                             </div>
                         </div>
                     </div>
@@ -827,7 +874,7 @@
                                         class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
                                         Assigned Unit</th>
                                     <th
-                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap md:hidden lg:table-cell">
                                         Lease Term</th>
                                     <th
                                         class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
@@ -839,53 +886,53 @@
                             </thead>
                             <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
                                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                                    <td data-label="Tenant Details" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold">
+                                    <td data-label="Tenant Details" class="col-property px-4 lg:px-6 py-3 lg:py-4 font-semibold">
                                         <div class="min-w-[140px]">
                                             <div class="text-sm font-bold whitespace-nowrap">John Doe</div>
-                                            <div class="text-xs text-slate-500 max-w-[200px] truncate">john.doe@example.com • (310) 555-0142</div>
+                                            <div class="text-xs text-slate-500 max-w-[200px] truncate md:hidden lg:block">john.doe@example.com • (310) 555-0142</div>
                                         </div>
                                     </td>
-                                    <td data-label="Assigned Unit" class="px-4 lg:px-6 py-3 lg:py-4 font-medium text-slate-700 dark:text-slate-350 whitespace-nowrap">Oasis Apartment #304</td>
-                                    <td data-label="Lease Term" class="px-4 lg:px-6 py-3 lg:py-4 text-slate-550 whitespace-nowrap">Dec 15, 2025 – Dec 15, 2026</td>
+                                    <td data-label="Assigned Unit" class="px-4 lg:px-6 py-3 lg:py-4 font-medium text-slate-700 dark:text-slate-350">Oasis Apartment #304</td>
+                                    <td data-label="Lease Term" class="px-4 lg:px-6 py-3 lg:py-4 text-slate-555 md:hidden lg:table-cell">Dec 15, 2025 – Dec 15, 2026</td>
                                     <td data-label="Outstanding" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold">$0.00 (Paid)</span></td>
                                     <td data-label="Quick Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap">
                                         <div class="flex justify-end gap-2">
-                                            <button onclick="showNotification('Drafting direct message to John Doe...')" class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:text-primary-500 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer"><i data-lucide="mail" class="w-4 h-4"></i></button>
-                                            <button onclick="showNotification('Tenant details panel...')" class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:text-primary-500 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer"><i data-lucide="eye" class="w-4 h-4"></i></button>
+                                            <button onclick="showNotification('Drafting direct message to John Doe...')" class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:text-primary-500 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer bg-white dark:bg-slate-800"><i data-lucide="mail" class="w-4 h-4"></i></button>
+                                            <button onclick="showNotification('Tenant details panel...')" class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:text-primary-500 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer bg-white dark:bg-slate-800"><i data-lucide="eye" class="w-4 h-4"></i></button>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                                    <td data-label="Tenant Details" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold">
+                                    <td data-label="Tenant Details" class="col-property px-4 lg:px-6 py-3 lg:py-4 font-semibold">
                                         <div class="min-w-[140px]">
                                             <div class="text-sm font-bold whitespace-nowrap">Sarah Jenkins</div>
-                                            <div class="text-xs text-slate-500 max-w-[200px] truncate">sarah.j@example.com • (305) 555-0112</div>
+                                            <div class="text-xs text-slate-500 max-w-[200px] truncate md:hidden lg:block">sarah.j@example.com • (305) 555-0112</div>
                                         </div>
                                     </td>
-                                    <td data-label="Assigned Unit" class="px-4 lg:px-6 py-3 lg:py-4 font-medium text-slate-700 dark:text-slate-350 whitespace-nowrap">Sunset Heights Villa</td>
-                                    <td data-label="Lease Term" class="px-4 lg:px-6 py-3 lg:py-4 text-slate-550 whitespace-nowrap">Oct 01, 2025 – Oct 01, 2026</td>
+                                    <td data-label="Assigned Unit" class="px-4 lg:px-6 py-3 lg:py-4 font-medium text-slate-700 dark:text-slate-350">Sunset Heights Villa</td>
+                                    <td data-label="Lease Term" class="px-4 lg:px-6 py-3 lg:py-4 text-slate-555 md:hidden lg:table-cell">Oct 01, 2025 – Oct 01, 2026</td>
                                     <td data-label="Outstanding" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold">$0.00 (Paid)</span></td>
                                     <td data-label="Quick Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap">
                                         <div class="flex justify-end gap-2">
-                                            <button onclick="showNotification('Drafting direct message...')" class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:text-primary-500 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer"><i data-lucide="mail" class="w-4 h-4"></i></button>
-                                            <button onclick="showNotification('Tenant details panel...')" class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:text-primary-500 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer"><i data-lucide="eye" class="w-4 h-4"></i></button>
+                                            <button onclick="showNotification('Drafting direct message...')" class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:text-primary-500 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer bg-white dark:bg-slate-800"><i data-lucide="mail" class="w-4 h-4"></i></button>
+                                            <button onclick="showNotification('Tenant details panel...')" class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:text-primary-500 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer bg-white dark:bg-slate-800"><i data-lucide="eye" class="w-4 h-4"></i></button>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                                    <td data-label="Tenant Details" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold">
+                                    <td data-label="Tenant Details" class="col-property px-4 lg:px-6 py-3 lg:py-4 font-semibold">
                                         <div class="min-w-[140px]">
                                             <div class="text-sm font-bold whitespace-nowrap">Michael Chang</div>
-                                            <div class="text-xs text-slate-500 max-w-[200px] truncate">m.chang@example.com • (718) 555-0189</div>
+                                            <div class="text-xs text-slate-500 max-w-[200px] truncate md:hidden lg:block">m.chang@example.com • (718) 555-0189</div>
                                         </div>
                                     </td>
-                                    <td data-label="Assigned Unit" class="px-4 lg:px-6 py-3 lg:py-4 font-medium text-slate-700 dark:text-slate-350 whitespace-nowrap">Brooklyn Brownstone #2</td>
-                                    <td data-label="Lease Term" class="px-4 lg:px-6 py-3 lg:py-4 text-slate-550 whitespace-nowrap">Jan 15, 2026 – Jan 15, 2027</td>
+                                    <td data-label="Assigned Unit" class="px-4 lg:px-6 py-3 lg:py-4 font-medium text-slate-700 dark:text-slate-350">Brooklyn Brownstone #2</td>
+                                    <td data-label="Lease Term" class="px-4 lg:px-6 py-3 lg:py-4 text-slate-555 md:hidden lg:table-cell">Jan 15, 2026 – Jan 15, 2027</td>
                                     <td data-label="Outstanding" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span class="px-2.5 py-0.5 rounded-full bg-rose-100 dark:bg-rose-950/50 text-rose-600 dark:text-rose-455 text-xs font-bold border border-rose-200 dark:border-rose-900">$3,100 (Late 2 Days)</span></td>
                                     <td data-label="Quick Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap">
                                         <div class="flex justify-end gap-2">
-                                            <button onclick="showNotification('Sending late rent warning notice email...')" class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:text-primary-500 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer"><i data-lucide="bell-ring" class="w-4 h-4 text-rose-500 animate-bounce"></i></button>
-                                            <button onclick="showNotification('Tenant details panel...')" class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:text-primary-500 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer"><i data-lucide="eye" class="w-4 h-4"></i></button>
+                                            <button onclick="showNotification('Sending late rent warning notice email...')" class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:text-primary-500 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer bg-white dark:bg-slate-800"><i data-lucide="bell-ring" class="w-4 h-4 text-rose-500 animate-bounce"></i></button>
+                                            <button onclick="showNotification('Tenant details panel...')" class="p-2 border border-slate-200 dark:border-slate-700 rounded-lg hover:text-primary-500 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer bg-white dark:bg-slate-800"><i data-lucide="eye" class="w-4 h-4"></i></button>
                                         </div>
                                     </td>
                                 </tr>
@@ -961,7 +1008,7 @@
             <div id="section-maintenance" class="dashboard-section hidden space-y-8">
 
                 <!-- KPI Row -->
-                <div class="grid grid-cols-1 sm:grid-cols-4 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div
                         class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
                         <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Total Open Tickets</p>
@@ -999,11 +1046,8 @@
                                 class="bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700">
                                 <tr>
                                     <th
-                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
-                                        Ticket ID</th>
-                                    <th
                                         class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">
-                                        Issue Description</th>
+                                        Issue Description / Ticket ID</th>
                                     <th
                                         class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">
                                         Residence Unit</th>
@@ -1011,7 +1055,7 @@
                                         class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
                                         Urgency</th>
                                     <th
-                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap md:hidden lg:table-cell">
                                         Assigned Staff</th>
                                     <th
                                         class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase text-right whitespace-nowrap">
@@ -1020,52 +1064,52 @@
                             </thead>
                             <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
                                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                                    <td data-label="Ticket ID"
-                                        class="px-4 lg:px-6 py-3 lg:py-4 font-mono font-bold text-xs text-primary-500 whitespace-nowrap">
-                                        MNT-28491</td>
-                                    <td data-label="Issue Description" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold">Bedroom heating unit blowing
-                                        cold air</td>
+                                    <td data-label="Issue Description" class="col-property px-4 lg:px-6 py-3 lg:py-4">
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <span class="font-mono font-bold text-xs text-primary-500">MNT-28491</span>
+                                            <span class="font-semibold text-slate-800 dark:text-slate-200">Bedroom heating unit blowing cold air</span>
+                                        </div>
+                                    </td>
                                     <td data-label="Residence Unit" class="px-4 lg:px-6 py-3 lg:py-4">Oasis Apartment #304 (John Doe)</td>
                                     <td data-label="Urgency" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span
                                             class="px-2.5 py-0.5 rounded-full bg-rose-50 dark:bg-rose-950/20 text-rose-500 text-xs font-bold border border-rose-200 dark:border-rose-900">High</span>
                                     </td>
-                                    <td data-label="Assigned Staff" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Dave Miller (HVAC
-                                        specialist)</td>
-                                    <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
+                                    <td data-label="Assigned Staff" class="px-4 lg:px-6 py-3 lg:py-4 md:hidden lg:table-cell">Dave Miller (HVAC specialist)</td>
+                                    <td data-label="Actions" class="col-actions px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
                                             onclick="resolveTicketRow(this, 'MNT-28491')"
                                             class="bg-primary-500 hover:bg-primary-600 text-white font-bold px-3 py-1 rounded-lg text-xs shadow-sm cursor-pointer">Resolve</button>
                                     </td>
                                 </tr>
                                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                                    <td data-label="Ticket ID"
-                                        class="px-4 lg:px-6 py-3 lg:py-4 font-mono font-bold text-xs text-primary-500 whitespace-nowrap">
-                                        MNT-29841</td>
-                                    <td data-label="Issue Description" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold">Master bathroom toilet clog /
-                                        leak overflow</td>
+                                    <td data-label="Issue Description" class="col-property px-4 lg:px-6 py-3 lg:py-4">
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <span class="font-mono font-bold text-xs text-primary-500">MNT-29841</span>
+                                            <span class="font-semibold text-slate-800 dark:text-slate-200">Master bathroom toilet clog / leak overflow</span>
+                                        </div>
+                                    </td>
                                     <td data-label="Residence Unit" class="px-4 lg:px-6 py-3 lg:py-4">Sunset Heights Villa (Sarah Jenkins)</td>
                                     <td data-label="Urgency" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span
                                             class="px-2.5 py-0.5 rounded-full bg-red-100 dark:bg-red-950/50 text-red-600 dark:text-red-400 text-xs font-bold border border-red-200 dark:border-red-900">Emergency</span>
                                     </td>
-                                    <td data-label="Assigned Staff" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Quick Plumb Response
-                                        Dispatch</td>
-                                    <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
+                                    <td data-label="Assigned Staff" class="px-4 lg:px-6 py-3 lg:py-4 md:hidden lg:table-cell">Quick Plumb Response Dispatch</td>
+                                    <td data-label="Actions" class="col-actions px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
                                             onclick="resolveTicketRow(this, 'MNT-29841')"
                                             class="bg-primary-500 hover:bg-primary-600 text-white font-bold px-3 py-1 rounded-lg text-xs shadow-sm cursor-pointer">Resolve</button>
                                     </td>
                                 </tr>
                                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                                    <td data-label="Ticket ID"
-                                        class="px-4 lg:px-6 py-3 lg:py-4 font-mono font-bold text-xs text-primary-500 whitespace-nowrap">
-                                        MNT-19201</td>
-                                    <td data-label="Issue Description" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold">Kitchen sink drain pipe leak
-                                        slow drip</td>
+                                    <td data-label="Issue Description" class="col-property px-4 lg:px-6 py-3 lg:py-4">
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <span class="font-mono font-bold text-xs text-primary-500">MNT-19201</span>
+                                            <span class="font-semibold text-slate-800 dark:text-slate-200">Kitchen sink drain pipe leak slow drip</span>
+                                        </div>
+                                    </td>
                                     <td data-label="Residence Unit" class="px-4 lg:px-6 py-3 lg:py-4">Brooklyn Brownstone #2</td>
                                     <td data-label="Urgency" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span
                                             class="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-750 text-slate-500 text-xs font-bold border border-slate-200 dark:border-slate-700">Medium</span>
                                     </td>
-                                    <td data-label="Assigned Staff" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Mark Wilson (Property
-                                        manager)</td>
-                                    <td data-label="Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><span
+                                    <td data-label="Assigned Staff" class="px-4 lg:px-6 py-3 lg:py-4 md:hidden lg:table-cell">Mark Wilson (Property manager)</td>
+                                    <td data-label="Actions" class="col-actions px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><span
                                             class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 text-xs font-bold">Resolved</span>
                                     </td>
                                 </tr>
@@ -1078,7 +1122,7 @@
                 <div
                     class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm space-y-4 mt-6">
                     <h3 class="font-heading font-bold text-lg">Staff Availability & Active Workloads</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         <!-- Staff 1 -->
                         <div
                             class="p-4 rounded-xl border border-slate-150 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex items-center justify-between">
@@ -1120,7 +1164,7 @@
             <div id="section-finances" class="dashboard-section hidden space-y-8">
 
                 <!-- KPI Row -->
-                <div class="grid grid-cols-1 sm:grid-cols-4 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div
                         class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
                         <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Total Revenue YTD</p>
@@ -1208,13 +1252,10 @@
                                 class="bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-700">
                                 <tr>
                                     <th
-                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
-                                        Payment Date</th>
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">
+                                        Payment Date / Transaction ID</th>
                                     <th
-                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
-                                        Transaction ID</th>
-                                    <th
-                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
+                                        class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap md:hidden lg:table-cell">
                                         Invoiced Item</th>
                                     <th
                                         class="px-4 lg:px-6 py-3 lg:py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase whitespace-nowrap">
@@ -1229,63 +1270,67 @@
                             </thead>
                             <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
                                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                                    <td data-label="Payment Date" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Jun 18, 2026</td>
-                                    <td data-label="Transaction ID" class="px-4 lg:px-6 py-3 lg:py-4 font-mono text-xs whitespace-nowrap">TXN-492091
+                                    <td data-label="Payment Date" class="col-property px-4 lg:px-6 py-3 lg:py-4">
+                                        <div>
+                                            <div class="font-bold text-slate-800 dark:text-slate-200">Jun 18, 2026</div>
+                                            <div class="text-[10px] text-slate-400 font-mono mt-0.5">TXN-492091</div>
+                                        </div>
                                     </td>
-                                    <td data-label="Invoiced Item" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold whitespace-nowrap">Rent - June
-                                        2026</td>
+                                    <td data-label="Invoiced Item" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold md:hidden lg:table-cell">Rent - June 2026</td>
                                     <td data-label="Tenant Name" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">John Doe</td>
-                                    <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-emerald-600 whitespace-nowrap">
-                                        +$2,500.00</td>
-                                    <td data-label="Audit" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
-                                            onclick="showNotification('Audit receipt triggered!')"
-                                            class="text-primary-500 hover:text-primary-600"><i
-                                                data-lucide="shield-check" class="w-4.5 h-4.5 ml-auto"></i></button>
+                                    <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-emerald-600 whitespace-nowrap">+$2,500.00</td>
+                                    <td data-label="Audit" class="col-actions px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap">
+                                        <button onclick="showNotification('Audit receipt triggered!')" class="text-primary-500 hover:text-primary-600 bg-transparent border-0 cursor-pointer">
+                                            <i data-lucide="shield-check" class="w-4.5 h-4.5 ml-auto"></i>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                                    <td data-label="Payment Date" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Jun 15, 2026</td>
-                                    <td data-label="Transaction ID" class="px-4 lg:px-6 py-3 lg:py-4 font-mono text-xs whitespace-nowrap">TXN-839103
+                                    <td data-label="Payment Date" class="col-property px-4 lg:px-6 py-3 lg:py-4">
+                                        <div>
+                                            <div class="font-bold text-slate-800 dark:text-slate-200">Jun 15, 2026</div>
+                                            <div class="text-[10px] text-slate-400 font-mono mt-0.5">TXN-839103</div>
+                                        </div>
                                     </td>
-                                    <td data-label="Invoiced Item" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold whitespace-nowrap">Rent - June
-                                        2026</td>
+                                    <td data-label="Invoiced Item" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold md:hidden lg:table-cell">Rent - June 2026</td>
                                     <td data-label="Tenant Name" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Sarah Jenkins</td>
-                                    <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-emerald-600 whitespace-nowrap">
-                                        +$4,200.00</td>
-                                    <td data-label="Audit" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
-                                            onclick="showNotification('Audit receipt triggered!')"
-                                            class="text-primary-500 hover:text-primary-600"><i
-                                                data-lucide="shield-check" class="w-4.5 h-4.5 ml-auto"></i></button>
+                                    <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-emerald-600 whitespace-nowrap">+$4,200.00</td>
+                                    <td data-label="Audit" class="col-actions px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap">
+                                        <button onclick="showNotification('Audit receipt triggered!')" class="text-primary-500 hover:text-primary-600 bg-transparent border-0 cursor-pointer">
+                                            <i data-lucide="shield-check" class="w-4.5 h-4.5 ml-auto"></i>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                                    <td data-label="Payment Date" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">May 18, 2026</td>
-                                    <td data-label="Transaction ID" class="px-4 lg:px-6 py-3 lg:py-4 font-mono text-xs whitespace-nowrap">TXN-392091
+                                    <td data-label="Payment Date" class="col-property px-4 lg:px-6 py-3 lg:py-4">
+                                        <div>
+                                            <div class="font-bold text-slate-800 dark:text-slate-200">May 18, 2026</div>
+                                            <div class="text-[10px] text-slate-400 font-mono mt-0.5">TXN-392091</div>
+                                        </div>
                                     </td>
-                                    <td data-label="Invoiced Item" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold whitespace-nowrap">Rent - May
-                                        2026</td>
+                                    <td data-label="Invoiced Item" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold md:hidden lg:table-cell">Rent - May 2026</td>
                                     <td data-label="Tenant Name" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">John Doe</td>
-                                    <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-emerald-600 whitespace-nowrap">
-                                        +$2,500.00</td>
-                                    <td data-label="Audit" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
-                                            onclick="showNotification('Audit receipt triggered!')"
-                                            class="text-primary-500 hover:text-primary-600"><i
-                                                data-lucide="shield-check" class="w-4.5 h-4.5 ml-auto"></i></button>
+                                    <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-emerald-600 whitespace-nowrap">+$2,500.00</td>
+                                    <td data-label="Audit" class="col-actions px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap">
+                                        <button onclick="showNotification('Audit receipt triggered!')" class="text-primary-500 hover:text-primary-600 bg-transparent border-0 cursor-pointer">
+                                            <i data-lucide="shield-check" class="w-4.5 h-4.5 ml-auto"></i>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
-                                    <td data-label="Payment Date" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">May 15, 2026</td>
-                                    <td data-label="Transaction ID" class="px-4 lg:px-6 py-3 lg:py-4 font-mono text-xs whitespace-nowrap">TXN-902183
+                                    <td data-label="Payment Date" class="col-property px-4 lg:px-6 py-3 lg:py-4">
+                                        <div>
+                                            <div class="font-bold text-slate-800 dark:text-slate-200">May 15, 2026</div>
+                                            <div class="text-[10px] text-slate-400 font-mono mt-0.5">TXN-902183</div>
+                                        </div>
                                     </td>
-                                    <td data-label="Invoiced Item" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold whitespace-nowrap">Rent - May
-                                        2026</td>
+                                    <td data-label="Invoiced Item" class="px-4 lg:px-6 py-3 lg:py-4 font-semibold md:hidden lg:table-cell">Rent - May 2026</td>
                                     <td data-label="Tenant Name" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">Sarah Jenkins</td>
-                                    <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-emerald-600 whitespace-nowrap">
-                                        +$4,200.00</td>
-                                    <td data-label="Audit" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap"><button
-                                            onclick="showNotification('Audit receipt triggered!')"
-                                            class="text-primary-500 hover:text-primary-600"><i
-                                                data-lucide="shield-check" class="w-4.5 h-4.5 ml-auto"></i></button>
+                                    <td data-label="Amount" class="px-4 lg:px-6 py-3 lg:py-4 font-bold text-emerald-600 whitespace-nowrap">+$4,200.00</td>
+                                    <td data-label="Audit" class="col-actions px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap">
+                                        <button onclick="showNotification('Audit receipt triggered!')" class="text-primary-500 hover:text-primary-600 bg-transparent border-0 cursor-pointer">
+                                            <i data-lucide="shield-check" class="w-4.5 h-4.5 ml-auto"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>

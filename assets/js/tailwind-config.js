@@ -35,6 +35,9 @@ tailwind.config = {
       boxShadow: {
         'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
         'card': '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01)',
+      },
+      screens: {
+        'xs': '400px',
       }
     }
   }
