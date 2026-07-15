@@ -14,6 +14,7 @@ tailwind.config = {
           700: '#0f766e',
           800: '#115e59',
           900: '#134e4a',
+          950: '#042f2e',
         },
         secondary: {
           50: '#f8fafc',

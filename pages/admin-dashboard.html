@@ -185,11 +185,31 @@
             }
         }
 
-        /* Desktop: keep normal table behaviour */
+        /* Desktop: keep normal table behaviour but prevent layout overflow by reducing paddings */
         @media (min-width: 768px) {
             .r-table-wrap {
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
+            }
+            .r-table th,
+            .r-table td {
+                padding-left: 0.75rem !important;  /* px-3 override */
+                padding-right: 0.75rem !important; /* px-3 override */
+            }
+        }
+        @media (min-width: 768px) and (max-width: 1279px) {
+            /* On tablet and laptop screens, allow text wrapping in cells to prevent horizontal scrollbars */
+            .r-table th,
+            .r-table td,
+            .r-table td * {
+                white-space: normal !important;
+            }
+        }
+        @media (min-width: 1024px) {
+            .r-table th,
+            .r-table td {
+                padding-left: 1rem !important;  /* px-4 override */
+                padding-right: 1rem !important; /* px-4 override */
             }
         }
     </style>
@@ -312,7 +332,7 @@
                 <div id="section-overview" class="dashboard-section space-y-8">
 
                     <!-- KPI Cards Grid -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
                         <div
                             class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm relative overflow-hidden">
                             <div class="flex justify-between items-start mb-2 relative z-10">
@@ -380,11 +400,11 @@
                     </div>
 
                     <!-- Split tables and charts -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
 
                         <!-- Property List Table -->
                         <div
-                            class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm overflow-hidden h-fit">
+                            class="xl:col-span-2 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm overflow-hidden h-fit">
                             <div
                                 class="p-5 border-b border-slate-100 dark:border-slate-700/60 flex items-center justify-between">
                                 <h3 class="font-bold text-lg font-heading">Recent Properties</h3>
@@ -464,7 +484,7 @@
                         </div>
 
                         <!-- Side widgets -->
-                        <div class="space-y-6 lg:col-span-1">
+                        <div class="space-y-6 xl:col-span-1">
                             <!-- Revenue Trend Widget -->
                             <div
                                 class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm p-5 space-y-4">
@@ -517,7 +537,7 @@
                     <div
                         class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-4 mt-8">
                         <h3 class="font-heading font-bold text-lg">System Quick Actions & Controls</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                             <a href="add-property.html"
                                 class="flex items-center gap-3 p-4 rounded-xl border border-slate-150 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 hover:bg-primary-500/5 hover:border-primary-500 dark:hover:bg-primary-500/10 transition-all cursor-pointer group text-left rtl:text-right">
                                 <div class="p-3 rounded-lg bg-white dark:bg-slate-800 text-primary-500 shadow-sm"><i
@@ -562,7 +582,7 @@
                 <div id="section-properties" class="dashboard-section hidden space-y-8">
 
                     <!-- KPI Row -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
                         <div
                             class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
                             <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Total Portfolios</p>
@@ -892,8 +912,8 @@
                                             <div class="text-xs text-slate-500 max-w-[200px] truncate md:hidden lg:block">john.doe@example.com • (310) 555-0142</div>
                                         </div>
                                     </td>
-                                    <td data-label="Assigned Unit" class="px-4 lg:px-6 py-3 lg:py-4 font-medium text-slate-700 dark:text-slate-350">Oasis Apartment #304</td>
-                                    <td data-label="Lease Term" class="px-4 lg:px-6 py-3 lg:py-4 text-slate-555 md:hidden lg:table-cell">Dec 15, 2025 – Dec 15, 2026</td>
+                                    <td data-label="Assigned Unit" class="px-4 lg:px-6 py-3 lg:py-4 font-medium text-slate-700 dark:text-slate-300">Oasis Apartment #304</td>
+                                    <td data-label="Lease Term" class="px-4 lg:px-6 py-3 lg:py-4 text-slate-500 md:hidden lg:table-cell">Dec 15, 2025 – Dec 15, 2026</td>
                                     <td data-label="Outstanding" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold">$0.00 (Paid)</span></td>
                                     <td data-label="Quick Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap">
                                         <div class="flex justify-end gap-2">
@@ -909,8 +929,8 @@
                                             <div class="text-xs text-slate-500 max-w-[200px] truncate md:hidden lg:block">sarah.j@example.com • (305) 555-0112</div>
                                         </div>
                                     </td>
-                                    <td data-label="Assigned Unit" class="px-4 lg:px-6 py-3 lg:py-4 font-medium text-slate-700 dark:text-slate-350">Sunset Heights Villa</td>
-                                    <td data-label="Lease Term" class="px-4 lg:px-6 py-3 lg:py-4 text-slate-555 md:hidden lg:table-cell">Oct 01, 2025 – Oct 01, 2026</td>
+                                    <td data-label="Assigned Unit" class="px-4 lg:px-6 py-3 lg:py-4 font-medium text-slate-700 dark:text-slate-300">Sunset Heights Villa</td>
+                                    <td data-label="Lease Term" class="px-4 lg:px-6 py-3 lg:py-4 text-slate-500 md:hidden lg:table-cell">Oct 01, 2025 – Oct 01, 2026</td>
                                     <td data-label="Outstanding" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span class="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 text-xs font-bold">$0.00 (Paid)</span></td>
                                     <td data-label="Quick Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap">
                                         <div class="flex justify-end gap-2">
@@ -926,8 +946,8 @@
                                             <div class="text-xs text-slate-500 max-w-[200px] truncate md:hidden lg:block">m.chang@example.com • (718) 555-0189</div>
                                         </div>
                                     </td>
-                                    <td data-label="Assigned Unit" class="px-4 lg:px-6 py-3 lg:py-4 font-medium text-slate-700 dark:text-slate-350">Brooklyn Brownstone #2</td>
-                                    <td data-label="Lease Term" class="px-4 lg:px-6 py-3 lg:py-4 text-slate-555 md:hidden lg:table-cell">Jan 15, 2026 – Jan 15, 2027</td>
+                                    <td data-label="Assigned Unit" class="px-4 lg:px-6 py-3 lg:py-4 font-medium text-slate-700 dark:text-slate-300">Brooklyn Brownstone #2</td>
+                                    <td data-label="Lease Term" class="px-4 lg:px-6 py-3 lg:py-4 text-slate-500 md:hidden lg:table-cell">Jan 15, 2026 – Jan 15, 2027</td>
                                     <td data-label="Outstanding" class="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap"><span class="px-2.5 py-0.5 rounded-full bg-rose-100 dark:bg-rose-950/50 text-rose-600 dark:text-rose-455 text-xs font-bold border border-rose-200 dark:border-rose-900">$3,100 (Late 2 Days)</span></td>
                                     <td data-label="Quick Actions" class="px-4 lg:px-6 py-3 lg:py-4 text-right whitespace-nowrap">
                                         <div class="flex justify-end gap-2">
@@ -1008,7 +1028,7 @@
             <div id="section-maintenance" class="dashboard-section hidden space-y-8">
 
                 <!-- KPI Row -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
                     <div
                         class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
                         <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Total Open Tickets</p>
@@ -1164,7 +1184,7 @@
             <div id="section-finances" class="dashboard-section hidden space-y-8">
 
                 <!-- KPI Row -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
                     <div
                         class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
                         <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Total Revenue YTD</p>
@@ -1173,7 +1193,7 @@
                     <div
                         class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
                         <p class="text-slate-500 text-xs font-bold uppercase tracking-wider">Operating Expenses</p>
-                        <h4 class="text-2xl font-bold mt-1 text-slate-650 dark:text-slate-350">$1,240,000</h4>
+                        <h4 class="text-2xl font-bold mt-1 text-slate-600 dark:text-slate-300">$1,240,000</h4>
                     </div>
                     <div
                         class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">

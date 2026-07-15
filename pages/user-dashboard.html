@@ -266,7 +266,7 @@
                     </div>
 
                     <!-- Stat Cards Grid -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
                         <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm flex items-center gap-4">
                             <div class="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-500"><i data-lucide="calendar-check" class="w-6 h-6"></i></div>
                             <div>
@@ -407,10 +407,10 @@
                     </div>
 
                     <!-- Payment Grid Layout -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
                         
                         <!-- Pay Rent Form -->
-                        <div class="lg:col-span-1 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-5 h-fit">
+                        <div class="xl:col-span-1 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-5 h-fit">
                             <h3 class="font-bold text-lg font-heading border-b border-slate-100 dark:border-slate-700 pb-3">Pay Rent Form</h3>
                             
                             <form id="payment-form" class="space-y-4" onsubmit="handlePaymentSubmit(event)">
@@ -446,7 +446,7 @@
                         </div>
 
                         <!-- Historical Ledger Log -->
-                        <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm overflow-hidden h-fit">
+                        <div class="xl:col-span-2 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm overflow-hidden h-fit">
                             <div class="p-5 border-b border-slate-100 dark:border-slate-700/60">
                                 <h3 class="font-bold text-lg font-heading">Historical Payments Ledger</h3>
                             </div>
@@ -529,7 +529,7 @@
                                         <p class="text-[10px] text-slate-400 font-semibold">Expires 12/28 • Primary Account</p>
                                     </div>
                                 </div>
-                                <button onclick="showNotification('Payment method settings opened.')" class="text-slate-400 hover:text-slate-650 cursor-pointer"><i data-lucide="settings" class="w-4 h-4"></i></button>
+                                <button onclick="showNotification('Payment method settings opened.')" class="text-slate-400 hover:text-slate-600 cursor-pointer"><i data-lucide="settings" class="w-4 h-4"></i></button>
                             </div>
                             <!-- Bank routing -->
                             <div class="p-4 rounded-xl border border-slate-150 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex items-center justify-between">
@@ -542,7 +542,7 @@
                                         <p class="text-[10px] text-slate-400 font-semibold">Savings Account Linked</p>
                                     </div>
                                 </div>
-                                <button onclick="showNotification('Payment method settings opened.')" class="text-slate-400 hover:text-slate-650 cursor-pointer"><i data-lucide="settings" class="w-4 h-4"></i></button>
+                                <button onclick="showNotification('Payment method settings opened.')" class="text-slate-400 hover:text-slate-600 cursor-pointer"><i data-lucide="settings" class="w-4 h-4"></i></button>
                             </div>
                             <!-- Autopay Settings -->
                             <div class="p-4 rounded-xl border border-slate-150 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex items-center justify-between">
@@ -593,10 +593,10 @@
                     </div>
 
                     <!-- Layout splits -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
                         
                         <!-- Submit Ticket Card -->
-                        <div class="lg:col-span-1 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm h-fit space-y-4">
+                        <div class="xl:col-span-1 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm h-fit space-y-4">
                             <h3 class="font-bold text-lg font-heading border-b border-slate-100 dark:border-slate-700 pb-3">Submit Maintenance Request</h3>
                             
                             <form id="maintenance-form" class="space-y-4" onsubmit="handleMaintenanceSubmit(event)">
@@ -646,7 +646,7 @@
                         </div>
 
                         <!-- Ticket Log & Timelines -->
-                        <div class="lg:col-span-2 space-y-6">
+                        <div class="xl:col-span-2 space-y-6">
                             <h3 class="font-bold text-lg font-heading border-b border-slate-100 dark:border-slate-700 pb-3">Requests History</h3>
                             
                             <!-- Ticket Card 1 (Active) -->
@@ -732,10 +732,10 @@
                 <div id="section-lease" class="dashboard-section hidden space-y-8">
                     
                     <!-- Property & Landlord Details Card -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
                         
                         <!-- Rented Property -->
-                        <div class="lg:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-5">
+                        <div class="xl:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-5">
                             <h3 class="font-bold text-lg font-heading border-b border-slate-100 dark:border-slate-700 pb-3 flex items-center gap-2">
                                 <i data-lucide="building" class="text-primary-500"></i>
                                 Rented Residence Details
@@ -769,11 +769,11 @@
                                         <p class="font-bold text-slate-700 dark:text-slate-200 mt-0.5">10% charge after June 05 / monthly deadline</p>
                                     </div>
                                 </div>
-                            </div>
+                             </div>
                         </div>
 
                         <!-- Management Agency Contact -->
-                        <div class="lg:col-span-1 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm flex flex-col justify-between">
+                        <div class="xl:col-span-1 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm flex flex-col justify-between">
                             <div>
                                 <h3 class="font-bold text-lg font-heading border-b border-slate-100 dark:border-slate-700 pb-3 flex items-center gap-2 mb-4">
                                     <i data-lucide="shield" class="text-primary-500"></i>
@@ -788,11 +788,11 @@
                                 </div>
                                 <div class="space-y-3.5 text-sm">
                                     <div class="flex items-center gap-2.5 text-slate-600 dark:text-slate-300">
-                                        <i data-lucide="mail" class="w-4 h-4 shrink-0 text-slate-450"></i>
+                                        <i data-lucide="mail" class="w-4 h-4 shrink-0 text-slate-400"></i>
                                         <span>robert@nestflow.com</span>
                                     </div>
                                     <div class="flex items-center gap-2.5 text-slate-600 dark:text-slate-300">
-                                        <i data-lucide="phone" class="w-4 h-4 shrink-0 text-slate-450"></i>
+                                        <i data-lucide="phone" class="w-4 h-4 shrink-0 text-slate-400"></i>
                                         <span>(310) 555-0199</span>
                                     </div>
                                 </div>
@@ -804,10 +804,10 @@
                     </div>
 
                     <!-- Lease agreement specs and file download -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
                         
                         <!-- Timeline dates -->
-                        <div class="lg:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-5">
+                        <div class="xl:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-5">
                             <h3 class="font-bold text-lg font-heading border-b border-slate-100 dark:border-slate-700 pb-3 flex items-center gap-2">
                                 <i data-lucide="calendar" class="text-primary-500"></i>
                                 Term Milestones
@@ -835,7 +835,7 @@
                         </div>
 
                         <!-- Rules and Download -->
-                        <div class="lg:col-span-1 space-y-6">
+                        <div class="xl:col-span-1 space-y-6">
                             <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-4">
                                 <h3 class="font-bold text-base font-heading">Agreement Files</h3>
                                 <div class="p-4 rounded-xl border border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex items-center gap-3">
@@ -844,21 +844,21 @@
                                         <p class="font-bold text-xs truncate">lease_agreement_signed.pdf</p>
                                         <p class="text-[10px] text-slate-400 font-semibold">2.4 MB • PDF Document</p>
                                     </div>
-                                    <button onclick="showNotification('PDF Lease Agreement downloading...')" class="p-2 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-350 rounded-lg shadow-sm border border-slate-200/50 dark:border-slate-700 hover:text-primary-500 cursor-pointer shrink-0"><i data-lucide="download" class="w-4 h-4"></i></button>
+                                    <button onclick="showNotification('PDF Lease Agreement downloading...')" class="p-2 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-lg shadow-sm border border-slate-200/50 dark:border-slate-700 hover:text-primary-500 cursor-pointer shrink-0"><i data-lucide="download" class="w-4 h-4"></i></button>
                                 </div>
                             </div>
                             
                             <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700/60 shadow-sm space-y-3 text-xs">
                                 <h3 class="font-bold text-base font-heading mb-1">Key Policies</h3>
-                                <div class="flex items-start gap-2.5 text-slate-650 dark:text-slate-400 leading-relaxed">
+                                <div class="flex items-start gap-2.5 text-slate-600 dark:text-slate-400 leading-relaxed">
                                     <i data-lucide="dog" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i>
                                     <span><strong>Pet Policy:</strong> Registered pets allowed, subject to a monthly fee of $50.</span>
                                 </div>
-                                <div class="flex items-start gap-2.5 text-slate-650 dark:text-slate-400 leading-relaxed">
+                                <div class="flex items-start gap-2.5 text-slate-600 dark:text-slate-400 leading-relaxed">
                                     <i data-lucide="users" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i>
                                     <span><strong>Guests:</strong> Overnight guests permitted for a maximum of 14 consecutive days.</span>
                                 </div>
-                                <div class="flex items-start gap-2.5 text-slate-650 dark:text-slate-400 leading-relaxed">
+                                <div class="flex items-start gap-2.5 text-slate-600 dark:text-slate-400 leading-relaxed">
                                     <i data-lucide="trash-2" class="w-4 h-4 text-emerald-500 shrink-0 mt-0.5"></i>
                                     <span><strong>Trash pickup:</strong> Sun-Thu between 6:00 PM – 8:00 PM outside apartment door.</span>
                                 </div>
